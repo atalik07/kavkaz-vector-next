@@ -1,24 +1,43 @@
 @import "tailwindcss";
 
+/* Tailwind v4: разрешаем dark: через класс .dark (его ставит next-themes на <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Светлая тема (по умолчанию) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* page */
+  --background: #fafafa;
+  --foreground: #0b0f19;
+  --ring: rgba(11, 15, 25, 0.18); 
+
+  /* text */
+  --muted: rgba(11, 15, 25, 0.70);
+
+  /* UI */
+  --surface: #ffffff;
+  --border: rgba(11, 15, 25, 0.14);
+
+  /* buttons/links */
+  --primary-bg: #0b0f19;
+  --primary-fg: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* темная тема */
+html.dark {
+  --background: #0f121b;
+  --foreground: #f5f7ff;
+  --ring: rgba(245, 247, 255, 0.16);
+
+  --muted: rgba(245, 247, 255, 0.72);
+
+  --surface: rgba(255, 255, 255, 0.06);
+  --border: rgba(245, 247, 255, 0.14);
+
+  --primary-bg: #f5f7ff;
+  --primary-fg: #0f121b;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Базовые стили страницы */
 body {
   background: var(--background);
   color: var(--foreground);
@@ -27,4 +46,10 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* мягкий фокус по умолчанию */
+:where(a, button, input, textarea, select, summary, [role="button"], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 1px solid var(--ring);
+  outline-offset: 2px; /* небольшой воздух */
 }
