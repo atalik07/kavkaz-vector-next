@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { copy } from "@/lib/copy";
 
 type Mode = "system" | "light" | "dark";
 
@@ -30,13 +31,13 @@ export default function ThemeToggle() {
       aria-label="Theme"
     >
       <button type="button" onClick={() => setTheme("system")} className={btn("system")}>
-        System
+        {copy.theme.system}
       </button>
       <button type="button" onClick={() => setTheme("light")} className={btn("light")}>
-        Light
+        {copy.theme.light}
       </button>
       <button type="button" onClick={() => setTheme("dark")} className={btn("dark")}>
-        Dark
+        {copy.theme.dark}
       </button>
     </div>
   );

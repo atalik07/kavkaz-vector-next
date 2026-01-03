@@ -1,4 +1,5 @@
 import ThemeToggle from "@/components/ThemeToggle";
+import { copy } from "@/lib/copy";
 
 export default function Header() {
   return (
@@ -8,22 +9,28 @@ export default function Header() {
           <a href="#hero" className="flex items-center gap-3 text-white">
             <img
               src="/images/logo.svg"
-              alt="Кавказский вектор"
-              className="h-8 w-8"
+              alt={`${copy.brand.name} ${copy.brand.tagline}`}
+              className="h-9 w-9"
             />
-            <span className="font-semibold tracking-tight">Kavkaz Vector</span>
+            <span className="flex flex-col">
+              <span className="block text-base font-semibold tracking-tight text-white leading-none">
+                {copy.brand.name}
+              </span>
+              <span className="block text-base font-semibold tracking-tight text-white leading-none">
+                {copy.brand.tagline}
+              </span>
+            </span>
           </a>
-
 
         <nav className="flex gap-4 text-sm text-white/85">
           <a className="rounded-md px-2 py-1 hover:text-white hover:bg-white/10 transition-colors" href="#tours">
-            Tours
+            {copy.nav.tours}
           </a>
           <a className="rounded-md px-2 py-1 hover:text-white hover:bg-white/10 transition-colors" href="#about">
-            About
+            {copy.nav.about}
           </a>
           <a className="rounded-md px-2 py-1 hover:text-white hover:bg-white/10 transition-colors" href="#contacts">
-            Contacts
+            {copy.nav.contacts}
           </a>
         </nav>
 

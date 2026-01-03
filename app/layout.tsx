@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { copy } from "@/lib/copy";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
@@ -14,8 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Кавказский вектор",
-  description: "Путешествия по Северному Кавказу",
+  title: {
+    default: copy.seo.title,
+    template: `%s — ${copy.seo.title}`,
+  },
+  description: copy.seo.description,
 };
 
 export default function RootLayout({
