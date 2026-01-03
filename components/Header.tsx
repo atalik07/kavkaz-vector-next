@@ -1,41 +1,397 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { copy } from "@/lib/copy";
 
-export default function Header() {
-  return (
-<header className="fixed inset-x-0 top-0 z-50 border-b border-white/15 bg-black/20 backdrop-blur">
+type SectionId = "hero" | "tours" | "about" | "contacts";
+type NavId = Exclude<SectionId, "hero">;
 
-      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <a href="#hero" className="flex items-center gap-3 text-white">
-            <img
-              src="/images/logo.svg"
-              alt={`${copy.brand.name} ${copy.brand.tagline}`}
-              className="h-9 w-9"
-            />
-            <span className="flex flex-col">
-              <span className="block text-base font-semibold tracking-tight text-white leading-none">
+function IconTelegram(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M10 14l11 -11" />
+      <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 .1l-3.5 -7l-7 -3.5a.55 .55 0 0 1 .1 -1z" />
+    </svg>
+  );
+}
+
+
+function IconInstagram(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M4 4m0 4a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
+      <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+      <path d="M16.5 7.5l0 .01" />
+    </svg>
+  );
+}
+
+function IconMail(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+      <path d="M3 7l9 6l9 -6" />
+    </svg>
+  );
+}
+
+
+function IconPhone(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" {...props}>
+      <path
+        d="M8.2 4.6 6.9 3.8c-.7-.4-1.6-.2-2 .5-.7 1.2-1 2.6-.7 4 1 4.4 4.7 8.1 9.1 9.1 1.4.3 2.8 0 4-.7.7-.4.9-1.3.5-2l-.8-1.3c-.4-.6-1.2-.9-1.9-.6l-1.7.7c-.6.2-1.2.1-1.6-.3l-2.9-2.9c-.4-.4-.5-1-.3-1.6l.7-1.7c.3-.7 0-1.5-.6-1.9Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconBurger(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" {...props}>
+      <path d="M4 7h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M4 12h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function MobileMenu({
+  open,
+  onClose,
+  items,
+  phoneHref,
+  phoneLabel,
+  social,
+}: {
+  open: boolean;
+  onClose: () => void;
+  items: readonly { id: NavId; href: string; label: string }[];
+  phoneHref: string;
+  phoneLabel: string;
+  social: { href: string; label: string; icon: React.ReactNode }[];
+}) {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[60] md:hidden">
+      <button
+        type="button"
+        aria-label="Close menu"
+        onClick={onClose}
+        className="absolute inset-0 bg-black/50"
+      />
+      <div className="absolute right-3 top-3 w-[min(92vw,360px)] rounded-2xl border border-white/15 bg-black/70 p-4 text-white backdrop-blur">
+        <div className="flex items-center justify-between">
+          <div className="text-sm font-semibold">{copy.brand.name}</div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-md px-2 py-1 text-sm hover:bg-white/10"
+          >
+            Закрыть
+          </button>
+        </div>
+
+        <div className="mt-4 space-y-2">
+          {items.map((it) => (
+            <a
+              key={it.id}
+              href={it.href}
+              onClick={onClose}
+              className="block rounded-lg px-3 py-2 hover:bg-white/10"
+            >
+              {it.label}
+            </a>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-xl border border-white/15 p-3">
+          <a
+            href={phoneHref}
+            className="flex items-center gap-2 rounded-lg px-2 py-2 hover:bg-white/10"
+          >
+            <IconPhone className="h-5 w-5" />
+            <span className="font-medium">{phoneLabel}</span>
+          </a>
+
+          <div className="mt-2 flex gap-2 px-2">
+            {social.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={s.label}
+                className="rounded-lg p-2 text-white/85 hover:bg-white/10 hover:text-[color:var(--accent)]"
+              >
+                <span className="block h-5 w-5">{s.icon}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* В мобилке ты хотел все переключатели внутри бургера */}
+        <div className="mt-4 space-y-3">
+          <div className="rounded-xl border border-white/15 p-3">
+            <div className="text-xs text-white/70">Тема</div>
+            <div className="mt-2">
+              <ThemeToggle />
+            </div>
+          </div>
+
+          {/* Заглушки под язык и слабовидящих — подключим позже реальной логикой */}
+          <div className="rounded-xl border border-white/15 p-3">
+            <div className="text-xs text-white/70">Язык</div>
+            <div className="mt-2 flex gap-2">
+              <button className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-sm">
+                RU
+              </button>
+              <button className="rounded-full border border-white/15 px-3 py-1 text-sm hover:bg-white/10">
+                EN
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-left font-medium hover:bg-white/15"
+          >
+            Версия для слабовидящих
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Header() {
+  const items = useMemo(
+    () =>
+      [
+        { id: "tours", href: "#tours", label: copy.nav.tours },
+        { id: "about", href: "#about", label: copy.nav.about },
+        { id: "contacts", href: "#contacts", label: copy.nav.contacts },
+      ] as const,
+    []
+  );
+
+  const phoneHref = "tel:+79991234567";
+  const phoneLabel = "+7 (999) 123-45-67";
+
+  const social = useMemo(
+    () => [
+    { href: "mailto:hello@example.com", label: "Email", icon: <IconMail className="block h-5 w-5" /> },
+    { href: "https://t.me/your", label: "Telegram", icon: <IconTelegram className="block h-5 w-5 scale-[0.92]" /> },
+    { href: "https://instagram.com/your", label: "Instagram", icon: <IconInstagram className="block h-5 w-5" /> },
+    ],
+    []
+  );
+
+  const [active, setActive] = useState<NavId | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const hero = document.getElementById("hero");
+    const sections = (["tours", "about", "contacts"] as const)
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (!hero || !sections.length) return;
+
+    const HEADER_H = 72;
+
+    const updateScrolledAndActive = () => {
+      const heroBottom = hero.getBoundingClientRect().bottom;
+      const isScrolled = heroBottom <= HEADER_H;
+
+      setScrolled(isScrolled);
+      if (!isScrolled) setActive(null);
+    };
+
+    updateScrolledAndActive();
+    window.addEventListener("scroll", updateScrolledAndActive, { passive: true });
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const heroBottom = hero.getBoundingClientRect().bottom;
+        if (heroBottom > HEADER_H) return;
+
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0))[0];
+
+        if (visible?.target?.id) setActive(visible.target.id as NavId);
+      },
+      {
+        root: null,
+        rootMargin: `-${HEADER_H}px 0px -60% 0px`,
+        threshold: [0.1, 0.2, 0.35, 0.5, 0.65],
+      }
+    );
+
+    sections.forEach((el) => io.observe(el));
+
+    return () => {
+      window.removeEventListener("scroll", updateScrolledAndActive);
+      io.disconnect();
+    };
+  }, []);
+
+  const linkBase = "rounded-md px-2 py-1 text-sm uppercase transition-colors";
+  const linkInactive =
+    "text-current/85 hover:text-current " +
+    "group-data-[scrolled=false]:hover:bg-white/12 " +
+    "group-data-[scrolled=true]:hover:bg-black/5 " +
+    "dark:group-data-[scrolled=false]:hover:bg-white/10 " +
+    "dark:group-data-[scrolled=true]:hover:bg-white/25 ";
+
+  const linkActive = "text-[color:var(--accent)]";
+
+  return (
+    <>
+      <header
+        data-scrolled={scrolled ? "true" : "false"}
+        className={[
+          "group fixed inset-x-0 top-0 z-50 border-b backdrop-blur transition-colors duration-200",
+          "border-white/15 bg-black/20 text-white",
+          "data-[scrolled=true]:border-black/10 data-[scrolled=true]:bg-white/85 data-[scrolled=true]:text-[color:var(--foreground)] data-[scrolled=true]:shadow-sm",
+          "dark:data-[scrolled=true]:border-white/15 dark:data-[scrolled=true]:bg-black/35 dark:data-[scrolled=true]:text-white",
+        ].join(" ")}
+      >
+        <div className="mx-auto grid h-16 sm:h-[72px] max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
+          <a href="#hero" className="flex items-center gap-3">
+            <span className="inline-flex items-center justify-center rounded-full border border-current/15 p-1">
+              <img
+                src="/images/logo.svg"
+                alt={`${copy.brand.name} ${copy.brand.tagline}`}
+                className="h-8 w-8 rounded-full"
+              />
+            </span>
+
+            <span className="flex flex-col gap-0">
+              <span className="block text-base font-semibold tracking-tight leading-none">
                 {copy.brand.name}
               </span>
-              <span className="block text-base font-semibold tracking-tight text-white leading-none">
+              <span className="block text-base font-semibold tracking-tight leading-none">
                 {copy.brand.tagline}
               </span>
             </span>
           </a>
 
-        <nav className="flex gap-4 text-sm text-white/85">
-          <a className="rounded-md px-2 py-1 hover:text-white hover:bg-white/10 transition-colors" href="#tours">
-            {copy.nav.tours}
-          </a>
-          <a className="rounded-md px-2 py-1 hover:text-white hover:bg-white/10 transition-colors" href="#about">
-            {copy.nav.about}
-          </a>
-          <a className="rounded-md px-2 py-1 hover:text-white hover:bg-white/10 transition-colors" href="#contacts">
-            {copy.nav.contacts}
-          </a>
-        </nav>
+          <nav className="hidden md:flex justify-self-center gap-4">
+            {items.map((item) => {
+              const isActive = active === item.id;
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={[
+                    linkBase,
+                    isActive ? linkActive : linkInactive,
+                    isActive ? "hover:bg-transparent" : "",
+                  ].join(" ")}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
 
-        <ThemeToggle />
-      </div>
-    </header>
+          {/* Right: phone + social (desktop) / phone icon + burger (mobile) */}
+          <div className="flex items-center justify-self-end gap-2">
+            {/* Phone (desktop full) */}
+            <a
+              href={phoneHref}
+              className="hidden lg:inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm text-current/90 hover:text-[color:var(--accent)]"
+            >
+              <IconPhone className="h-4 w-4" />
+              <span className="font-medium">{phoneLabel}</span>
+            </a>
+
+            {/* Phone icon (mobile) */}
+            <a
+              href={phoneHref}
+              className="inline-flex lg:hidden items-center justify-center rounded-full p-2 hover:bg-white/10 hover:text-[color:var(--accent)]"
+              aria-label={phoneLabel}
+              title={phoneLabel}
+            >
+              <IconPhone className="h-5 w-5" />
+            </a>
+
+            {/* Social (desktop) */}
+            <div className="hidden lg:flex items-center">
+              {social.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  className="inline-flex h-9 w-9 items-center justify-center text-current/85 hover:text-[color:var(--accent)]"
+                >
+                  <span className="grid h-5 w-5 place-items-center">
+                    {s.icon}
+                  </span>
+                </a>
+              ))}
+            </div>
+
+
+            {/* Burger (mobile) */}
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className="inline-flex md:hidden items-center justify-center rounded-full p-2 hover:bg-white/10"
+              aria-label="Open menu"
+            >
+              <IconBurger className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <MobileMenu
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        items={items}
+        phoneHref={phoneHref}
+        phoneLabel={phoneLabel}
+        social={social}
+      />
+    </>
   );
 }

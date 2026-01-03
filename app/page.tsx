@@ -9,8 +9,12 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <main className="pt-20">
-        <Hero />
+
+      {/* Hero без отступа — начинается от верхней границы экрана */}
+      <Hero />
+
+      {/* Всё остальное с отступом под fixed-хедер */}
+      <main className="pt-16 sm:pt-[72px]">
         <Tours />
         <About />
         <Contacts />

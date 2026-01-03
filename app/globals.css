@@ -20,6 +20,9 @@
   /* buttons/links */
   --primary-bg: #0b0f19;
   --primary-fg: #ffffff;
+
+  --accent: #ff4b2b;
+  --hero-fade: rgba(250, 250, 250, 1); /* мягкий светлый, но можно сделать чуть темнее */
 }
 
 /* темная тема */
@@ -35,13 +38,21 @@ html.dark {
 
   --primary-bg: #f5f7ff;
   --primary-fg: #0f121b;
+
+  --hero-fade: rgba(15, 18, 27, 1);
 }
 
 /* Базовые стили страницы */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+* { box-sizing: border-box; }
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
 html {
@@ -52,4 +63,13 @@ html {
 :where(a, button, input, textarea, select, summary, [role="button"], [tabindex]:not([tabindex="-1"])):focus-visible {
   outline: 1px solid var(--ring);
   outline-offset: 2px; /* небольшой воздух */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-gilroy-display), var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Для hero subtitle / описаний секций */
+.subhead {
+  font-family: var(--font-gilroy-subhead), var(--font-geist-sans), system-ui, sans-serif;
 }

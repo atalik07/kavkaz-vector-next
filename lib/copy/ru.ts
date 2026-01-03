@@ -18,8 +18,9 @@ export const ru = {
   },
 
   hero: {
-    title: "Кавказ. Туры и впечатления.",
-    subtitle: "Каркас на Next.js + Tailwind. Дальше подключим Sanity, темы и анимации.",
+    titleLine1: "Путешествия",
+    titleLine2: "по Северному Кавказу",
+    subtitle: "Незабываемые впечатления в сердце Кавказских гор",
     ctaTours: "Смотреть туры",
     ctaContacts: "Контакты",
     imageAlt: "Горы Кавказа (Эльбрус)",
