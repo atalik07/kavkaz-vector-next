@@ -5,16 +5,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 const gilroyDisplay = localFont({
   variable: "--font-gilroy-display",
   src: [
@@ -47,8 +37,7 @@ export default function RootLayout({
   return (
     <html lang="ru" suppressHydrationWarning>
 <body
-    className={`${geistSans.variable} ${geistMono.variable} 
-    ${gilroyDisplay.variable} ${gilroySubhead.variable} 
+    className={`${gilroyDisplay.variable} ${gilroySubhead.variable} 
     antialiased bg-[var(--background)] text-[var(--foreground)]`}
   >
   <ThemeProvider>{children}</ThemeProvider>

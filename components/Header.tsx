@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { copy } from "@/lib/copy";
+import { ButtonLink } from "@/components/Button";
 
 type SectionId = "hero" | "tours" | "about" | "contacts";
 type NavId = Exclude<SectionId, "hero">;
@@ -138,13 +139,16 @@ function MobileMenu({
         </div>
 
         <div className="mt-4 rounded-xl border border-white/15 p-3">
-          <a
-            href={phoneHref}
-            className="flex items-center gap-2 rounded-lg px-2 py-2 hover:bg-white/10"
-          >
-            <IconPhone className="h-5 w-5" />
-            <span className="font-medium">{phoneLabel}</span>
-          </a>
+<ButtonLink
+  href={phoneHref}
+  variant="outline"
+  size="sm"
+  className="hidden lg:inline-flex gap-2 text-current/90 hover:text-[color:var(--accent)]"
+>
+  <IconPhone className="h-4 w-4" />
+  <span className="font-medium">{phoneLabel}</span>
+</ButtonLink>
+
 
           <div className="mt-2 flex gap-2 px-2">
             {social.map((s) => (

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { copy } from "@/lib/copy";
 import HeroUtilityBar from "@/components/HeroUtilityBar";
+import { ButtonLink } from "@/components/Button";
 
 export default function Hero() {
   return (
@@ -52,25 +53,26 @@ export default function Hero() {
 
 
 
-<div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-  <a
-    href="#tours"
-    className="inline-flex w-full items-center justify-center rounded-full bg-white/15 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/25 backdrop-blur transition
-               hover:bg-[color:var(--accent)] hover:text-white hover:ring-[color:var(--accent)]
-               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:w-auto"
-  >
-    {copy.hero.ctaTours}
-  </a>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center uppercase">
+                <ButtonLink
+                  href="#tours"
+                  variant="accentOutline"
+                  size="md"
+                  className="w-full sm:w-auto"
+                >
+                  {copy.hero.ctaTours}
+                </ButtonLink>
 
-  <a
-    href="#contacts"
-    className="inline-flex w-full items-center justify-center rounded-full bg-white/8 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/20 backdrop-blur transition
-               hover:bg-[color:var(--accent)] hover:text-white hover:ring-[color:var(--accent)]
-               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:w-auto"
-  >
-    {copy.hero.ctaContacts}
-  </a>
-</div>
+                <ButtonLink
+                  href="#contacts"
+                  variant="soft"
+                  size="md"
+                  className="w-full sm:w-auto bg-white/8 ring-white/20 hover:bg-white/12"
+                >
+                  {copy.hero.ctaContacts}
+                </ButtonLink>
+
+                </div>
 
 
         {/* Плашка под кнопками (десктоп/планшет), выравнивается по этому же контейнеру */}
