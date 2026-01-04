@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { copy } from "@/lib/copy";
 import { ButtonLink } from "@/components/Button";
+import { HEADER_H_DESKTOP, HEADER_H_MOBILE } from "@/lib/layout";
 
 type SectionId = "hero" | "tours" | "about" | "contacts";
 type NavId = Exclude<SectionId, "hero">;
@@ -227,31 +228,38 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    const hero = document.getElementById("hero");
-    const sections = (["tours", "about", "contacts"] as const)
-      .map((id) => document.getElementById(id))
-      .filter(Boolean) as HTMLElement[];
+useEffect(() => {
+  const hero = document.getElementById("hero");
+  const sections = (["tours", "about", "contacts"] as const)
+    .map((id) => document.getElementById(id))
+    .filter(Boolean) as HTMLElement[];
 
-    if (!hero || !sections.length) return;
+  if (!hero || !sections.length) return;
 
-    const HEADER_H = 72;
+  const mq = window.matchMedia("(min-width: 640px)");
+  const getHeaderH = () => (mq.matches ? HEADER_H_DESKTOP : HEADER_H_MOBILE);
 
-    const updateScrolledAndActive = () => {
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      const isScrolled = heroBottom <= HEADER_H;
+  let headerH = getHeaderH();
 
-      setScrolled(isScrolled);
-      if (!isScrolled) setActive(null);
-    };
+  const updateScrolledAndActive = () => {
+    headerH = getHeaderH();
+    const heroBottom = hero.getBoundingClientRect().bottom;
+    const isScrolled = heroBottom <= headerH;
 
-    updateScrolledAndActive();
-    window.addEventListener("scroll", updateScrolledAndActive, { passive: true });
+    setScrolled(isScrolled);
+    if (!isScrolled) setActive(null);
+  };
 
-    const io = new IntersectionObserver(
+  let io: IntersectionObserver | null = null;
+
+  const setupObserver = () => {
+    headerH = getHeaderH();
+    io?.disconnect();
+
+    io = new IntersectionObserver(
       (entries) => {
         const heroBottom = hero.getBoundingClientRect().bottom;
-        if (heroBottom > HEADER_H) return;
+        if (heroBottom > headerH) return;
 
         const visible = entries
           .filter((e) => e.isIntersecting)
@@ -261,18 +269,44 @@ export default function Header() {
       },
       {
         root: null,
-        rootMargin: `-${HEADER_H}px 0px -60% 0px`,
+        rootMargin: `-${headerH}px 0px -60% 0px`,
         threshold: [0.1, 0.2, 0.35, 0.5, 0.65],
       }
     );
 
-    sections.forEach((el) => io.observe(el));
+    sections.forEach((el) => io!.observe(el));
+  };
 
-    return () => {
-      window.removeEventListener("scroll", updateScrolledAndActive);
-      io.disconnect();
-    };
-  }, []);
+  // init
+  updateScrolledAndActive();
+  setupObserver();
+  window.addEventListener("scroll", updateScrolledAndActive, { passive: true });
+
+  const onBreakpointChange = () => {
+    updateScrolledAndActive();
+    setupObserver();
+  };
+
+  // Современный путь
+  if (typeof mq.addEventListener === "function") {
+    mq.addEventListener("change", onBreakpointChange);
+  } else {
+    // Fallback: старые Safari/WebView
+    window.addEventListener("resize", onBreakpointChange, { passive: true });
+  }
+
+  return () => {
+    window.removeEventListener("scroll", updateScrolledAndActive);
+    io?.disconnect();
+
+    if (typeof mq.removeEventListener === "function") {
+      mq.removeEventListener("change", onBreakpointChange);
+    } else {
+      window.removeEventListener("resize", onBreakpointChange);
+    }
+  };
+}, []);
+
 
   const linkBase = "rounded-md px-2 py-1 text-sm uppercase transition-colors";
   const linkInactive =
@@ -295,7 +329,7 @@ export default function Header() {
           "dark:data-[scrolled=true]:border-white/15 dark:data-[scrolled=true]:bg-black/35 dark:data-[scrolled=true]:text-white",
         ].join(" ")}
       >
-        <div className="mx-auto grid h-16 sm:h-[72px] max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
+        <div className="mx-auto grid h-14 sm:h-[60px] max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
           <a href="#hero" className="flex items-center gap-3">
             <span className="inline-flex items-center justify-center rounded-full border border-current/15 p-1">
               <img

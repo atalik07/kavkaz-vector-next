@@ -52,7 +52,7 @@ export default function Tours() {
   return (
     <section
       id="tours"
-      className="min-h-screen scroll-mt-16 sm:scroll-mt-[72px] bg-[color:var(--background)]"
+      className="min-h-[calc(100svh-var(--header-h))] scroll-mt-[var(--header-h)] bg-[color:var(--background)]"
     >
       {/* ВАЖНО: max-w + px держат центр на ультравайдах */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
@@ -71,7 +71,8 @@ export default function Tours() {
         {/* Слайдер */}
         <div className="relative mt-4 sm:mt-6">
           {/* РАМКА режет хвосты (строго) */}
-          <div className="overflow-hidden">
+<div className="swiper-clip">
+
             <Swiper
               modules={[A11y]}
               onSwiper={(s) => {
@@ -94,7 +95,7 @@ export default function Tours() {
               touchStartPreventDefault={false}
               centeredSlides={false}
               autoHeight={false}
-              className="!overflow-hidden"
+              className=""
               breakpoints={{
                 640: { slidesPerView: 2, spaceBetween: 16 },
                 1200: { slidesPerView: 3, spaceBetween: 22 },
@@ -107,7 +108,16 @@ export default function Tours() {
                       - контент внутри растягиваем flex-ом
                       - описание строго 3 строки (line-clamp-3)
                   */}
-                  <article className="flex w-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.06] shadow-[0_20px_70px_rgba(0,0,0,0.35)] min-[1200px]:min-h-[400px]">
+<article
+  className={[
+    "flex w-full flex-col overflow-hidden rounded-3xl border",
+    "border-black/10 bg-white shadow-[0_0px_0px_rgba(0,0,0,0.1)]",
+    "dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[0_0px_0px_rgba(0,0,0,0.1)]",
+    "min-[1200px]:min-h-[400px]",
+  ].join(" ")}
+>
+
+
                     <div className="relative aspect-[16/9] w-full overflow-hidden">
                       <Image
                         src={t.image}
@@ -165,12 +175,12 @@ export default function Tours() {
               className={[
                 "pointer-events-auto",
                 "absolute left-0 top-1/2 -translate-y-1/2",
-                // выносим за пределы сетки карточек, но в пределах контейнера страницы
                 "-translate-x-[110%]",
                 "z-10 h-11 w-11 grid place-items-center rounded-full",
-                "border border-white/15 bg-black/25 text-white/80 backdrop-blur",
-                "hover:bg-white/10 hover:text-white transition",
+                "border border-black/10 bg-white/80 text-black/70 shadow-sm backdrop-blur",
+                "hover:bg-white hover:text-black/90",
                 "disabled:opacity-25 disabled:pointer-events-none",
+                "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
               ].join(" ")}
             >
               <ArrowIcon dir="left" />
@@ -181,15 +191,22 @@ export default function Tours() {
               aria-label="Следующий слайд"
               onClick={() => swiperRef.current?.slideNext()}
               disabled={!canNext}
-              className={[
-                "pointer-events-auto",
-                "absolute right-0 top-1/2 -translate-y-1/2",
-                "translate-x-[110%]",
-                "z-10 h-11 w-11 grid place-items-center rounded-full",
-                "border border-white/15 bg-black/25 text-white/80 backdrop-blur",
-                "hover:bg-white/10 hover:text-white transition",
-                "disabled:opacity-25 disabled:pointer-events-none",
-              ].join(" ")}
+className={[
+  "pointer-events-auto",
+  "absolute right-0 top-1/2 -translate-y-1/2",
+  "translate-x-[110%]",
+  "z-10 h-11 w-11 grid place-items-center rounded-full",
+  // light
+  "border border-black/10 bg-white/80 text-black/70 shadow-sm backdrop-blur",
+  "hover:bg-white hover:text-black/90",
+  // dark
+  "dark:border-white/15 dark:bg-black/25 dark:text-white/80",
+  "dark:hover:bg-white/10 dark:hover:text-white",
+  // misc
+  "transition",
+  "disabled:opacity-25 disabled:pointer-events-none",
+].join(" ")}
+
             >
               <ArrowIcon dir="right" />
             </button>

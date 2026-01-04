@@ -7,7 +7,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="bg-[color:var(--background)] min-h-[calc(100svh-64px)] sm:min-h-[calc(100svh-72px)] scroll-mt-16 sm:scroll-mt-[72px]"
+      className="bg-[color:var(--background)] min-h-[calc(100svh-var(--header-h))] scroll-mt-[var(--header-h)]"
     >
       {/* Делаем 3 строки по высоте: top (фикс), center (растягивается), bottom (фикс) */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6 min-h-[calc(100svh-64px)] sm:min-h-[calc(100svh-72px)] grid grid-rows-[auto_1fr_auto]">
@@ -49,7 +49,7 @@ export default function About() {
             <div className="min-h-0 md:col-start-3">
               <div className="flex h-full min-h-0 flex-col overflow-hidden md:pt-10 md:pb-10">
                 <div className="min-h-0 overflow-hidden">
-                  <div className="space-y-4 text-[15px] leading-relaxed text-[color:var(--muted)]">
+                  <div className="space-y-4 text-[15px] leading-snug text-[color:var(--muted)]">
                     {copy.about.paragraphs.map((p, idx) => (
                       <p key={idx} className="text-balance">
                         {p}
