@@ -144,7 +144,7 @@ function MobileMenu({
   href={phoneHref}
   variant="outline"
   size="sm"
-  className="hidden lg:inline-flex gap-2 text-current/90 hover:text-[color:var(--accent)]"
+  className="inline-flex gap-2 text-current/90 hover:text-[color:var(--accent)]"
 >
   <IconPhone className="h-4 w-4" />
   <span className="font-medium">{phoneLabel}</span>
@@ -212,17 +212,31 @@ export default function Header() {
     []
   );
 
-  const phoneHref = "tel:+79991234567";
-  const phoneLabel = "+7 (999) 123-45-67";
+const phoneHref = copy.contacts.links.phoneHref;
+const phoneLabel = copy.contacts.values.phone;
 
-  const social = useMemo(
-    () => [
-    { href: "mailto:hello@example.com", label: "Email", icon: <IconMail className="block h-5 w-5" /> },
-    { href: "https://t.me/your", label: "Telegram", icon: <IconTelegram className="block h-5 w-5 scale-[0.92]" /> },
-    { href: "https://instagram.com/your", label: "Instagram", icon: <IconInstagram className="block h-5 w-5" /> },
-    ],
-    []
-  );
+
+const social = useMemo(
+  () => [
+    {
+      href: copy.contacts.links.emailHref,
+      label: "Email",
+      icon: <IconMail className="block h-5 w-5" />,
+    },
+    {
+      href: copy.contacts.social.telegram.href,
+      label: copy.contacts.social.telegram.label,
+      icon: <IconTelegram className="block h-5 w-5 scale-[0.92]" />,
+    },
+    {
+      href: copy.contacts.social.instagram.href,
+      label: copy.contacts.social.instagram.label,
+      icon: <IconInstagram className="block h-5 w-5" />,
+    },
+  ],
+  []
+);
+
 
   const [active, setActive] = useState<NavId | null>(null);
   const [scrolled, setScrolled] = useState(false);

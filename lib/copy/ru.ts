@@ -107,13 +107,72 @@ about: {
     ctaHref: "#", // или куда нужно
   },
 
-  contacts: {
-    title: "Контакты",
-    descriptionPlaceholder: "Контакты — позже.",
+contacts: {
+    eyebrow: "Свяжитесь с нами любым удобным способом",
+    titleLeft: "Контакты",
+    titleRight: "Напишите нам",
+
+    fields: {
+      phoneLabel: "Телефон:",
+      emailLabel: "Email:",
+      addressLabel: "Адрес офиса:",
+      hoursLabel: "График работы:",
+    },
+
+    values: {
+      phone: "+7 (863) 210-00-00",
+      email: "info@kavvector.ru",
+      address: "г. Пятигорск, проспект Калинина, 25, офис 12",
+      hours: "ежедневно с 10:00 до 19:00 по МСК",
+    },
+
+    form: {
+      name: "Имя",
+      namePlaceholder: "Как к вам обращаться",
+      phone: "Телефон",
+      phonePlaceholder: "+7 (___) ___-__-__",
+      email: "Эл. почта",
+      emailPlaceholder: "you@example.com",
+      message: "Сообщение",
+      messagePlaceholder: "Расскажите, какой тур вы ищете",
+      submit: "Отправить",
+      consent:
+        "Нажимая ОТПРАВИТЬ, вы соглашаетесь с политикой конфиденциальности и согласием на обработку персональных данных.",
+      privacy: "политикой конфиденциальности",
+      personalData: "согласием на обработку персональных данных",
+    },
+
+    map: {
+      title: "Карта",
+      src: "https://www.google.com/maps?q=Пятигорск%20проспект%20Калинина%2025&output=embed",
+    },
+    links: {
+      phoneHref: "tel:+78632100000",
+      emailHref: "mailto:info@kavvector.ru",
+    },
+
+    social: {
+      telegram: { href: "https://t.me/your", label: "Telegram" },
+      instagram: { href: "https://instagram.com/your", label: "Instagram" },
+      // можно добавить что угодно дальше:
+      // whatsapp: { href: "https://wa.me/7...", label: "WhatsApp" },
+      // vk: { href: "https://vk.com/...", label: "VK" },
+    },
   },
 
+
   footer: {
-    copyright: "© {year} Кавказский вектор",
+    copyright: "© {year} Кавказский вектор. Все права защищены.",
+    links: {
+      privacy: {
+        label: "Политика конфиденциальности",
+        href: "#", // вставишь реальную ссылку/роут
+      },
+      personalData: {
+        label: "Согласие на обработку персональных данных",
+        href: "#", // вставишь реальную ссылку/роут
+      },
+    },
   },
 
   seo: {

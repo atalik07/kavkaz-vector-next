@@ -23,9 +23,11 @@ const variants: Record<Variant, string> = {
     "bg-[color:var(--primary-bg)] text-[color:var(--primary-fg)] ring-1 ring-white/10 " +
     "hover:bg-[color:var(--accent)] hover:text-white hover:ring-[color:var(--accent)]",
 
-  outline:
-    "border border-white/15 bg-white/[0.02] text-[color:var(--foreground)] " +
-    "hover:bg-[color:var(--accent)] hover:text-white hover:border-[color:var(--accent)]",
+outline:
+  "border border-black/20 bg-transparent text-[color:var(--foreground)] " +
+  "dark:border-white/15 dark:bg-white/[0.02] " +
+  "hover:bg-[color:var(--accent)] hover:text-white hover:border-[color:var(--accent)]",
+
 
   ghost:
     "bg-white/10 text-white ring-1 ring-white/20 backdrop-blur " +
