@@ -258,14 +258,14 @@ useEffect(() => {
     const activeLine = scrollY + headerH + 8; // +8px чуть ниже шапки
 
     // собираем якоря
-    const anchors: { id: NavId; top: number }[] = ["tours", "about", "contacts"].map(
-      (id) => {
-        const el = getAnchor(id);
-        const rect = el?.getBoundingClientRect();
-        const top = rect ? rect.top + window.scrollY : Infinity;
-        return { id, top, };
-      }
-    );
+const navIds = ["tours", "about", "contacts"] as const;
+
+const anchors: { id: NavId; top: number }[] = navIds.map((id) => {
+  const el = getAnchor(id);
+  const rect = el?.getBoundingClientRect();
+  const top = rect ? rect.top + window.scrollY : Infinity;
+  return { id, top };
+});
 
     // берём ту секцию, у которой top <= activeLine и которая ближе всех к activeLine
     // берём ту секцию, чей якорь БЛИЖЕ ВСЕГО к линии под шапкой
