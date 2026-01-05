@@ -11,6 +11,8 @@ export default function About() {
     >
       {/* Делаем 3 строки по высоте: top (фикс), center (растягивается), bottom (фикс) */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6 min-h-[calc(100svh-64px)] sm:min-h-[calc(100svh-72px)] grid grid-rows-[auto_1fr_auto]">
+        
+        <div id="about-anchor" className="h-px w-full" />
         {/* TOP: отступы и заголовок — как в Tours */}
         <div className="pt-16 sm:pt-20">
           <div className="text-center">

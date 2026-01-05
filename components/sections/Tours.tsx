@@ -56,6 +56,8 @@ export default function Tours() {
     >
       {/* ВАЖНО: max-w + px держат центр на ультравайдах */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
+        {/* ЯКОРЬ для определения активной секции "Туры" */}
+      <div id="tours-anchor" className="h-px w-full" />
         {/* Верх — как в старом дизайне: больше воздуха */}
         <div className="text-center">
           <div className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[color:var(--muted)]">

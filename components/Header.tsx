@@ -230,74 +230,89 @@ export default function Header() {
 
 useEffect(() => {
   const hero = document.getElementById("hero");
-  const sections = (["tours", "about", "contacts"] as const)
-    .map((id) => document.getElementById(id))
-    .filter(Boolean) as HTMLElement[];
-
-  if (!hero || !sections.length) return;
+  if (!hero) return;
 
   const mq = window.matchMedia("(min-width: 640px)");
   const getHeaderH = () => (mq.matches ? HEADER_H_DESKTOP : HEADER_H_MOBILE);
 
-  let headerH = getHeaderH();
+  const getAnchor = (id: SectionId) =>
+    document.getElementById(`${id}-anchor`) ?? document.getElementById(id);
 
-  const updateScrolledAndActive = () => {
-    headerH = getHeaderH();
-    const heroBottom = hero.getBoundingClientRect().bottom;
+  const calcActiveByScroll = () => {
+    const headerH = getHeaderH();
+
+    const heroRect = hero.getBoundingClientRect();
+    const heroBottom = heroRect.bottom;
+
+    // флаг "шапка прилипла"
     const isScrolled = heroBottom <= headerH;
-
     setScrolled(isScrolled);
-    if (!isScrolled) setActive(null);
-  };
 
-  let io: IntersectionObserver | null = null;
+    // пока герой не уехал под шапку — не подсвечиваем пункты меню
+    if (!isScrolled) {
+      setActive(null);
+      return;
+    }
 
-  const setupObserver = () => {
-    headerH = getHeaderH();
-    io?.disconnect();
+    const scrollY = window.scrollY;
+    const activeLine = scrollY + headerH + 8; // +8px чуть ниже шапки
 
-    io = new IntersectionObserver(
-      (entries) => {
-        const heroBottom = hero.getBoundingClientRect().bottom;
-        if (heroBottom > headerH) return;
-
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0))[0];
-
-        if (visible?.target?.id) setActive(visible.target.id as NavId);
-      },
-      {
-        root: null,
-        rootMargin: `-${headerH}px 0px -60% 0px`,
-        threshold: [0.1, 0.2, 0.35, 0.5, 0.65],
+    // собираем якоря
+    const anchors: { id: NavId; top: number }[] = ["tours", "about", "contacts"].map(
+      (id) => {
+        const el = getAnchor(id);
+        const rect = el?.getBoundingClientRect();
+        const top = rect ? rect.top + window.scrollY : Infinity;
+        return { id, top, };
       }
     );
 
-    sections.forEach((el) => io!.observe(el));
+    // берём ту секцию, у которой top <= activeLine и которая ближе всех к activeLine
+    // берём ту секцию, чей якорь БЛИЖЕ ВСЕГО к линии под шапкой
+    const visible = anchors
+      .filter((a) => isFinite(a.top))
+      .sort((a, b) => {
+        const da = Math.abs(a.top - activeLine);
+        const db = Math.abs(b.top - activeLine);
+        return da - db;
+      })[0];
+
+    if (!visible) {
+      setActive(null);
+      return;
+    }
+
+    setActive(visible.id);
+
+  }
+
+  // первый расчёт
+  calcActiveByScroll();
+
+  const onScroll = () => {
+    calcActiveByScroll();
   };
 
-  // init
-  updateScrolledAndActive();
-  setupObserver();
-  window.addEventListener("scroll", updateScrolledAndActive, { passive: true });
+  const onResize = () => {
+    calcActiveByScroll();
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onResize);
 
   const onBreakpointChange = () => {
-    updateScrolledAndActive();
-    setupObserver();
+    calcActiveByScroll();
   };
 
-  // Современный путь
   if (typeof mq.addEventListener === "function") {
     mq.addEventListener("change", onBreakpointChange);
   } else {
-    // Fallback: старые Safari/WebView
-    window.addEventListener("resize", onBreakpointChange, { passive: true });
+    window.addEventListener("resize", onBreakpointChange);
   }
 
   return () => {
-    window.removeEventListener("scroll", updateScrolledAndActive);
-    io?.disconnect();
+    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("resize", onResize);
 
     if (typeof mq.removeEventListener === "function") {
       mq.removeEventListener("change", onBreakpointChange);
@@ -306,7 +321,6 @@ useEffect(() => {
     }
   };
 }, []);
-
 
   const linkBase = "rounded-md px-2 py-1 text-sm uppercase transition-colors";
   const linkInactive =
