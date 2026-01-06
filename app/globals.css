@@ -23,7 +23,7 @@
 
   --accent: #ff4b2b;
   --hero-fade: rgba(250, 250, 250, 1); /* мягкий светлый, но можно сделать чуть темнее */
-    --header-h: 56px; /* mobile */
+  --header-h: 56px; /* mobile */
 }
 
 @media (min-width: 640px) {
@@ -86,4 +86,3 @@ h1, h2, h3, h4, h5, h6 {
 .swiper-clip {
   clip-path: inset(0);
 }
-

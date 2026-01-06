@@ -4,10 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { copy } from "@/lib/copy";
 import { ButtonLink } from "@/components/Button";
-import { HEADER_H_DESKTOP, HEADER_H_MOBILE } from "@/lib/layout";
 
-type SectionId = "hero" | "tours" | "about" | "contacts";
-type NavId = Exclude<SectionId, "hero">;
+type NavId = "tours" | "about" | "contacts";
 
 function IconTelegram(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -26,7 +24,6 @@ function IconTelegram(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
 
 function IconInstagram(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -64,7 +61,6 @@ function IconMail(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
 
 function IconPhone(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -140,16 +136,15 @@ function MobileMenu({
         </div>
 
         <div className="mt-4 rounded-xl border border-white/15 p-3">
-<ButtonLink
-  href={phoneHref}
-  variant="outline"
-  size="sm"
-  className="inline-flex gap-2 text-current/90 hover:text-[color:var(--accent)]"
->
-  <IconPhone className="h-4 w-4" />
-  <span className="font-medium">{phoneLabel}</span>
-</ButtonLink>
-
+          <ButtonLink
+            href={phoneHref}
+            variant="outline"
+            size="sm"
+            className="inline-flex gap-2 text-current/90 hover:text-[color:var(--accent)]"
+          >
+            <IconPhone className="h-4 w-4" />
+            <span className="font-medium">{phoneLabel}</span>
+          </ButtonLink>
 
           <div className="mt-2 flex gap-2 px-2">
             {social.map((s) => (
@@ -167,7 +162,6 @@ function MobileMenu({
           </div>
         </div>
 
-        {/* В мобилке ты хотел все переключатели внутри бургера */}
         <div className="mt-4 space-y-3">
           <div className="rounded-xl border border-white/15 p-3">
             <div className="text-xs text-white/70">Тема</div>
@@ -176,7 +170,6 @@ function MobileMenu({
             </div>
           </div>
 
-          {/* Заглушки под язык и слабовидящих — подключим позже реальной логикой */}
           <div className="rounded-xl border border-white/15 p-3">
             <div className="text-xs text-white/70">Язык</div>
             <div className="mt-2 flex gap-2">
@@ -212,12 +205,10 @@ export default function Header() {
     []
   );
 
-const phoneHref = copy.contacts.links.phoneHref;
-const phoneLabel = copy.contacts.values.phone;
+  const phoneHref = copy.contacts.links.phoneHref;
+  const phoneLabel = copy.contacts.values.phone;
 
-
-const social = useMemo(
-  () => [
+  const social = [
     {
       href: copy.contacts.links.emailHref,
       label: "Email",
@@ -233,108 +224,74 @@ const social = useMemo(
       label: copy.contacts.social.instagram.label,
       icon: <IconInstagram className="block h-5 w-5" />,
     },
-  ],
-  []
-);
-
+  ];
 
   const [active, setActive] = useState<NavId | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-useEffect(() => {
-  const hero = document.getElementById("hero");
-  if (!hero) return;
+  useEffect(() => {
+    const hero = document.getElementById("hero");
+    if (!hero) return;
 
-  const mq = window.matchMedia("(min-width: 640px)");
-  const getHeaderH = () => (mq.matches ? HEADER_H_DESKTOP : HEADER_H_MOBILE);
+    const getHeaderH = () => {
+      const v = getComputedStyle(document.documentElement).getPropertyValue("--header-h").trim();
+      const n = Number.parseFloat(v);
+      return Number.isFinite(n) ? n : 0;
+    };
 
-  const getAnchor = (id: SectionId) =>
-    document.getElementById(`${id}-anchor`) ?? document.getElementById(id);
+    const getAnchor = (id: NavId) => document.getElementById(id);
 
-  const calcActiveByScroll = () => {
-    const headerH = getHeaderH();
+    const calcActiveByScroll = () => {
+      const headerH = getHeaderH();
 
-    const heroRect = hero.getBoundingClientRect();
-    const heroBottom = heroRect.bottom;
+      const heroRect = hero.getBoundingClientRect();
+      const heroBottom = heroRect.bottom;
 
-    // флаг "шапка прилипла"
-    const isScrolled = heroBottom <= headerH;
-    setScrolled(isScrolled);
+      const isScrolled = heroBottom <= headerH;
+      setScrolled(isScrolled);
 
-    // пока герой не уехал под шапку — не подсвечиваем пункты меню
-    if (!isScrolled) {
-      setActive(null);
-      return;
-    }
+      if (!isScrolled) {
+        setActive(null);
+        return;
+      }
 
-    const scrollY = window.scrollY;
-    const activeLine = scrollY + headerH + 8; // +8px чуть ниже шапки
+      const scrollY = window.scrollY;
+      const activeLine = scrollY + headerH + 8;
 
-    // собираем якоря
-const navIds = ["tours", "about", "contacts"] as const;
+      const navIds = ["tours", "about", "contacts"] as const;
 
-const anchors: { id: NavId; top: number }[] = navIds.map((id) => {
-  const el = getAnchor(id);
-  const rect = el?.getBoundingClientRect();
-  const top = rect ? rect.top + window.scrollY : Infinity;
-  return { id, top };
-});
+      const anchors: { id: NavId; top: number }[] = navIds.map((id) => {
+        const el = getAnchor(id);
+        const rect = el?.getBoundingClientRect();
+        const top = rect ? rect.top + window.scrollY : Infinity;
+        return { id, top };
+      });
 
-    // берём ту секцию, у которой top <= activeLine и которая ближе всех к activeLine
-    // берём ту секцию, чей якорь БЛИЖЕ ВСЕГО к линии под шапкой
-    const visible = anchors
-      .filter((a) => isFinite(a.top))
-      .sort((a, b) => {
-        const da = Math.abs(a.top - activeLine);
-        const db = Math.abs(b.top - activeLine);
-        return da - db;
-      })[0];
+      const visible = anchors
+        .filter((a) => isFinite(a.top))
+        .sort((a, b) => {
+          const da = Math.abs(a.top - activeLine);
+          const db = Math.abs(b.top - activeLine);
+          return da - db;
+        })[0];
 
-    if (!visible) {
-      setActive(null);
-      return;
-    }
+      setActive(visible ? visible.id : null);
+    };
 
-    setActive(visible.id);
-
-  }
-
-  // первый расчёт
-  calcActiveByScroll();
-
-  const onScroll = () => {
     calcActiveByScroll();
-  };
 
-  const onResize = () => {
-    calcActiveByScroll();
-  };
+    const onScroll = () => calcActiveByScroll();
+    const onResize = () => calcActiveByScroll();
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
 
-  const onBreakpointChange = () => {
-    calcActiveByScroll();
-  };
-
-  if (typeof mq.addEventListener === "function") {
-    mq.addEventListener("change", onBreakpointChange);
-  } else {
-    window.addEventListener("resize", onBreakpointChange);
-  }
-
-  return () => {
-    window.removeEventListener("scroll", onScroll);
-    window.removeEventListener("resize", onResize);
-
-    if (typeof mq.removeEventListener === "function") {
-      mq.removeEventListener("change", onBreakpointChange);
-    } else {
-      window.removeEventListener("resize", onBreakpointChange);
-    }
-  };
-}, []);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
 
   const linkBase = "rounded-md px-2 py-1 text-sm uppercase transition-colors";
   const linkInactive =
@@ -397,9 +354,7 @@ const anchors: { id: NavId; top: number }[] = navIds.map((id) => {
             })}
           </nav>
 
-          {/* Right: phone + social (desktop) / phone icon + burger (mobile) */}
           <div className="flex items-center justify-self-end gap-2">
-            {/* Phone (desktop full) */}
             <a
               href={phoneHref}
               className="hidden lg:inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm text-current/90 hover:text-[color:var(--accent)]"
@@ -408,7 +363,6 @@ const anchors: { id: NavId; top: number }[] = navIds.map((id) => {
               <span className="font-medium">{phoneLabel}</span>
             </a>
 
-            {/* Phone icon (mobile) */}
             <a
               href={phoneHref}
               className="inline-flex lg:hidden items-center justify-center rounded-full p-2 hover:bg-white/10 hover:text-[color:var(--accent)]"
@@ -418,7 +372,6 @@ const anchors: { id: NavId; top: number }[] = navIds.map((id) => {
               <IconPhone className="h-5 w-5" />
             </a>
 
-            {/* Social (desktop) */}
             <div className="hidden lg:flex items-center">
               {social.map((s) => (
                 <a
@@ -429,15 +382,11 @@ const anchors: { id: NavId; top: number }[] = navIds.map((id) => {
                   aria-label={s.label}
                   className="inline-flex h-9 w-9 items-center justify-center text-current/85 hover:text-[color:var(--accent)]"
                 >
-                  <span className="grid h-5 w-5 place-items-center">
-                    {s.icon}
-                  </span>
+                  <span className="grid h-5 w-5 place-items-center">{s.icon}</span>
                 </a>
               ))}
             </div>
 
-
-            {/* Burger (mobile) */}
             <button
               type="button"
               onClick={() => setMobileOpen(true)}

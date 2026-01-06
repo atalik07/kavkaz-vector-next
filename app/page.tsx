@@ -4,25 +4,31 @@ import Hero from "@/components/sections/Hero";
 import Tours from "@/components/sections/Tours";
 import About from "@/components/sections/About";
 import Contacts from "@/components/sections/Contacts";
-import SnapScrollGsap from "@/components/SnapScrollGsap";
 
 export default function HomePage() {
   return (
     <>
-      {/* Менеджер поэкранного скролла для desktop */}
-      <SnapScrollGsap untilId="contacts" />
-
       <Header />
 
-      <Hero />
+      <main>
+        <section id="hero">
+          <Hero />
+        </section>
 
-      <main className="pt-16 sm:pt-[72px]">
-        <Tours />
-        <About />
-        <Contacts />
-        <Footer />
+        <section id="tours">
+          <Tours />
+        </section>
+
+        <section id="about">
+          <About />
+        </section>
+
+        <section id="contacts">
+          <Contacts />
+        </section>
       </main>
+
+      <Footer />
     </>
   );
 }
-
