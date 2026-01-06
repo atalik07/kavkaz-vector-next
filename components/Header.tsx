@@ -230,68 +230,87 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
+  const ids = ["tours", "about", "contacts"] as const;
+
+  const getHeaderH = () => {
+    const v = getComputedStyle(document.documentElement)
+      .getPropertyValue("--header-h")
+      .trim();
+    const n = Number.parseFloat(v);
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  const calcScrolled = () => {
     const hero = document.getElementById("hero");
-    if (!hero) return;
+    if (!hero) return false;
+    const headerH = getHeaderH();
+    return hero.getBoundingClientRect().bottom <= headerH;
+  };
 
-    const getHeaderH = () => {
-      const v = getComputedStyle(document.documentElement).getPropertyValue("--header-h").trim();
-      const n = Number.parseFloat(v);
-      return Number.isFinite(n) ? n : 0;
-    };
+  const pickByLine = (line: number): NavId | null => {
+    const hero = document.getElementById("hero");
 
-    const getAnchor = (id: NavId) => document.getElementById(id);
-
-    const calcActiveByScroll = () => {
-      const headerH = getHeaderH();
-
+    // Пока линия ещё внутри hero — ничего не активно
+    if (hero) {
       const heroRect = hero.getBoundingClientRect();
-      const heroBottom = heroRect.bottom;
+      if (heroRect.bottom > line) return null;
+    }
 
-      const isScrolled = heroBottom <= headerH;
-      setScrolled(isScrolled);
+    let current: NavId | null = null;
 
-      if (!isScrolled) {
-        setActive(null);
-        return;
-      }
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (r.top <= line) current = id;
+    }
 
-      const scrollY = window.scrollY;
-      const activeLine = scrollY + headerH + 8;
+    return current;
+  };
 
-      const navIds = ["tours", "about", "contacts"] as const;
+  let raf = 0;
+  let lastY = window.scrollY;
 
-      const anchors: { id: NavId; top: number }[] = navIds.map((id) => {
-        const el = getAnchor(id);
-        const rect = el?.getBoundingClientRect();
-        const top = rect ? rect.top + window.scrollY : Infinity;
-        return { id, top };
-      });
+  const recompute = () => {
+    raf = 0;
 
-      const visible = anchors
-        .filter((a) => isFinite(a.top))
-        .sort((a, b) => {
-          const da = Math.abs(a.top - activeLine);
-          const db = Math.abs(b.top - activeLine);
-          return da - db;
-        })[0];
+    const headerH = getHeaderH();
 
-      setActive(visible ? visible.id : null);
-    };
+    // Порог для движения ВНИЗ (переключаемся как только следующая секция дошла до хедера)
+    const lineDown = headerH + 8;
 
-    calcActiveByScroll();
+    // Порог для движения ВВЕРХ (переключаемся "назад" позже — когда предыдущая секция реально заняла верх)
+    // 0.35vh можно крутить: больше => ещё позже переключение вверх.
+    const lineUp = headerH + Math.round(window.innerHeight * 0.5);
 
-    const onScroll = () => calcActiveByScroll();
-    const onResize = () => calcActiveByScroll();
+    const y = window.scrollY;
+    const goingDown = y > lastY;
+    lastY = y;
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
+    const nextActive = goingDown ? pickByLine(lineDown) : pickByLine(lineUp);
 
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
+    setActive(nextActive);
+    setScrolled(calcScrolled());
+  };
+
+  const requestRecompute = () => {
+    if (raf) return;
+    raf = window.requestAnimationFrame(recompute);
+  };
+
+  recompute();
+
+  window.addEventListener("scroll", requestRecompute, { passive: true });
+  window.addEventListener("resize", requestRecompute);
+
+  return () => {
+    if (raf) window.cancelAnimationFrame(raf);
+    window.removeEventListener("scroll", requestRecompute);
+    window.removeEventListener("resize", requestRecompute);
+  };
+}, []);
+
 
   const linkBase = "rounded-md px-2 py-1 text-sm uppercase transition-colors";
   const linkInactive =
