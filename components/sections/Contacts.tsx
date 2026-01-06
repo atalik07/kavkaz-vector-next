@@ -14,9 +14,9 @@ export default function Contacts() {
           </div>
         </div>
 
-        <div className="mt-4 sm:mt-6 grid gap-6 lg:grid-cols-2">
+        <div className="mt-4 sm:mt-6 grid gap-6 lg:grid-cols-2 lg:items-stretch">
           {/* LEFT: contacts + map */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 lg:min-h-0 lg:h-full">
             <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur">
               <div className="px-4 sm:px-5 pt-3 sm:pt-4 pb-3 sm:pb-4">
                 <h3 className="text-lg sm:text-xl font-semibold leading-snug">
@@ -47,10 +47,10 @@ export default function Contacts() {
               </div>
             </div>
 
-            <div className="rounded-3xl overflow-hidden border border-[color:var(--border)] bg-[color:var(--surface)]/80">
+            <div className="rounded-3xl overflow-hidden border border-[color:var(--border)] bg-[color:var(--surface)]/80 lg:flex-1 lg:min-h-0">
               <iframe
                 title={c.map.title}
-                className="block h-[260px] w-full sm:h-[320px] lg:h-[360px]"
+                className="block h-[260px] w-full sm:h-[320px] lg:h-full"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 src={c.map.src}
@@ -59,8 +59,9 @@ export default function Contacts() {
           </div>
 
           {/* RIGHT: form */}
-          <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur">
-            <div className="px-4 sm:px-5 pt-3 sm:pt-4 pb-3 sm:pb-4">
+          <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur lg:h-full">
+            {/* тут ключевая подтяжка низа: pb уменьшили */}
+            <div className="px-4 sm:px-5 pt-3 sm:pt-4 pb-2 sm:pb-3">
               <h3 className="text-lg sm:text-xl font-semibold leading-snug">
                 {c.titleRight}
               </h3>
@@ -117,13 +118,15 @@ export default function Contacts() {
                   />
                 </label>
 
-                <div className="pt-1">
+                {/* кнопку не отталкиваем вниз лишним padding */}
+                <div className="pt-0">
                   <Button type="submit" className="w-full uppercase tracking-wide">
                     {c.form.submit}
                   </Button>
                 </div>
 
-                <p className="text-xs leading-5 text-[color:var(--muted)]">
+                {/* контролируем отступ явно, чтобы не оставалось воздуха снизу */}
+                <p className="mt-2 text-xs leading-5 text-[color:var(--muted)]">
                   {c.form.consent}
                 </p>
               </form>
