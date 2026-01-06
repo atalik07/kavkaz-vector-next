@@ -18,7 +18,7 @@ export default function About() {
 
         <div className="mt-6 grid gap-6 md:grid-cols-[1fr_32px_1fr] md:items-start">
           {/* Left image */}
-          <div className="relative overflow-hidden rounded-[32px] sm:rounded-[40px] bg-black/10 md:col-start-1">
+          <div className="relative overflow-hidden rounded-3xl bg-black/10 md:col-start-1">
             <div className="relative aspect-[4/3] lg:aspect-[1/1] w-full">
               <Image
                 src="/images/about-jeep.webp"
