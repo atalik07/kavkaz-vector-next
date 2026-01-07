@@ -1,22 +1,107 @@
+"use client";
+
 import { copy } from "@/lib/copy";
 import { Button } from "@/components/Button";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function Contacts() {
   const c = copy.contacts;
 
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const eyebrowRef = useRef<HTMLDivElement | null>(null);
+  const leftCardRef = useRef<HTMLDivElement | null>(null);
+  const rightCardRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = sectionRef.current;
+    const eyebrow = eyebrowRef.current;
+    const left = leftCardRef.current;
+    const right = rightCardRef.current;
+
+    if (!section || !eyebrow || !left || !right) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        isMobile: "(max-width: 767px)",
+        isDesktop: "(min-width: 768px)",
+        reduce: "(prefers-reduced-motion: reduce)",
+      },
+      (ctx) => {
+        if (ctx.conditions?.reduce) return;
+
+        const base = {
+          duration: 0.9,
+          ease: "power3.out",
+        };
+
+        const fromY = 14;
+
+        // Десктоп: карточки от краёв. Мобилка: обе снизу.
+        const leftFrom = ctx.conditions?.isDesktop
+          ? { autoAlpha: 0, x: -16, y: 0, filter: "blur(2px)" }
+          : { autoAlpha: 0, x: 0, y: fromY, filter: "blur(2px)" };
+
+        const rightFrom = ctx.conditions?.isDesktop
+          ? { autoAlpha: 0, x: 16, y: 0, filter: "blur(2px)" }
+          : { autoAlpha: 0, x: 0, y: fromY, filter: "blur(2px)" };
+
+        const tl = gsap.timeline({
+          defaults: base,
+          scrollTrigger: {
+            trigger: left, // как в About: триггерим по "главному" блоку, чтобы анимация читалась
+            start: "top 70%",
+            end: "bottom 30%",
+            toggleActions: "play reverse play reverse",
+          },
+        });
+
+        // 1) карточки (раньше)
+        tl.fromTo(left, leftFrom, { autoAlpha: 1, x: 0, y: 0, filter: "blur(0px)" }, 0.0)
+          .fromTo(right, rightFrom, { autoAlpha: 1, x: 0, y: 0, filter: "blur(0px)" }, 0.08)
+
+          // 2) заголовок (позже)
+          .fromTo(
+            eyebrow,
+            { autoAlpha: 0, y: 12, filter: "blur(0px)" },
+            { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.55 },
+            0.48
+          );
+
+        return () => {
+          tl.scrollTrigger?.kill();
+          tl.kill();
+        };
+      }
+    );
+
+    return () => mm.revert();
+  }, []);
+
   return (
-    <div className="bg-[color:var(--background)]">
+    <div ref={sectionRef}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
         {/* Header */}
         <div className="text-center">
-          <div className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[color:var(--muted)]">
+          <div
+            ref={eyebrowRef}
+            className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[color:var(--muted)]"
+          >
             {c.eyebrow}
           </div>
         </div>
 
         <div className="mt-4 sm:mt-6 grid gap-6 lg:grid-cols-2 lg:items-stretch">
           {/* LEFT: contacts + map */}
-          <div className="flex flex-col gap-6 lg:min-h-0 lg:h-full">
+          <div
+            ref={leftCardRef}
+            className="flex flex-col gap-6 lg:min-h-0 lg:h-full"
+          >
             <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur">
               <div className="px-4 sm:px-5 pt-3 sm:pt-4 pb-3 sm:pb-4">
                 <h3 className="text-lg sm:text-xl font-semibold leading-snug">
@@ -59,8 +144,10 @@ export default function Contacts() {
           </div>
 
           {/* RIGHT: form */}
-          <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur lg:h-full">
-            {/* тут ключевая подтяжка низа: pb уменьшили */}
+          <div
+            ref={rightCardRef}
+            className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur lg:h-full"
+          >
             <div className="px-4 sm:px-5 pt-3 sm:pt-4 pb-2 sm:pb-3">
               <h3 className="text-lg sm:text-xl font-semibold leading-snug">
                 {c.titleRight}
@@ -100,11 +187,11 @@ export default function Contacts() {
                   </span>
                   <input
                     className="h-10 rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] px-3 text-[color:var(--foreground)] outline-none focus:border-[color:var(--accent)]"
-                    placeholder={c.form.emailPlaceholder}
-                    name="email"
-                    autoComplete="email"
-                    inputMode="email"
-                  />
+                      placeholder={c.form.emailPlaceholder}
+                      name="email"
+                      autoComplete="email"
+                      inputMode="email"
+                    />
                 </label>
 
                 <label className="grid gap-2">
@@ -118,15 +205,13 @@ export default function Contacts() {
                   />
                 </label>
 
-                {/* кнопку не отталкиваем вниз лишним padding */}
                 <div className="pt-0">
                   <Button type="submit" className="w-full sm:w-auto uppercase tracking-wide">
                     {c.form.submit}
                   </Button>
                 </div>
 
-                {/* контролируем отступ явно, чтобы не оставалось воздуха снизу */}
-                <p className="mt-2 text-xs leading-5 text-[color:var(--muted)]">
+                <p className="mt-2 text-xs leading-5 text-[color:var(--foreground)]/70">
                   {c.form.consent}
                 </p>
               </form>
