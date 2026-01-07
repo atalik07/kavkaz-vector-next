@@ -378,7 +378,7 @@ export default function Header() {
           <div className="flex items-center justify-self-end gap-2">
             <a
               href={phoneHref}
-              className="hidden lg:inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm text-current/90 hover:text-[color:var(--accent)]"
+              className="hidden lg:inline-flex items-center gap-2 rounded-full px-3 py-1 text-base font-semibold text-current/90 hover:text-[color:var(--accent)]"
             >
               <IconPhone className="h-4 w-4" />
               <span className="font-medium">{phoneLabel}</span>
@@ -390,7 +390,7 @@ export default function Header() {
               aria-label={phoneLabel}
               title={phoneLabel}
             >
-              <IconPhone className="h-5 w-5" />
+              <IconPhone className="h-6 w-6" />
             </a>
 
             <div className="hidden lg:flex items-center">

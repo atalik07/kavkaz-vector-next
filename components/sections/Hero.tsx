@@ -9,7 +9,7 @@ export default function Hero() {
       data-hero
       data-observe="hero"
       data-inview="false"
-      className="relative overflow-hidden min-h-[100svh]"
+      className="relative isolate overflow-hidden min-h-[100svh]"
     >
       <Image
         src="/images/hero-elbrus.webp"
@@ -20,8 +20,9 @@ export default function Hero() {
         className="object-cover object-top"
       />
 
+      {/* gradients BELOW content */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[45svh]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[45svh]"
         style={{
           background:
             "linear-gradient(to bottom, rgba(0,0,0,0) 0%, color-mix(in srgb, var(--hero-fade) 6%, transparent) 55%, color-mix(in srgb, var(--hero-fade) 18%, transparent) 100%)",
@@ -30,7 +31,7 @@ export default function Hero() {
       />
 
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[18svh]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[18svh]"
         style={{
           background:
             "linear-gradient(to bottom, rgba(0,0,0,0) 0%, color-mix(in srgb, var(--hero-fade) 55%, transparent) 70%, var(--hero-fade) 100%)",
@@ -38,7 +39,8 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto flex max-w-6xl flex-col justify-end px-4 sm:px-6 pb-16 sm:pb-[72px] min-h-[100svh]">
+      {/* content ABOVE gradients */}
+      <div className="relative z-20 mx-auto flex max-w-6xl flex-col justify-end px-4 sm:px-6 pb-16 sm:pb-[72px] min-h-[100svh]">
         <h1 className="w-full font-extrabold uppercase text-white leading-[0.92] tracking-tight">
           <span
             data-hero-title="1"
@@ -74,12 +76,7 @@ export default function Hero() {
           data-reveal-delay="3"
           className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center uppercase"
         >
-          <ButtonLink
-            href="#tours"
-            variant="accentOutline"
-            size="md"
-            className="w-full sm:w-auto"
-          >
+          <ButtonLink href="#tours" variant="accentOutline" size="md" className="w-full sm:w-auto">
             {copy.hero.ctaTours}
           </ButtonLink>
 
@@ -93,7 +90,10 @@ export default function Hero() {
           </ButtonLink>
         </div>
 
-        <HeroUtilityBar />
+        {/* make sure the bar is above gradients */}
+        <div className="relative z-20">
+          <HeroUtilityBar />
+        </div>
       </div>
     </div>
   );
