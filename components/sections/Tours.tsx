@@ -43,35 +43,6 @@ function formatRub(n: number) {
   return new Intl.NumberFormat("ru-RU").format(n);
 }
 
-/**
- * ВАЖНО:
- * 1) Tailwind group-data варианты мы УБИРАЕМ (они у тебя не генерятся, поэтому всё скрыто).
- * 2) Переходим на data-reveal + CSS (см. ниже).
- *
- * Добавь в globals.css:
- *
- * [data-observe] [data-reveal] {
- *   opacity: 0;
- *   transform: translate3d(0, 24px, 0);
- *   transition-property: transform, opacity;
- *   transition-duration: 700ms;
- *   transition-timing-function: ease;
- *   will-change: transform, opacity;
- * }
- * [data-observe][data-inview="true"] [data-reveal] {
- *   opacity: 1;
- *   transform: translate3d(0, 0, 0);
- * }
- * [data-observe] [data-reveal="up"] {
- *   transform: translate3d(0, -24px, 0);
- * }
- * [data-observe] [data-reveal="down-from-above"] {
- *   transform: translate3d(0, -16px, 0);
- * }
- * [data-observe][data-inview="true"] [data-reveal-delay="1"] { transition-delay: 60ms; }
- * [data-observe][data-inview="true"] [data-reveal-delay="2"] { transition-delay: 170ms; }
- * [data-observe][data-inview="true"] [data-reveal-delay="3"] { transition-delay: 260ms; }
- */
 export default function Tours() {
   const tours = useMemo(() => copy.tours.items, []);
   const swiperRef = useRef<SwiperType | null>(null);
