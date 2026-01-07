@@ -2,10 +2,11 @@ import Image from "next/image";
 import { copy } from "@/lib/copy";
 import HeroUtilityBar from "@/components/HeroUtilityBar";
 import { ButtonLink } from "@/components/Button";
+import HeroMotion from "@/components/HeroMotion";
 
 export default function Hero() {
   return (
-    <div className="relative overflow-hidden min-h-[100svh]">
+    <div data-hero className="relative overflow-hidden min-h-[100svh]">
       <Image
         src="/images/hero-elbrus.webp"
         alt={copy.hero.imageAlt}
@@ -15,7 +16,6 @@ export default function Hero() {
         className="object-cover object-top"
       />
 
-      {/* long soft fade (theme-aware) */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[45svh]"
         style={{
@@ -25,7 +25,6 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* strong bottom fade (theme-aware) */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[18svh]"
         style={{
@@ -37,26 +36,33 @@ export default function Hero() {
 
       <div className="relative mx-auto flex max-w-6xl flex-col justify-end px-4 sm:px-6 pb-16 sm:pb-[72px] min-h-[100svh]">
         <h1 className="w-full font-extrabold uppercase text-white leading-[0.92] tracking-tight">
-          <span className="block text-4xl sm:text-6xl lg:text-7xl xl:text-8xl">
+          <span
+            data-hero-title="1"
+            className="block text-4xl sm:text-6xl lg:text-7xl xl:text-8xl"
+          >
             {copy.hero.titleLine1}
           </span>
 
-          <span className="block text-4xl sm:text-6xl lg:text-[68px] xl:text-[76px] lg:whitespace-nowrap">
+          <span
+            data-hero-title="2"
+            className="block text-4xl sm:text-6xl lg:text-[68px] xl:text-[76px] lg:whitespace-nowrap"
+          >
             {copy.hero.titleLine2}
           </span>
         </h1>
 
-        <p className="subhead mt-6 text-pretty text-white/80 uppercase tracking-[0.06em] text-base sm:text-xl lg:text-2xl lg:whitespace-nowrap">
+        <p
+          data-hero-subtitle
+          className="subhead mt-6 text-pretty text-white/80 uppercase tracking-[0.06em] text-base sm:text-xl lg:text-2xl lg:whitespace-nowrap"
+        >
           {copy.hero.subtitle}
         </p>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center uppercase">
-          <ButtonLink
-            href="#tours"
-            variant="accentOutline"
-            size="md"
-            className="w-full sm:w-auto"
-          >
+        <div
+          data-hero-actions
+          className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center uppercase"
+        >
+          <ButtonLink href="#tours" variant="accentOutline" size="md" className="w-full sm:w-auto">
             {copy.hero.ctaTours}
           </ButtonLink>
 
@@ -70,9 +76,11 @@ export default function Hero() {
           </ButtonLink>
         </div>
 
-        {/* Плашка под кнопками (десктоп/планшет), выравнивается по этому же контейнеру */}
         <HeroUtilityBar />
       </div>
+
+      {/* client-only анимация */}
+      <HeroMotion />
     </div>
   );
 }
