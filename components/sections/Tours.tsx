@@ -11,6 +11,7 @@ import { A11y } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper/types";
 
 import "swiper/css";
+import InView from "@/components/InView";
 
 function ArrowIcon({ dir }: { dir: "left" | "right" }) {
   return (
@@ -42,6 +43,35 @@ function formatRub(n: number) {
   return new Intl.NumberFormat("ru-RU").format(n);
 }
 
+/**
+ * ВАЖНО:
+ * 1) Tailwind group-data варианты мы УБИРАЕМ (они у тебя не генерятся, поэтому всё скрыто).
+ * 2) Переходим на data-reveal + CSS (см. ниже).
+ *
+ * Добавь в globals.css:
+ *
+ * [data-observe] [data-reveal] {
+ *   opacity: 0;
+ *   transform: translate3d(0, 24px, 0);
+ *   transition-property: transform, opacity;
+ *   transition-duration: 700ms;
+ *   transition-timing-function: ease;
+ *   will-change: transform, opacity;
+ * }
+ * [data-observe][data-inview="true"] [data-reveal] {
+ *   opacity: 1;
+ *   transform: translate3d(0, 0, 0);
+ * }
+ * [data-observe] [data-reveal="up"] {
+ *   transform: translate3d(0, -24px, 0);
+ * }
+ * [data-observe] [data-reveal="down-from-above"] {
+ *   transform: translate3d(0, -16px, 0);
+ * }
+ * [data-observe][data-inview="true"] [data-reveal-delay="1"] { transition-delay: 60ms; }
+ * [data-observe][data-inview="true"] [data-reveal-delay="2"] { transition-delay: 170ms; }
+ * [data-observe][data-inview="true"] [data-reveal-delay="3"] { transition-delay: 260ms; }
+ */
 export default function Tours() {
   const tours = useMemo(() => copy.tours.items, []);
   const swiperRef = useRef<SwiperType | null>(null);
@@ -55,18 +85,31 @@ export default function Tours() {
   };
 
   return (
-    <div className="bg-[color:var(--background)]">
+    <div data-observe="tours" data-inview="false">
+      {/* можно оставить тут для точечного фикса; позже вынесешь один InView выше по странице */}
+      <InView />
+
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
         <div className="text-center">
-          <div className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[color:var(--muted)]">
-            {copy.tours.eyebrow}
+          {/* eyebrow (последним сверху) */}
+          <div data-reveal data-reveal-delay="3">
+            <div className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[color:var(--muted)]">
+              {copy.tours.eyebrow}
+            </div>
           </div>
-          <h2 className="mt-3 text-2xl sm:text-4xl font-semibold tracking-[0.14em] uppercase">
+
+          {/* title (лесенкой перед eyebrow) */}
+          <h2
+            data-reveal
+            data-reveal-delay="2"
+            className="mt-3 text-2xl sm:text-4xl font-semibold tracking-[0.14em] uppercase"
+          >
             {copy.tours.title}
           </h2>
         </div>
 
-        <div className="relative mt-4 sm:mt-6">
+        {/* slider wrapper: появляется первым, снизу */}
+        <div data-reveal data-reveal-delay="1" className="relative mt-4 sm:mt-6">
           <div className="swiper-clip">
             <Swiper
               modules={[A11y]}
@@ -177,7 +220,12 @@ export default function Tours() {
           </div>
         </div>
 
-        <div className="mt-5 sm:mt-7 text-center text-[11px] sm:text-xs tracking-[0.25em] uppercase text-[color:var(--muted)]">
+        {/* bottom text: синхронно с title, но "выехал вниз" из-под карусели */}
+        <div
+          data-reveal="down-from-above"
+          data-reveal-delay="2"
+          className="mt-5 sm:mt-7 text-center text-[11px] sm:text-xs tracking-[0.25em] uppercase text-[color:var(--muted)]"
+        >
           {copy.tours.bottomText}{" "}
           <Link
             href="/routes"

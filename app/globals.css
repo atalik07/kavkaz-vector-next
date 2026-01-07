@@ -86,3 +86,38 @@ h1, h2, h3, h4, h5, h6 {
 .swiper-clip {
   clip-path: inset(0);
 }
+
+/* Default: no hiding before we are "ready" (prevents initial invisible flash) */
+[data-observe] [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Once ready, we control reveal states */
+[data-observe][data-ready="true"] [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition-property: transform, opacity;
+  transition-duration: 700ms;
+  transition-timing-function: ease;
+  will-change: transform, opacity;
+}
+
+[data-observe][data-ready="true"][data-inview="true"] [data-reveal] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Direction */
+[data-observe][data-ready="true"] [data-reveal="up"] {
+  transform: translate3d(0, -24px, 0);
+}
+
+[data-observe][data-ready="true"] [data-reveal="down-from-above"] {
+  transform: translate3d(0, -16px, 0);
+}
+
+/* Delays (only when visible) */
+[data-observe][data-ready="true"][data-inview="true"] [data-reveal-delay="1"] { transition-delay: 60ms; }
+[data-observe][data-ready="true"][data-inview="true"] [data-reveal-delay="2"] { transition-delay: 170ms; }
+[data-observe][data-ready="true"][data-inview="true"] [data-reveal-delay="3"] { transition-delay: 260ms; }
