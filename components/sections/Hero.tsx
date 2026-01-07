@@ -2,11 +2,15 @@ import Image from "next/image";
 import { copy } from "@/lib/copy";
 import HeroUtilityBar from "@/components/HeroUtilityBar";
 import { ButtonLink } from "@/components/Button";
-import HeroMotion from "@/components/HeroMotion";
 
 export default function Hero() {
   return (
-    <div data-hero className="relative overflow-hidden min-h-[100svh]">
+    <div
+      data-hero
+      data-observe="hero"
+      data-inview="false"
+      className="relative overflow-hidden min-h-[100svh]"
+    >
       <Image
         src="/images/hero-elbrus.webp"
         alt={copy.hero.imageAlt}
@@ -38,6 +42,8 @@ export default function Hero() {
         <h1 className="w-full font-extrabold uppercase text-white leading-[0.92] tracking-tight">
           <span
             data-hero-title="1"
+            data-reveal
+            data-reveal-delay="1"
             className="block text-4xl sm:text-6xl lg:text-7xl xl:text-8xl"
           >
             {copy.hero.titleLine1}
@@ -45,6 +51,8 @@ export default function Hero() {
 
           <span
             data-hero-title="2"
+            data-reveal
+            data-reveal-delay="2"
             className="block text-4xl sm:text-6xl lg:text-[68px] xl:text-[76px] lg:whitespace-nowrap"
           >
             {copy.hero.titleLine2}
@@ -53,6 +61,8 @@ export default function Hero() {
 
         <p
           data-hero-subtitle
+          data-reveal
+          data-reveal-delay="2"
           className="subhead mt-6 text-pretty text-white/80 uppercase tracking-[0.06em] text-base sm:text-xl lg:text-2xl lg:whitespace-nowrap"
         >
           {copy.hero.subtitle}
@@ -60,9 +70,16 @@ export default function Hero() {
 
         <div
           data-hero-actions
+          data-reveal="up"
+          data-reveal-delay="3"
           className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center uppercase"
         >
-          <ButtonLink href="#tours" variant="accentOutline" size="md" className="w-full sm:w-auto">
+          <ButtonLink
+            href="#tours"
+            variant="accentOutline"
+            size="md"
+            className="w-full sm:w-auto"
+          >
             {copy.hero.ctaTours}
           </ButtonLink>
 
@@ -78,9 +95,6 @@ export default function Hero() {
 
         <HeroUtilityBar />
       </div>
-
-      {/* client-only анимация */}
-      <HeroMotion />
     </div>
   );
 }

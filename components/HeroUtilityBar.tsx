@@ -4,7 +4,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 export default function HeroUtilityBar() {
   return (
-    <div data-hero-bar className="mt-5 hidden md:block">
+    <div data-hero-bar data-reveal="up" data-reveal-delay="4" className="mt-5 hidden md:block">
       <div
         className={[
           "inline-flex items-center gap-2 rounded-full border p-1 backdrop-blur",
