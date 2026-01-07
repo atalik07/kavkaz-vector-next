@@ -51,7 +51,13 @@ function Icon({ mode }: { mode: Mode }) {
   );
 }
 
-export default function ThemeToggle() {
+export default function ThemeToggle({
+  className = "",
+  ui = "desktop",
+}: {
+  className?: string;
+  ui?: "desktop" | "mobile";
+}) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -60,46 +66,39 @@ export default function ThemeToggle() {
 
   const mode = (theme ?? "system") as Mode;
 
-  // БАЗА: как было в dark (почти прозрачное стекло).
-  // Дальше точечно переопределяем только для LIGHT после скролла,
-  // и для LIGHT на hero убираем "белёсость" (делаем чуть темнее, но очень мягко).
+  // desktop: всегда темное "стекло" (как ты хочешь для hero/десктопа)
+  const groupDesktop = "border-white/15 bg-white/5";
+
+  // mobile: подстраивается под тему (в light темные бордеры/иконки)
+  const groupMobile = "border-black/10 bg-black/5 dark:border-white/15 dark:bg-white/10";
+
   const group =
     "inline-flex items-center rounded-full border p-0.5 backdrop-blur transition-colors " +
-    // default (работает и в dark): как было раньше
-    "border-white/15 bg-white/5 " +
-    // light + hero (scrolled=false): чуть менее белёсый (слегка темнее, но НЕ как black/25)
-    // "group-data-[scrolled=false]:bg-black/10 " +
-    // light + scrolled=true: под светлый хедер — поверхность из переменных
-    "group-data-[scrolled=true]:border-[color:var(--border)] group-data-[scrolled=true]:bg-[color:var(--surface)]/90 " +
-    // dark: всегда держим старый вариант, ничего не ломаем
-    "dark:group-data-[scrolled=false]:bg-white/5 dark:group-data-[scrolled=true]:bg-white/5 dark:group-data-[scrolled=true]:border-white/15";
+    (ui === "mobile" ? groupMobile : groupDesktop) +
+    " " +
+    className;
 
   const base =
-    "inline-flex h-7 w-7 items-center justify-center rounded-full border border-transparent " +
+    "inline-flex h-9 w-9 items-center justify-center rounded-full border border-transparent " +
     "appearance-none no-underline select-none outline-none transition-colors";
 
-  const active =
-    "bg-white/10 border-white/20 shadow-sm text-[color:var(--accent)] " +
-    "group-data-[scrolled=true]:bg-black/10 group-data-[scrolled=true]:border-[color:var(--border)] " +
-    "dark:group-data-[scrolled=true]:bg-white/10 dark:group-data-[scrolled=true]:border-white/20";
+  // active
+  const activeDesktop = "bg-white/10 border-white/20 shadow-sm text-[color:var(--accent)]";
+  const activeMobile =
+    "shadow-sm text-[color:var(--accent)] bg-black/10 border-black/10 dark:bg-white/10 dark:border-white/20";
 
-  const inactive =
-    "hover:bg-white/10 " +
-    // по умолчанию (hero и dark): белая иконка/линии читабельны
-    "text-white/75 hover:text-white " +
-    // после скролла в light: под светлый фон делаем нейтральные цвета
-    "group-data-[scrolled=true]:text-[color:var(--muted)] group-data-[scrolled=true]:hover:text-[color:var(--foreground)] group-data-[scrolled=true]:hover:bg-black/5 " +
-    // в dark после скролла оставляем как было
-    "dark:group-data-[scrolled=true]:text-white/75 dark:group-data-[scrolled=true]:hover:text-white dark:group-data-[scrolled=true]:hover:bg-white/10";
+  // inactive
+  const inactiveDesktop = "text-white/75 hover:text-white hover:bg-white/10";
+  const inactiveMobile =
+    "text-black/70 hover:text-black hover:bg-black/10 dark:text-white/75 dark:hover:text-white dark:hover:bg-white/10";
+
+  const active = ui === "mobile" ? activeMobile : activeDesktop;
+  const inactive = ui === "mobile" ? inactiveMobile : inactiveDesktop;
 
   const btnClass = (value: Mode) => `${base} ${mode === value ? active : inactive}`;
 
   const labelFor = (value: Mode) =>
-    value === "system"
-      ? copy.theme.system
-      : value === "light"
-        ? copy.theme.light
-        : copy.theme.dark;
+    value === "system" ? copy.theme.system : value === "light" ? copy.theme.light : copy.theme.dark;
 
   return (
     <div role="radiogroup" aria-label={copy.theme.label} className={group}>

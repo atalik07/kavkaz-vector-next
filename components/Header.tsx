@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { copy } from "@/lib/copy";
 import { ButtonLink } from "@/components/Button";
@@ -85,6 +85,15 @@ function IconBurger(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+function IconClose(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" {...props}>
+      <path d="M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M18 6l-12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function MobileMenu({
   open,
   onClose,
@@ -108,17 +117,24 @@ function MobileMenu({
         type="button"
         aria-label="Close menu"
         onClick={onClose}
-        className="absolute inset-0 bg-black/50"
+        className="absolute inset-0 bg-black/30 dark:bg-black/50"
       />
-      <div className="absolute right-3 top-3 w-[min(92vw,360px)] rounded-2xl border border-white/15 bg-black/70 p-4 text-white backdrop-blur">
-        <div className="flex items-center justify-between">
-          <div className="text-sm font-semibold">{copy.brand.name}</div>
+
+      <div
+        className={[
+          "absolute right-3 top-3 w-[min(92vw,360px)] rounded-2xl border p-4 backdrop-blur transition-colors",
+          "border-black/10 bg-white/75 text-[color:var(--foreground)] shadow-sm",
+          "dark:border-white/15 dark:bg-black/70 dark:text-white dark:shadow-none",
+        ].join(" ")}
+      >
+        <div className="flex items-center justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md px-2 py-1 text-sm hover:bg-white/10"
+            aria-label="Закрыть меню"
+            className="rounded-md p-2 hover:bg-black/5 dark:hover:bg-white/10"
           >
-            Закрыть
+            <IconClose className="h-7 w-7" />
           </button>
         </div>
 
@@ -128,25 +144,25 @@ function MobileMenu({
               key={it.id}
               href={it.href}
               onClick={onClose}
-              className="block rounded-lg px-3 py-2 hover:bg-white/10"
+              className="block rounded-xl px-4 py-3 text-lg leading-snug text-center hover:bg-black/5 dark:hover:bg-white/10"
             >
               {it.label}
             </a>
           ))}
         </div>
 
-        <div className="mt-4 rounded-xl border border-white/15 p-3">
+        <div className="mt-4 rounded-xl border border-black/10 p-4 text-center dark:border-white/15">
           <ButtonLink
             href={phoneHref}
             variant="outline"
             size="sm"
-            className="inline-flex gap-2 text-current/90 hover:text-[color:var(--accent)]"
+            className="h-12 w-full justify-center gap-3 rounded-full px-4 text-base font-medium text-current/90 hover:text-[color:var(--accent)]"
           >
-            <IconPhone className="h-4 w-4" />
+            <IconPhone className="h-5 w-5" />
             <span className="font-medium">{phoneLabel}</span>
           </ButtonLink>
 
-          <div className="mt-2 flex gap-2 px-2">
+          <div className="mt-3 flex justify-center gap-3">
             {social.map((s) => (
               <a
                 key={s.label}
@@ -154,37 +170,47 @@ function MobileMenu({
                 target="_blank"
                 rel="noreferrer"
                 aria-label={s.label}
-                className="rounded-lg p-2 text-white/85 hover:bg-white/10 hover:text-[color:var(--accent)]"
+                className="rounded-xl p-3 text-current/80 hover:bg-black/5 hover:text-[color:var(--accent)] dark:text-white/90 dark:hover:bg-white/10"
               >
-                <span className="block h-5 w-5">{s.icon}</span>
+                <span className="block h-6 w-6">{s.icon}</span>
               </a>
             ))}
           </div>
         </div>
 
         <div className="mt-4 space-y-3">
-          <div className="rounded-xl border border-white/15 p-3">
-            <div className="text-xs text-white/70">Тема</div>
-            <div className="mt-2">
-              <ThemeToggle />
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-xl border border-black/10 p-3 dark:border-white/15">
+              <div className="text-xs text-black/60 text-center dark:text-white/70">Тема</div>
+              <div className="mt-2 flex justify-center">
+                <ThemeToggle ui="mobile" className="w-full justify-between" />
+              </div>
             </div>
-          </div>
 
-          <div className="rounded-xl border border-white/15 p-3">
-            <div className="text-xs text-white/70">Язык</div>
-            <div className="mt-2 flex gap-2">
-              <button className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-sm">
-                RU
-              </button>
-              <button className="rounded-full border border-white/15 px-3 py-1 text-sm hover:bg-white/10">
-                EN
-              </button>
+            <div className="rounded-xl border border-black/10 p-3 dark:border-white/15">
+              <div className="text-xs text-black/60 text-center dark:text-white/70">Язык</div>
+              <div className="mt-2">
+                <div className="grid grid-cols-2 rounded-full border border-black/10 bg-black/5 p-0.5 dark:border-white/15 dark:bg-white/10">
+                  <button
+                    type="button"
+                    className="h-9 rounded-full bg-black/10 text-sm font-medium dark:bg-white/10"
+                  >
+                    RU
+                  </button>
+                  <button
+                    type="button"
+                    className="h-9 rounded-full text-sm font-medium text-black/70 hover:bg-black/10 dark:text-white/80 dark:hover:bg-white/10"
+                  >
+                    EN
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
           <button
             type="button"
-            className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-left font-medium hover:bg-white/15"
+            className="mt-2 w-full rounded-xl border border-black/10 bg-black/5 px-4 py-3 text-center font-medium hover:bg-black/10 dark:border-white/15 dark:bg-white/10 dark:hover:bg-white/15"
           >
             Версия для слабовидящих
           </button>
@@ -209,11 +235,7 @@ export default function Header() {
   const phoneLabel = copy.contacts.values.phone;
 
   const social = [
-    {
-      href: copy.contacts.links.emailHref,
-      label: "Email",
-      icon: <IconMail className="block h-5 w-5" />,
-    },
+    { href: copy.contacts.links.emailHref, label: "Email", icon: <IconMail className="block h-5 w-5" /> },
     {
       href: copy.contacts.social.telegram.href,
       label: copy.contacts.social.telegram.label,
@@ -230,87 +252,73 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-useEffect(() => {
-  const ids = ["tours", "about", "contacts"] as const;
+  useEffect(() => {
+    const ids = ["tours", "about", "contacts"] as const;
 
-  const getHeaderH = () => {
-    const v = getComputedStyle(document.documentElement)
-      .getPropertyValue("--header-h")
-      .trim();
-    const n = Number.parseFloat(v);
-    return Number.isFinite(n) ? n : 0;
-  };
+    const getHeaderH = () => {
+      const v = getComputedStyle(document.documentElement).getPropertyValue("--header-h").trim();
+      const n = Number.parseFloat(v);
+      return Number.isFinite(n) ? n : 0;
+    };
 
-  const calcScrolled = () => {
-    const hero = document.getElementById("hero");
-    if (!hero) return false;
-    const headerH = getHeaderH();
-    return hero.getBoundingClientRect().bottom <= headerH;
-  };
+    const calcScrolled = () => {
+      const hero = document.getElementById("hero");
+      if (!hero) return false;
+      const headerH = getHeaderH();
+      return hero.getBoundingClientRect().bottom <= headerH;
+    };
 
-  const pickByLine = (line: number): NavId | null => {
-    const hero = document.getElementById("hero");
+    const pickByLine = (line: number): NavId | null => {
+      const hero = document.getElementById("hero");
+      if (hero) {
+        const heroRect = hero.getBoundingClientRect();
+        if (heroRect.bottom > line) return null;
+      }
 
-    // Пока линия ещё внутри hero — ничего не активно
-    if (hero) {
-      const heroRect = hero.getBoundingClientRect();
-      if (heroRect.bottom > line) return null;
-    }
+      let current: NavId | null = null;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const r = el.getBoundingClientRect();
+        if (r.top <= line) current = id;
+      }
+      return current;
+    };
 
-    let current: NavId | null = null;
+    let raf = 0;
+    let lastY = window.scrollY;
 
-    for (const id of ids) {
-      const el = document.getElementById(id);
-      if (!el) continue;
-      const r = el.getBoundingClientRect();
-      if (r.top <= line) current = id;
-    }
+    const recompute = () => {
+      raf = 0;
+      const headerH = getHeaderH();
+      const lineDown = headerH + 8;
+      const lineUp = headerH + Math.round(window.innerHeight * 0.5);
 
-    return current;
-  };
+      const y = window.scrollY;
+      const goingDown = y > lastY;
+      lastY = y;
 
-  let raf = 0;
-  let lastY = window.scrollY;
+      const nextActive = goingDown ? pickByLine(lineDown) : pickByLine(lineUp);
 
-  const recompute = () => {
-    raf = 0;
+      setActive(nextActive);
+      setScrolled(calcScrolled());
+    };
 
-    const headerH = getHeaderH();
+    const requestRecompute = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(recompute);
+    };
 
-    // Порог для движения ВНИЗ (переключаемся как только следующая секция дошла до хедера)
-    const lineDown = headerH + 8;
+    recompute();
+    window.addEventListener("scroll", requestRecompute, { passive: true });
+    window.addEventListener("resize", requestRecompute);
 
-    // Порог для движения ВВЕРХ (переключаемся "назад" позже — когда предыдущая секция реально заняла верх)
-    // 0.35vh можно крутить: больше => ещё позже переключение вверх.
-    const lineUp = headerH + Math.round(window.innerHeight * 0.5);
-
-    const y = window.scrollY;
-    const goingDown = y > lastY;
-    lastY = y;
-
-    const nextActive = goingDown ? pickByLine(lineDown) : pickByLine(lineUp);
-
-    setActive(nextActive);
-    setScrolled(calcScrolled());
-  };
-
-  const requestRecompute = () => {
-    if (raf) return;
-    raf = window.requestAnimationFrame(recompute);
-  };
-
-  recompute();
-
-  window.addEventListener("scroll", requestRecompute, { passive: true });
-  window.addEventListener("resize", requestRecompute);
-
-  return () => {
-    if (raf) window.cancelAnimationFrame(raf);
-    window.removeEventListener("scroll", requestRecompute);
-    window.removeEventListener("resize", requestRecompute);
-  };
-}, []);
-
+    return () => {
+      if (raf) window.cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", requestRecompute);
+      window.removeEventListener("resize", requestRecompute);
+    };
+  }, []);
 
   const linkBase = "rounded-md px-2 py-1 text-sm uppercase transition-colors";
   const linkInactive =
@@ -333,7 +341,7 @@ useEffect(() => {
           "dark:data-[scrolled=true]:border-white/15 dark:data-[scrolled=true]:bg-black/35 dark:data-[scrolled=true]:text-white",
         ].join(" ")}
       >
-        <div className="mx-auto grid h-14 sm:h-[60px] max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
+        <div className="mx-auto grid h-14 sm:h-[60px] max-w-6xl grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
           <a href="#hero" className="flex items-center gap-3">
             <span className="inline-flex items-center justify-center rounded-full border border-current/15 p-1">
               <img
@@ -344,12 +352,8 @@ useEffect(() => {
             </span>
 
             <span className="flex flex-col gap-0">
-              <span className="block text-base font-semibold tracking-tight leading-none">
-                {copy.brand.name}
-              </span>
-              <span className="block text-base font-semibold tracking-tight leading-none">
-                {copy.brand.tagline}
-              </span>
+              <span className="block text-base font-semibold tracking-tight leading-none">{copy.brand.name}</span>
+              <span className="block text-base font-semibold tracking-tight leading-none">{copy.brand.tagline}</span>
             </span>
           </a>
 
@@ -361,11 +365,9 @@ useEffect(() => {
                   key={item.id}
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={[
-                    linkBase,
-                    isActive ? linkActive : linkInactive,
-                    isActive ? "hover:bg-transparent" : "",
-                  ].join(" ")}
+                  className={[linkBase, isActive ? linkActive : linkInactive, isActive ? "hover:bg-transparent" : ""].join(
+                    " "
+                  )}
                 >
                   {item.label}
                 </a>
