@@ -120,7 +120,7 @@ export default function Contacts() {
 
                 {/* кнопку не отталкиваем вниз лишним padding */}
                 <div className="pt-0">
-                  <Button type="submit" className="w-full uppercase tracking-wide">
+                  <Button type="submit" className="w-full sm:w-auto uppercase tracking-wide">
                     {c.form.submit}
                   </Button>
                 </div>

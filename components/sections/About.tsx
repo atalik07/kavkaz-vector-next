@@ -17,7 +17,7 @@ export default function About() {
         </div>
 
         {/* Content */}
-        <div className="mt-6 grid gap-6 md:grid-cols-2 md:gap-x-6 lg:gap-x-8 md:items-stretch md:h-[62svh] md:min-h-0">
+        <div className="mt-6 grid gap-6 md:grid-cols-2 md:gap-x-6 lg:gap-x-8 md:items-stretch md:h-[65svh] md:min-h-0">
           {/* Left image */}
           <div className="relative overflow-hidden rounded-3xl bg-black/10 md:h-full">
             <div className="relative aspect-[4/3] w-full md:aspect-auto md:h-full">
