@@ -66,8 +66,8 @@ export default function ThemeToggle({
 
   const mode = (theme ?? "system") as Mode;
 
-  // desktop: всегда темное "стекло" (как ты хочешь для hero/десктопа)
-  const groupDesktop = "border-white/15 bg-white/5";
+ const groupDesktop = "border-zinc-900/15 bg-white/60 text-zinc-950 dark:border-white/15 dark:bg-white/5 dark:text-white";
+
 
   // mobile: подстраивается под тему (в light темные бордеры/иконки)
   const groupMobile = "border-black/10 bg-black/5 dark:border-white/15 dark:bg-white/10";
@@ -88,7 +88,9 @@ export default function ThemeToggle({
     "shadow-sm text-[color:var(--accent)] bg-black/10 border-black/10 dark:bg-white/10 dark:border-white/20";
 
   // inactive
-  const inactiveDesktop = "text-white/75 hover:text-white hover:bg-white/10";
+const inactiveDesktop =
+  "text-zinc-950/70 hover:text-zinc-950 hover:bg-black/5 dark:text-white/75 dark:hover:text-white dark:hover:bg-white/10";
+
   const inactiveMobile =
     "text-black/70 hover:text-black hover:bg-black/10 dark:text-white/75 dark:hover:text-white dark:hover:bg-white/10";
 
@@ -101,21 +103,22 @@ export default function ThemeToggle({
     value === "system" ? copy.theme.system : value === "light" ? copy.theme.light : copy.theme.dark;
 
   return (
-    <div role="radiogroup" aria-label={copy.theme.label} className={group}>
-      {(["system", "light", "dark"] as const).map((value) => (
-        <button
-          key={value}
-          type="button"
-          role="radio"
-          aria-checked={mode === value ? "true" : "false"}
-          onClick={() => setTheme(value)}
-          className={btnClass(value)}
-          title={labelFor(value)}
-        >
-          <Icon mode={value} />
-          <span className="sr-only">{labelFor(value)}</span>
-        </button>
-      ))}
-    </div>
+<div role="radiogroup" aria-label={copy.theme.label} className={group}>
+  {(["system", "light", "dark"] as const).map((value) => (
+    <button
+      key={value}
+      type="button"
+      role="radio"
+      aria-checked={mode === value}
+      onClick={() => setTheme(value)}
+      className={btnClass(value)}
+      title={labelFor(value)}
+    >
+      <Icon mode={value} />
+      <span className="sr-only">{labelFor(value)}</span>
+    </button>
+  ))}
+</div>
+
   );
 }

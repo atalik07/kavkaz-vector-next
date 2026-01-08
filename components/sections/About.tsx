@@ -1,85 +1,91 @@
-"use client";
-
-import Image from "next/image";
 import { copy } from "@/lib/copy";
-import { ButtonLink } from "@/components/Button";
+
+function Eyebrow({ children }: { children: string }) {
+  return (
+    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+      {children}
+    </div>
+  );
+}
 
 export default function About() {
   return (
-    <div data-observe="about" data-inview="false">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
-        {/* Header */}
-        <div className="text-center">
-          {/* eyebrow — последним */}
-          <div data-reveal data-reveal-delay="3">
-            <div className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[color:var(--muted)]">
-              {copy.about.eyebrow}
-            </div>
+    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+      {/* ABOUT / PRODUCTION */}
+      <div data-reveal="up">
+        <Eyebrow>{copy.about.eyebrow}</Eyebrow>
+        <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.about.title}</h2>
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
+          <div className="space-y-4 text-sm text-black/70 leading-relaxed dark:text-white/70">
+            {copy.about.paragraphs.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
           </div>
 
-          {/* title — раньше eyebrow */}
-          <h2
-            data-reveal
-            data-reveal-delay="2"
-            className="mt-3 text-2xl sm:text-4xl font-semibold tracking-[0.14em] uppercase"
-          >
-            {copy.about.title}
-          </h2>
+          <div className="mt-6">
+            <a
+              href={copy.about.ctaHref}
+              className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+            >
+              {copy.about.ctaMore}
+            </a>
+          </div>
         </div>
 
-        {/* Content */}
-        <div className="mt-6 grid gap-6 md:grid-cols-2 md:gap-x-6 lg:gap-x-8 md:items-stretch md:h-[65svh] md:min-h-0">
-          {/* Left image */}
-          <div
-            data-reveal
-            data-reveal-delay="1"
-            className="relative overflow-hidden rounded-3xl bg-black/10 md:h-full"
-          >
-            <div className="relative aspect-[4/3] w-full md:aspect-auto md:h-full">
-              <Image
-                src="/images/about-jeep.webp"
-                alt={copy.about.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 520px"
-                className="object-cover"
-              />
-            </div>
+        <div className="rounded-2xl border border-black/10 bg-black/[0.02] p-6 shadow-sm dark:border-white/15 dark:bg-white/[0.06] dark:shadow-none">
+          <div className="text-base font-semibold tracking-tight text-black dark:text-white">
+            {copy.terms.title}
           </div>
-
-          {/* Right text */}
-          <div
-            data-reveal
-            data-reveal-delay="2"
-            className="md:pt-6 lg:pt-7 md:flex md:flex-col md:min-h-0 md:h-full"
-          >
-            <div className="min-h-0 overflow-hidden">
-              <div className="space-y-4 text-[15px] leading-snug text-[color:var(--muted)]">
-                {copy.about.paragraphs.map((p, idx) => (
-                  <p key={idx} className="text-balance">
-                    {p}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            <div
-              data-reveal="down-from-above"
-              data-reveal-delay="3"
-              className="mt-6 shrink-0"
-            >
-              <ButtonLink
-                href={copy.about.ctaHref}
-                variant="outline"
-                size="md"
-                className="uppercase tracking-wide"
-              >
-                {copy.about.ctaMore}
-              </ButtonLink>
-            </div>
-
-          </div>
+          <ul className="mt-4 space-y-3 text-sm text-black/70 dark:text-white/70">
+            {copy.terms.items.slice(0, 5).map((it) => (
+              <li key={it.title}>
+                <div className="font-semibold text-black dark:text-white">{it.title}</div>
+                <div className="mt-1">{it.text}</div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
-    </div>
+
+      {/* LOGISTICS */}
+      <div className="mt-14" data-reveal="up">
+        <Eyebrow>{copy.logistics.eyebrow}</Eyebrow>
+        <h3 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.logistics.title}</h3>
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {copy.logistics.items.map((text) => (
+          <div
+            key={text}
+            className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none"
+          >
+            <div className="text-sm text-black/70 dark:text-white/70">{text}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* FAQ */}
+      <div className="mt-14" data-reveal="up">
+        <Eyebrow>{copy.faq.eyebrow}</Eyebrow>
+        <h3 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.faq.title}</h3>
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {copy.faq.items.map((q) => (
+          <details
+            key={q.q}
+            className="group rounded-2xl border border-black/10 bg-white p-6 shadow-sm open:shadow-md dark:border-white/15 dark:bg-white/5 dark:shadow-none"
+          >
+            <summary className="cursor-pointer list-none text-base font-semibold tracking-tight">
+              {q.q}
+            </summary>
+            <div className="mt-3 text-sm text-black/70 leading-relaxed dark:text-white/70">{q.a}</div>
+          </details>
+        ))}
+      </div>
+    </section>
   );
 }

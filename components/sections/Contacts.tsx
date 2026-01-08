@@ -1,167 +1,180 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import { copy } from "@/lib/copy";
-import { Button } from "@/components/Button";
+
+function FieldLabel({ children }: { children: string }) {
+  return <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">{children}</div>;
+}
 
 export default function Contacts() {
-  const c = copy.contacts;
+  const [sent, setSent] = useState(false);
+
+  const telegramHref = copy.contacts.social.telegram.href;
+
+  const mailto = useMemo(() => {
+    const subject = encodeURIComponent("Запрос условий / расчёта — ОптМебельЮг");
+    const body = encodeURIComponent(
+      [
+        "Здравствуйте!",
+        "",
+        "Хочу запросить условия/расчёт.",
+        "",
+        "1) Вы (ЮЛ/ИП) + город:",
+        "2) Канал (маркетплейсы/опт/магазин/студия):",
+        "3) Что нужно произвести (позиции):",
+        "4) Объём/партия:",
+        "5) Есть ли ТЗ/чертежи/ссылка на аналог:",
+        "6) Требования к упаковке/маркировке (если есть):",
+        "7) Точка отгрузки (ТК/склад/фулфилмент):",
+        "8) Сроки:",
+        "",
+        "Контакты для связи:",
+      ].join("\n")
+    );
+
+    // у тебя уже есть mailto в links.emailHref
+    return `${copy.contacts.links.emailHref}?subject=${subject}&body=${body}`;
+  }, []);
 
   return (
-    <div data-observe="contacts" data-inview="false">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
-        {/* Header */}
-        <div className="text-center">
-          <div data-reveal data-reveal-delay="3">
-            <div className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[color:var(--muted)]">
-              {c.eyebrow}
+    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+      <div data-reveal="up">
+        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+          {copy.contacts.eyebrow}
+        </div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.1fr]">
+        {/* LEFT: контакты */}
+        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
+          <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.contacts.titleLeft}</h2>
+
+          <div className="mt-6 space-y-5 text-sm">
+            <div>
+              <FieldLabel>{copy.contacts.fields.phoneLabel}</FieldLabel>
+              <a
+                href={copy.contacts.links.phoneHref}
+                className="mt-1 block text-base font-semibold text-black/85 hover:text-[color:var(--accent)] dark:text-white/85"
+              >
+                {copy.contacts.values.phone}
+              </a>
+            </div>
+
+            <div>
+              <FieldLabel>{copy.contacts.fields.emailLabel}</FieldLabel>
+              <a
+                href={copy.contacts.links.emailHref}
+                className="mt-1 block text-base font-semibold text-black/85 hover:text-[color:var(--accent)] dark:text-white/85"
+              >
+                {copy.contacts.values.email}
+              </a>
+            </div>
+
+            <div>
+              <FieldLabel>{copy.contacts.fields.addressLabel}</FieldLabel>
+              <div className="mt-1 text-black/70 dark:text-white/70">{copy.contacts.values.address}</div>
+            </div>
+
+            <div>
+              <FieldLabel>{copy.contacts.fields.hoursLabel}</FieldLabel>
+              <div className="mt-1 text-black/70 dark:text-white/70">{copy.contacts.values.hours}</div>
             </div>
           </div>
+
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <a
+              href={telegramHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+              onClick={() => setSent(true)}
+            >
+              {copy.contacts.social.telegram.label}
+            </a>
+
+            <a
+              href={mailto}
+              className="inline-flex h-11 items-center justify-center rounded-full border border-black/15 px-6 text-sm font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
+              onClick={() => setSent(true)}
+            >
+              Написать на Email
+            </a>
+          </div>
+
+          {sent ? (
+            <div className="mt-4 text-sm text-black/60 dark:text-white/70">
+              Сообщение можно отправить в Telegram или на Email. Для расчёта укажите позиции, партию, точку отгрузки и сроки.
+            </div>
+          ) : null}
         </div>
 
-        <div className="mt-4 sm:mt-6 grid gap-6 lg:grid-cols-2 lg:items-stretch">
-          {/* LEFT: contacts + map */}
-          <div
-            data-reveal
-            data-reveal-delay="1"
-            className="flex flex-col gap-6 lg:min-h-0 lg:h-full"
+        {/* RIGHT: форма + карта */}
+        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
+          <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.contacts.titleRight}</h3>
+
+          <form
+            className="mt-6 grid grid-cols-1 gap-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              // Быстрое MVP: открываем Telegram группу (или можно собрать текст и открыть mailto)
+              window.open(telegramHref, "_blank", "noopener,noreferrer");
+              setSent(true);
+            }}
           >
-            <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur">
-              <div className="px-4 sm:px-5 pt-3 sm:pt-4 pb-3 sm:pb-4">
-                <h3 className="text-lg sm:text-xl font-semibold leading-snug">
-                  {c.titleLeft}
-                </h3>
-
-                <dl className="mt-2 grid gap-2 text-sm sm:text-[15px] leading-snug">
-                  <div className="grid grid-cols-[110px_1fr] gap-3">
-                    <dt className="text-[color:var(--muted)]">
-                      {c.fields.phoneLabel}
-                    </dt>
-                    <dd className="text-[color:var(--foreground)]">
-                      {c.values.phone}
-                    </dd>
-                  </div>
-
-                  <div className="grid grid-cols-[110px_1fr] gap-3">
-                    <dt className="text-[color:var(--muted)]">
-                      {c.fields.emailLabel}
-                    </dt>
-                    <dd className="text-[color:var(--foreground)]">
-                      {c.values.email}
-                    </dd>
-                  </div>
-
-                  <div className="grid grid-cols-[110px_1fr] gap-3">
-                    <dt className="text-[color:var(--muted)]">
-                      {c.fields.addressLabel}
-                    </dt>
-                    <dd className="text-[color:var(--foreground)]">
-                      {c.values.address}
-                    </dd>
-                  </div>
-
-                  <div className="grid grid-cols-[110px_1fr] gap-3">
-                    <dt className="text-[color:var(--muted)]">
-                      {c.fields.hoursLabel}
-                    </dt>
-                    <dd className="text-[color:var(--foreground)]">
-                      {c.values.hours}
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-
-            <div className="rounded-3xl overflow-hidden border border-[color:var(--border)] bg-[color:var(--surface)]/80 lg:flex-1 lg:min-h-0">
-              <iframe
-                title={c.map.title}
-                className="block h-[260px] w-full sm:h-[320px] lg:h-full"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                src={c.map.src}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <input
+                name="name"
+                placeholder={copy.contacts.form.namePlaceholder}
+                aria-label={copy.contacts.form.name}
+                className="h-11 rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
+              />
+              <input
+                name="phone"
+                placeholder={copy.contacts.form.phonePlaceholder}
+                aria-label={copy.contacts.form.phone}
+                className="h-11 rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
               />
             </div>
-          </div>
 
-          {/* RIGHT: form */}
-          <div
-            data-reveal
-            data-reveal-delay="2"
-            className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur lg:h-full"
-          >
-            <div className="px-4 sm:px-5 pt-3 sm:pt-4 pb-2 sm:pb-3">
-              <h3 className="text-lg sm:text-xl font-semibold leading-snug">
-                {c.titleRight}
-              </h3>
+            <input
+              name="email"
+              placeholder={copy.contacts.form.emailPlaceholder}
+              aria-label={copy.contacts.form.email}
+              className="h-11 rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
+            />
 
-              <form className="mt-3 sm:mt-4 grid gap-3 sm:gap-4">
-                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                  <label className="grid gap-2">
-                    <span className="pl-3 text-sm text-[color:var(--muted)]">
-                      {c.form.name}
-                    </span>
-                    <input
-                      className="h-10 rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] px-3 text-[color:var(--foreground)] outline-none focus:border-[color:var(--accent)]"
-                      placeholder={c.form.namePlaceholder}
-                      name="name"
-                      autoComplete="name"
-                    />
-                  </label>
+            <textarea
+              name="message"
+              placeholder={copy.contacts.form.messagePlaceholder}
+              aria-label={copy.contacts.form.message}
+              rows={5}
+              className="rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
+            />
 
-                  <label className="grid gap-2">
-                    <span className="pl-3 text-sm text-[color:var(--muted)]">
-                      {c.form.phone}
-                    </span>
-                    <input
-                      className="h-10 rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] px-3 text-[color:var(--foreground)] outline-none focus:border-[color:var(--accent)]"
-                      placeholder={c.form.phonePlaceholder}
-                      name="phone"
-                      autoComplete="tel"
-                      inputMode="tel"
-                    />
-                  </label>
-                </div>
+            <button
+              type="submit"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+            >
+              {copy.contacts.form.submit}
+            </button>
 
-                <label className="grid gap-2">
-                  <span className="pl-3 text-sm text-[color:var(--muted)]">
-                    {c.form.email}
-                  </span>
-                  <input
-                    className="h-10 rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] px-3 text-[color:var(--foreground)] outline-none focus:border-[color:var(--accent)]"
-                    placeholder={c.form.emailPlaceholder}
-                    name="email"
-                    autoComplete="email"
-                    inputMode="email"
-                  />
-                </label>
-
-                <label className="grid gap-2">
-                  <span className="pl-3 text-sm text-[color:var(--muted)]">
-                    {c.form.message}
-                  </span>
-                  <textarea
-                    className="h-[112px] resize-none rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] px-3 py-2 text-[color:var(--foreground)] outline-none focus:border-[color:var(--accent)]"
-                    placeholder={c.form.messagePlaceholder}
-                    name="message"
-                  />
-                </label>
-
-                <div className="pt-0">
-                  <Button
-                    type="submit"
-                    className="w-full sm:w-auto uppercase tracking-wide"
-                  >
-                    {c.form.submit}
-                  </Button>
-                </div>
-
-                <p className="mt-2 text-xs leading-5 text-[color:var(--foreground)]/70">
-                  {c.form.consent}
-                </p>
-              </form>
+            <div className="text-xs text-black/60 dark:text-white/60">
+              {copy.contacts.form.consent}
             </div>
+          </form>
+
+          <div className="mt-8 overflow-hidden rounded-2xl border border-black/10 dark:border-white/15">
+            <div className="px-4 py-3 text-sm font-semibold">{copy.contacts.map.title}</div>
+            <iframe
+              title={copy.contacts.map.title}
+              src={copy.contacts.map.src}
+              className="h-64 w-full"
+              loading="lazy"
+            />
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

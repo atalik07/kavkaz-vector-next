@@ -1,150 +1,212 @@
-import Image from "next/image";
+"use client";
+
+import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { copy } from "@/lib/copy";
 import HeroUtilityBar from "@/components/HeroUtilityBar";
 import { ButtonLink } from "@/components/Button";
 
-function IconCheck(props: React.SVGProps<SVGSVGElement>) {
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectFade, Autoplay } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/effect-fade";
+
+function Dots({ count, active }: { count: number; active: number }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" {...props}>
-      <path
-        d="M20 6L9 17l-5-5"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <div className="flex flex-col gap-2 items-center pt-4">
+      {Array.from({ length: count }).map((_, i) => {
+        const on = i === active;
+        return (
+          <div
+            key={i}
+            className={[
+              "h-2 w-2 rounded-full transition",
+              on ? "bg-[color:var(--accent)]" : "bg-zinc-950/35 dark:bg-white/30",
+            ].join(" ")}
+          />
+        );
+      })}
+    </div>
   );
 }
 
 export default function Hero() {
-  const trust = (copy.hero as any).trust as string[] | undefined;
-  const slides =
-    (copy.hero as any).slides as
-      | { kicker: string; headline: string; text: string }[]
-      | undefined;
+  const slides = copy.hero.slides;
+
+  // лучше потом заменить на .webp
+  const slideImages = useMemo(
+    () => ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/4.jpg"],
+    []
+  );
+
+  // высота правой карты = высоте левого контента
+  const leftRef = useRef<HTMLDivElement | null>(null);
+  const [rightH, setRightH] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    const el = leftRef.current;
+    if (!el) return;
+
+    const measure = () => {
+      const h = Math.ceil(el.getBoundingClientRect().height);
+      setRightH(h > 0 ? h : null);
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    window.addEventListener("resize", measure);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  const [active, setActive] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(true);
+
+  const SLIDE_MS = 8000;
+  const FADE_MS = 900;
+
+  const s = slides?.[active];
 
   return (
-    <section
-      id="hero"
-      data-hero
-      data-observe="hero"
-      data-inview="false"
-      className="relative isolate overflow-hidden"
-    >
-      {/* background */}
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src="/images/hero-elbrus.webp"
-          alt={copy.hero.imageAlt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-        {/* без нижнего “растворения”, только затемнение для читабельности */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/55"
-        />
-      </div>
-
-      <div className="mx-auto grid min-h-[100svh] max-w-6xl grid-cols-1 items-end gap-10 px-4 pb-14 pt-24 sm:px-6 sm:pb-16 md:grid-cols-[1.2fr_0.8fr] md:items-center md:gap-8 md:pt-24">
+    <div data-hero data-observe="hero" data-inview="false" className="relative isolate overflow-hidden h-[100svh]">
+      <div className="relative z-20 mx-auto grid h-[100svh] max-w-6xl grid-cols-1 gap-10 px-4 pb-14 pt-24 sm:px-6 sm:pb-16 lg:grid-cols-2 lg:items-stretch">
         {/* LEFT */}
-        <div className="max-w-[46rem]">
-          <h1 className="font-extrabold uppercase text-white leading-[0.94] tracking-tight">
-            <span
-              data-hero-title="1"
-              data-reveal
-              data-reveal-delay="1"
-              className="block text-[44px] sm:text-6xl lg:text-7xl xl:text-8xl"
-            >
-              {copy.hero.titleLine1}
-            </span>
-            <span
-              data-hero-title="2"
+        <div className="min-h-0 lg:flex lg:items-center">
+          <div ref={leftRef} className="w-full">
+            <h1 className="font-extrabold uppercase text-zinc-950 dark:text-white leading-[0.94] tracking-tight">
+              <span data-reveal data-reveal-delay="1" className="block text-[40px] sm:text-6xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
+                {copy.hero.titleLine1}
+              </span>
+              <span data-reveal data-reveal-delay="2" className="block text-[40px] sm:text-6xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
+                {copy.hero.titleLine2}
+              </span>
+            </h1>
+
+            <p
               data-reveal
               data-reveal-delay="2"
-              className="block text-[44px] sm:text-6xl lg:text-7xl xl:text-8xl"
+              className="subhead mt-6 max-w-[48rem] text-zinc-950/80 dark:text-white/85 uppercase tracking-[0.06em] text-base sm:text-xl"
             >
-              {copy.hero.titleLine2}
-            </span>
-          </h1>
+              {copy.hero.subtitle}
+            </p>
 
-          <p
-            data-hero-subtitle
-            data-reveal
-            data-reveal-delay="2"
-            className="mt-6 max-w-[44rem] text-white/85 uppercase tracking-[0.06em] text-base sm:text-xl"
-          >
-            {copy.hero.subtitle}
-          </p>
+            <div data-reveal="up" data-reveal-delay="3" className="mt-7 flex flex-wrap gap-3">
+              <ButtonLink
+                href={copy.hero.ctaPrimaryHref}
+                variant="accentOutline"
+                size="md"
+                className="uppercase tracking-[0.10em]"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {copy.hero.ctaPrimary}
+              </ButtonLink>
 
-          <div
-            data-hero-actions
-            data-reveal="up"
-            data-reveal-delay="3"
-            className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center uppercase"
-          >
-            <ButtonLink href="#tours" variant="accentOutline" size="md" className="w-full sm:w-auto">
-              {copy.hero.ctaTours}
-            </ButtonLink>
+              <ButtonLink
+                href={copy.hero.ctaSecondaryHref}
+                variant="soft"
+                size="md"
+                className="uppercase tracking-[0.10em]"
+              >
+                {copy.hero.ctaSecondary}
+              </ButtonLink>
+            </div>
 
-            <ButtonLink href="#contacts" variant="soft" size="md" className="w-full sm:w-auto">
-              {copy.hero.ctaContacts}
-            </ButtonLink>
-          </div>
-
-          {trust?.length ? (
-            <ul
-              data-reveal="up"
-              data-reveal-delay="4"
-              className="mt-8 grid grid-cols-1 gap-3 text-white/90 sm:grid-cols-2"
-            >
-              {trust.slice(0, 4).map((t) => (
-                <li key={t} className="flex items-start gap-2 rounded-xl bg-black/20 px-3 py-2 backdrop-blur">
-                  <IconCheck className="mt-0.5 h-5 w-5 text-[color:var(--accent)]" />
-                  <span className="text-sm sm:text-base">{t}</span>
-                </li>
+            <div data-reveal="up" data-reveal-delay="4" className="mt-6 flex flex-wrap gap-2">
+              {copy.hero.trust.map((t) => (
+                <span
+                  key={t}
+                  className="rounded-xl border px-3 py-1 text-[11px] font-normal uppercase tracking-[0.08em] backdrop-blur border-zinc-900/10 bg-white/50 text-zinc-950/55 dark:border-white/10 dark:bg-black/10 dark:text-white/55"
+                >
+                  {t}
+                </span>
               ))}
-            </ul>
-          ) : null}
+            </div>
 
-          <div className="relative z-20">
-            <HeroUtilityBar />
+            <div className="relative z-20 mt-10">
+              <HeroUtilityBar />
+            </div>
           </div>
         </div>
 
         {/* RIGHT */}
-        <aside className="hidden md:block">
-          <div
-            data-reveal="up"
-            data-reveal-delay="4"
-            className="rounded-2xl border border-white/15 bg-black/20 p-5 text-white backdrop-blur"
-          >
-            <div className="text-xs uppercase tracking-[0.14em] text-white/70">Кратко</div>
+        <aside className="hidden lg:flex lg:items-center">
+          <div className="w-full" style={rightH ? { height: rightH } : undefined}>
+            <div className="heroRCard">
+              <div className="heroRInner">
+                <Dots count={slides.length} active={active} />
 
-            <div className="mt-4 space-y-4">
-              {(slides?.length ? slides : []).slice(0, 4).map((s) => (
-                <div key={`${s.kicker}-${s.headline}`} className="rounded-xl border border-white/10 bg-white/5 p-4">
-                  <div className="text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
-                    {s.kicker}
+                <div className="heroRSlide">
+                  {/* BG swiper fade */}
+                  <div className="heroRSlideBg">
+                    <Swiper
+                      modules={[EffectFade, Autoplay]}
+                      effect="fade"
+                      fadeEffect={{ crossFade: true }}
+                      slidesPerView={1}
+                      loop
+                      speed={FADE_MS}
+                      autoplay={{ delay: SLIDE_MS - FADE_MS, disableOnInteraction: false }}
+                      // preloadImages
+                      watchSlidesProgress
+                      onSlideChange={(sw) => {
+                        // realIndex — индекс без учёта loop-клонов
+                        const idx = sw.realIndex % slides.length;
+                        setActive(idx);
+
+                        // синхронизация “drawer”: закрываем на смене и открываем через чуть-чуть
+                        setDrawerOpen(false);
+                        window.setTimeout(() => setDrawerOpen(true), 120);
+                      }}
+                      className="absolute inset-0"
+                    >
+                      {slideImages.map((src, i) => (
+                        <SwiperSlide key={src + i}>
+                          {/* Важно: обычный img — меньше шансов на дерганье, чем next/image в fade */}
+                          <img
+                            src={src}
+                            alt=""
+                            className="absolute inset-0 h-full w-full object-cover opacity-45"
+                            loading={i === 0 ? "eager" : "lazy"}
+                            decoding="async"
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+
+                    <div className="heroRSlideOverlay" />
                   </div>
-                  <div className="mt-2 text-lg font-semibold leading-snug">{s.headline}</div>
-                  <div className="mt-2 text-sm text-white/80 leading-relaxed">{s.text}</div>
-                </div>
-              ))}
 
-              {!slides?.length ? (
-                <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/80">
-                  Добавь <code className="text-white/90">copy.hero.slides</code>, и тут появится мини‑презентация (4
-                  карточки).
+                  {/* TOP text */}
+                  <div
+                    className={[
+                      "relative",
+                      "transition-transform transition-opacity ease-out",
+                      "duration-[480ms]",
+                      drawerOpen ? "translate-y-0 opacity-100" : "-translate-y-3 opacity-0",
+                    ].join(" ")}
+                    style={{ zIndex: 1 }}
+                  >
+                    <div className="heroRSlideTop">
+                      <div className="text-xs font-semibold uppercase tracking-[0.14em] text-current/65">{s?.kicker}</div>
+                      <div className="mt-2 text-lg font-extrabold tracking-tight text-current">{s?.headline}</div>
+                    </div>
+                  </div>
+
+                  {/* Bottom drawer */}
+                  <div className={["heroRDrawer", drawerOpen ? "is-open" : ""].join(" ")}>
+                    <div className="text-sm leading-relaxed text-current/80">{s?.text}</div>
+                  </div>
                 </div>
-              ) : null}
+              </div>
             </div>
           </div>
         </aside>
       </div>
-    </section>
+    </div>
   );
 }

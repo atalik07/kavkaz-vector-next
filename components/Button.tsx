@@ -1,3 +1,4 @@
+// components/Button.tsx
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
@@ -9,11 +10,10 @@ function cx(...classes: Array<string | false | null | undefined>) {
 }
 
 const base =
-  "inline-flex items-center justify-center whitespace-nowrap rounded-full font-semibold transition " +
+  "inline-flex items-center justify-center whitespace-nowrap rounded-[8px] font-semibold transition " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:opacity-50 disabled:pointer-events-none";
 
 const sizes: Record<Size, string> = {
-  // УЖАТЫЕ вертикальные паддинги: вместо py-3 делаем фикс высоты
   sm: "h-9 px-4 text-sm",
   md: "h-10 px-5 text-sm",
 };
@@ -23,32 +23,27 @@ const variants: Record<Variant, string> = {
     "bg-[color:var(--primary-bg)] text-[color:var(--primary-fg)] ring-1 ring-white/10 " +
     "hover:bg-[color:var(--accent)] hover:text-white hover:ring-[color:var(--accent)]",
 
-outline:
-  "border border-black/20 bg-transparent text-[color:var(--foreground)] " +
-  "dark:border-white/15 dark:bg-white/[0.02] " +
-  "hover:bg-[color:var(--accent)] hover:text-white hover:border-[color:var(--accent)]",
-
+  outline:
+    "border border-black/20 bg-transparent text-[color:var(--foreground)] " +
+    "dark:border-white/15 dark:bg-white/[0.02] " +
+    "hover:bg-[color:var(--accent)] hover:text-white hover:border-[color:var(--accent)]",
 
   ghost:
     "bg-white/10 text-white ring-1 ring-white/20 backdrop-blur " +
     "hover:bg-white/15 hover:ring-white/30",
 
-  // Кнопка "Смотреть туры" в хедере:
-  // по умолчанию: акцентная рамка + акцентный текст
-  // hover: фон акцентный, текст белый
+  // FIX: в светлой теме текст/рамка должны быть тёмные, не белые
   accentOutline:
-    "border border-[color:var(--accent)] text-white/85 bg-white/[0.02] backdrop-blur-md " +
+    "border border-[color:var(--accent)] bg-white/40 text-zinc-950 backdrop-blur-md " +
+    "dark:bg-white/[0.02] dark:text-white/85 " +
     "hover:bg-[color:var(--accent)] hover:text-white hover:border-[color:var(--accent)]",
 
-  // Вторая кнопка: как текущая в hero (white/15 заливка),
-  // hover: акцентный текст + акцентная рамка, заливку НЕ меняем
+  // FIX: в светлой теме вторичная должна быть видимой (тёмная рамка + тёмный текст)
   soft:
- // стеклянная подложка: очень лёгкая белая + blur + тонкая рамка
-  "bg-white/[0.02] text-white/85 border border-white/18 backdrop-blur-md " +
-  // hover: акцентный текст + акцентная рамка, заливку НЕ трогаем
-  "hover:text-[color:var(--accent)] hover:border-[color:var(--accent)] " +
-  // чуть “подсветить” стекло на hover (но не делать акцентную заливку)
-  "hover:bg-white/[0.08]",
+    "bg-black/[0.02] text-zinc-950/80 border border-black/20 backdrop-blur-md " +
+    "dark:bg-white/[0.01] dark:text-white/85 dark:border-white/18 " +
+    "hover:text-[color:var(--accent)] hover:border-[color:var(--accent)] " +
+    "hover:bg-black/[0.00] dark:hover:bg-white/[0.03]",
 };
 
 export function Button({
@@ -63,10 +58,7 @@ export function Button({
   children: ReactNode;
 }) {
   return (
-    <button
-      className={cx(base, sizes[size], variants[variant], className)}
-      {...props}
-    >
+    <button className={cx(base, sizes[size], variants[variant], className)} {...props}>
       {children}
     </button>
   );
@@ -79,17 +71,27 @@ export function ButtonLink({
   children,
   href,
   ...props
-}: ComponentProps<typeof Link> & {
+}: Omit<ComponentProps<"a">, "href"> & {
   variant?: Variant;
   size?: Size;
   children: ReactNode;
+  href: string;
 }) {
+  const isExternal =
+    /^https?:\/\//i.test(href) || href.startsWith("tel:") || href.startsWith("mailto:");
+
+  const cls = cx(base, sizes[size], variants[variant], className);
+
+  if (isExternal) {
+    return (
+      <a href={href} className={cls} {...props}>
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <Link
-      href={href}
-      className={cx(base, sizes[size], variants[variant], className)}
-      {...props}
-    >
+    <Link href={href} className={cls}>
       {children}
     </Link>
   );

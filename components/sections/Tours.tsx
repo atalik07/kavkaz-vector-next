@@ -1,245 +1,117 @@
-"use client";
-
-import Image from "next/image";
-import Link from "next/link";
-import { useMemo, useRef, useState } from "react";
 import { copy } from "@/lib/copy";
-import { ButtonLink } from "@/components/Button";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y } from "swiper/modules";
-import type { Swiper as SwiperType } from "swiper/types";
-
-import "swiper/css";
-import InView from "@/components/InView";
-
-function ArrowIcon({ dir }: { dir: "left" | "right" }) {
+function Card({ title, text }: { title: string; text: string }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6">
-      {dir === "left" ? (
-        <path
-          d="M14.5 5.5 8 12l6.5 6.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      ) : (
-        <path
-          d="M9.5 5.5 16 12l-6.5 6.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      )}
-    </svg>
+    <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
+      <div className="text-base font-semibold tracking-tight">{title}</div>
+      <div className="mt-2 text-sm text-black/70 leading-relaxed dark:text-white/70">{text}</div>
+    </div>
   );
 }
 
-function formatRub(n: number) {
-  return new Intl.NumberFormat("ru-RU").format(n);
+function Eyebrow({ children }: { children: string }) {
+  return (
+    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+      {children}
+    </div>
+  );
 }
 
 export default function Tours() {
-  const tours = useMemo(() => copy.tours.items, []);
-  const swiperRef = useRef<SwiperType | null>(null);
-
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
-
-  const syncNavState = (s: SwiperType) => {
-    setCanPrev(!s.isBeginning);
-    setCanNext(!s.isEnd);
-  };
+  const tgHref = copy.contacts.social.telegram.href;
 
   return (
-    <div data-observe="tours" data-inview="false">
+    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+      {/* SERVICES (бывший каталог) */}
+      <div data-reveal="up">
+        <Eyebrow>{copy.tours.eyebrow}</Eyebrow>
+        <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.tours.title}</h2>
+      </div>
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
-        <div className="text-center">
-          {/* eyebrow (последним сверху) */}
-          <div data-reveal data-reveal-delay="3">
-            <div className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[color:var(--muted)]">
-              {copy.tours.eyebrow}
-            </div>
-          </div>
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {copy.tours.items.map((it) => (
+          <Card key={it.id} title={it.title} text={it.desc} />
+        ))}
+      </div>
 
-          {/* title (лесенкой перед eyebrow) */}
-          <h2
-            data-reveal
-            data-reveal-delay="2"
-            className="mt-3 text-2xl sm:text-4xl font-semibold tracking-[0.14em] uppercase"
+      <div className="mt-8 rounded-2xl border border-black/10 bg-black/[0.02] p-6 text-sm text-black/70 dark:border-white/15 dark:bg-white/[0.06] dark:text-white/70">
+        <div className="font-semibold text-black dark:text-white">{copy.tours.bottomText}</div>
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a
+            href={tgHref}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
           >
-            {copy.tours.title}
-          </h2>
-        </div>
-
-        {/* slider wrapper: появляется первым, снизу */}
-        <div data-reveal data-reveal-delay="1" className="relative mt-4 sm:mt-6">
-          <div className="swiper-clip">
-            <Swiper
-              modules={[A11y]}
-              onSwiper={(s) => {
-                swiperRef.current = s;
-                syncNavState(s);
-              }}
-              onSlideChange={syncNavState}
-              onResize={syncNavState}
-              slidesPerView={1}
-              spaceBetween={14}
-              watchOverflow
-              grabCursor
-              touchStartPreventDefault={false}
-              centeredSlides={false}
-              autoHeight={false}
-              breakpoints={{
-                640: { slidesPerView: 2, spaceBetween: 16 },
-                1200: { slidesPerView: 3, spaceBetween: 22 },
-              }}
-            >
-              {tours.map((t) => (
-                <SwiperSlide key={t.id} className="flex !h-auto">
-                  <article
-                    className={[
-                      "flex w-full flex-col overflow-hidden rounded-3xl border",
-                      "border-black/10 bg-white",
-                      "dark:border-white/10 dark:bg-white/[0.06]",
-                      "min-[1200px]:min-h-[400px]",
-                    ].join(" ")}
-                  >
-                    <div className="relative aspect-[16/9] w-full overflow-hidden">
-                      <Image
-                        src={t.image}
-                        alt={t.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover"
-                      />
-                    </div>
-
-                    <div className="flex flex-1 flex-col px-4 sm:px-5 pt-3 sm:pt-4 pb-3 sm:pb-4">
-                      <h3 className="text-lg sm:text-xl font-semibold leading-snug">
-                        {t.title}
-                      </h3>
-
-                      <p className="mt-2 text-sm sm:text-[15px] leading-snug text-[color:var(--muted)] line-clamp-3">
-                        {t.desc}
-                      </p>
-
-                      <div className="mt-auto flex items-center justify-between gap-4">
-                        <div className="text-sm sm:text-base font-semibold whitespace-nowrap">
-                          {copy.tours.priceFrom}&nbsp;{formatRub(t.priceFrom)}&nbsp;₽
-                        </div>
-
-                        <ButtonLink
-                          href={`/tours/${t.id}`}
-                          variant="outline"
-                          size="md"
-                          className="uppercase tracking-wide"
-                        >
-                          {copy.tours.ctaMore}
-                        </ButtonLink>
-                      </div>
-                    </div>
-                  </article>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
-{/* mobile/tablet arrows UNDER carousel */}
-<div className="mt-4 flex items-center justify-center gap-3 min-[1200px]:hidden">
-  <button
-    type="button"
-    aria-label="Предыдущий слайд"
-    onClick={() => swiperRef.current?.slidePrev()}
-    disabled={!canPrev}
-    className={[
-      "grid h-11 w-11 place-items-center rounded-full",
-      "border border-black/10 bg-white/85 text-black/70 shadow-sm backdrop-blur",
-      "hover:bg-white hover:text-black/90",
-      "disabled:pointer-events-none disabled:opacity-25",
-      "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
-    ].join(" ")}
-  >
-    <ArrowIcon dir="left" />
-  </button>
-
-  <button
-    type="button"
-    aria-label="Следующий слайд"
-    onClick={() => swiperRef.current?.slideNext()}
-    disabled={!canNext}
-    className={[
-      "grid h-11 w-11 place-items-center rounded-full",
-      "border border-black/10 bg-white/85 text-black/70 shadow-sm backdrop-blur",
-      "hover:bg-white hover:text-black/90",
-      "disabled:pointer-events-none disabled:opacity-25",
-      "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
-    ].join(" ")}
-  >
-    <ArrowIcon dir="right" />
-  </button>
-</div>
-
-
-          <div className="pointer-events-none hidden min-[1200px]:block">
-            <button
-              type="button"
-              aria-label="Предыдущий слайд"
-              onClick={() => swiperRef.current?.slidePrev()}
-              disabled={!canPrev}
-              className={[
-                "pointer-events-auto",
-                "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[110%]",
-                "z-10 grid h-11 w-11 place-items-center rounded-full",
-                "border border-black/10 bg-white/80 text-black/70 shadow-sm backdrop-blur",
-                "hover:bg-white hover:text-black/90",
-                "disabled:pointer-events-none disabled:opacity-25",
-                "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
-              ].join(" ")}
-            >
-              <ArrowIcon dir="left" />
-            </button>
-
-            <button
-              type="button"
-              aria-label="Следующий слайд"
-              onClick={() => swiperRef.current?.slideNext()}
-              disabled={!canNext}
-              className={[
-                "pointer-events-auto",
-                "absolute right-0 top-1/2 -translate-y-1/2 translate-x-[110%]",
-                "z-10 grid h-11 w-11 place-items-center rounded-full",
-                "border border-black/10 bg-white/80 text-black/70 shadow-sm backdrop-blur",
-                "hover:bg-white hover:text-black/90",
-                "disabled:pointer-events-none disabled:opacity-25",
-                "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
-              ].join(" ")}
-            >
-              <ArrowIcon dir="right" />
-            </button>
-          </div>
-        </div>
-
-        {/* bottom text: синхронно с title, но "выехал вниз" из-под карусели */}
-        <div
-          data-reveal="down-from-above"
-          data-reveal-delay="2"
-          className="mt-5 sm:mt-7 text-center text-[11px] sm:text-xs tracking-[0.25em] uppercase text-[color:var(--muted)]"
-        >
-          {copy.tours.bottomText}{" "}
-          <Link
-            href="/routes"
-            className="text-[color:var(--accent)] hover:underline underline-offset-4"
+            {copy.tours.ctaMore}
+          </a>
+          <a
+            href="#contacts"
+            className="inline-flex h-11 items-center justify-center rounded-full border border-black/15 px-6 text-sm font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
           >
+            {copy.hero.ctaSecondary}
+          </a>
+        </div>
+        <div className="mt-3">
+          <a href={tgHref} target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:opacity-80">
             {copy.tours.bottomLink}
-          </Link>
+          </a>
         </div>
       </div>
-    </div>
+
+      {/* SEGMENTS */}
+      <div className="mt-14" data-reveal="up">
+        <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.segments.title}</h3>
+      </div>
+      <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {copy.segments.items.map((it) => (
+          <Card key={it.title} title={it.title} text={it.text} />
+        ))}
+      </div>
+
+      {/* STEPS */}
+      <div className="mt-14" data-reveal="up">
+        <Eyebrow>{copy.steps.eyebrow}</Eyebrow>
+        <h3 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.steps.title}</h3>
+      </div>
+
+      <ol className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {copy.steps.items.map((s, i) => (
+          <li
+            key={s.title}
+            className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none"
+          >
+            <div className="text-xs font-semibold uppercase tracking-[0.14em] text-black/50 dark:text-white/60">
+              Шаг {i + 1}
+            </div>
+            <div className="mt-2 text-base font-semibold tracking-tight">{s.title}</div>
+            <div className="mt-2 text-sm text-black/70 leading-relaxed dark:text-white/70">{s.text}</div>
+          </li>
+        ))}
+      </ol>
+
+      <div className="mt-6">
+        <a
+          href={tgHref}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+        >
+          {copy.steps.cta}
+        </a>
+      </div>
+
+      {/* TERMS */}
+      <div className="mt-14" data-reveal="up">
+        <Eyebrow>{copy.terms.eyebrow}</Eyebrow>
+        <h3 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.terms.title}</h3>
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {copy.terms.items.map((it) => (
+          <Card key={it.title} title={it.title} text={it.text} />
+        ))}
+      </div>
+    </section>
   );
 }

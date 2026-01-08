@@ -8,7 +8,7 @@
   /* page */
   --background: #fafafa;
   --foreground: #0b0f19;
-  --ring: rgba(11, 15, 25, 0.18); 
+  --ring: rgba(11, 15, 25, 0.18);
 
   /* text */
   --muted: rgba(11, 15, 25, 0.70);
@@ -22,7 +22,7 @@
   --primary-fg: #ffffff;
 
   --accent: #ff4b2b;
-  --hero-fade: rgba(250, 250, 250, 1); /* мягкий светлый, но можно сделать чуть темнее */
+  --hero-fade: rgba(250, 250, 250, 1);
   --header-h: 56px; /* mobile */
 }
 
@@ -30,7 +30,6 @@
   :root {
     --header-h: 60px; /* sm+ */
   }
-
 }
 
 /* темная тема */
@@ -70,7 +69,7 @@ html {
 /* мягкий фокус по умолчанию */
 :where(a, button, input, textarea, select, summary, [role="button"], [tabindex]:not([tabindex="-1"])):focus-visible {
   outline: 1px solid var(--ring);
-  outline-offset: 2px; /* небольшой воздух */
+  outline-offset: 2px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -128,4 +127,105 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* HERO right card styles (height comes from inline style in Hero.tsx) */
+.heroRCard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* было: background: rgba(0, 0, 0, 0.25); */
+  background: rgba(0, 0, 0, 0.02);
+
+
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+.heroRInner {
+  flex: 1;
+  min-height: 0;
+  padding: 16px;
+
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.heroRSlide {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  /* border: 1px solid rgba(255, 255, 255, 0.12); */
+  background: rgba(255, 255, 255, 0.05);
+  min-height: 0;
+}
+
+.heroRSlideBg {
+  position: absolute;
+  inset: 0;
+}
+
+.heroRSlideOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.38);
+}
+
+.heroRSlideTop {
+  position: relative;
+  z-index: 1;
+  padding: 16px;
+  padding-bottom: 76px;
+}
+
+.heroRDrawer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+
+  padding: 14px 16px;
+  background: transparent;
+
+  transform: translateY(90%);
+  transition: transform 480ms ease;
+  will-change: transform;
+}
+
+.heroRDrawer.is-open {
+  transform: translateY(0%);
+}
+
+.heroRFoot {
+  padding: 0 16px 12px 16px;
+}
+
+/* Light theme overrides */
+html:not(.dark) .heroRCard {
+  border-color: rgba(24, 24, 27, 0.15);
+  background: rgba(255, 255, 255, 0.65);
+  color: rgb(24, 24, 27);
+}
+
+html:not(.dark) .heroRSlide {
+  /* border-color: rgba(24, 24, 27, 0.12); */
+  background: rgba(255, 255, 255, 0.7);
+}
+
+html:not(.dark) .heroRSlideOverlay {
+  background: rgba(255, 255, 255, 0.42);
+}
+
+html:not(.dark) .heroRDrawer {
+  background: transparent;
 }

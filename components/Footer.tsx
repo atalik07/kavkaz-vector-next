@@ -2,32 +2,37 @@ import { copy } from "@/lib/copy";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const copyright = copy.footer.copyright.replace("{year}", String(year));
 
   return (
-    <footer className="border-t border-[color:var(--border)] py-4 sm:py-5">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 text-sm text-[color:var(--muted)]">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          {/* mobile: по центру, desktop: как было */}
-          <div className="text-center sm:text-left">
-            {copy.footer.copyright.replace("{year}", String(year))}
-          </div>
+    <footer className="border-t border-black/10 py-10 dark:border-white/15">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 sm:px-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="text-sm text-black/70 dark:text-white/70">
+          <div className="font-semibold text-black dark:text-white">{copy.brand.name}</div>
+          <div className="mt-1">{copyright}</div>
+        </div>
 
-          {/* mobile: ссылки по центру столбиком, desktop: справа в строку */}
-          <div className="flex flex-col items-center gap-2 text-center sm:flex-row sm:items-center sm:gap-6 sm:justify-end sm:text-left">
-            <a
-              href={copy.footer.links.privacy.href}
-              className="text-[color:var(--muted)] transition-colors hover:text-[color:var(--accent)]"
-            >
-              {copy.footer.links.privacy.label}
-            </a>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <a
+            href={copy.contacts.social.telegram.href}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-[color:var(--accent)]"
+          >
+            {copy.contacts.social.telegram.label}
+          </a>
 
-            <a
-              href={copy.footer.links.personalData.href}
-              className="text-[color:var(--muted)] transition-colors hover:text-[color:var(--accent)]"
-            >
-              {copy.footer.links.personalData.label}
-            </a>
-          </div>
+          <a href={copy.contacts.links.emailHref} className="hover:text-[color:var(--accent)]">
+            {copy.contacts.values.email}
+          </a>
+
+          <a href={copy.footer.links.privacy.href} className="hover:text-[color:var(--accent)]">
+            {copy.footer.links.privacy.label}
+          </a>
+
+          <a href={copy.footer.links.personalData.href} className="hover:text-[color:var(--accent)]">
+            {copy.footer.links.personalData.label}
+          </a>
         </div>
       </div>
     </footer>

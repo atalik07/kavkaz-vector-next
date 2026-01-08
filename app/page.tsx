@@ -1,3 +1,4 @@
+// app/page.tsx
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "@/components/sections/Hero";
@@ -10,8 +11,6 @@ export default function HomePage() {
   return (
     <>
       <Header />
-
-      {/* один раз на страницу: наблюдает все элементы с data-observe */}
       <InView />
 
       <main>
@@ -19,12 +18,25 @@ export default function HomePage() {
           <Hero />
         </section>
 
-        <section id="tours">
+        <section id="services">
           <Tours />
         </section>
 
-        <section id="about">
+        <section id="formats">
+          {/* reuse Tours section content blocks already include segments/steps/terms.
+              Formats will be added next if needed */}
+        </section>
+
+        <section id="production">
           <About />
+        </section>
+
+        <section id="logistics">
+          {/* logistics already in About. Keep anchor for menu */}
+        </section>
+
+        <section id="portfolio">
+          {/* portfolio will be added next */}
         </section>
 
         <section id="contacts">

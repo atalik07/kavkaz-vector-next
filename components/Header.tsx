@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { copy } from "@/lib/copy";
 import { ButtonLink } from "@/components/Button";
@@ -186,11 +186,7 @@ function MobileMenu({
                 <ThemeToggle ui="mobile" className="w-full justify-between" />
               </div>
             </div>
-
-
           </div>
-
-          
         </div>
       </div>
     </div>
@@ -203,6 +199,10 @@ export default function Header() {
       [
         { id: "tours", href: "#tours", label: copy.nav.tours },
         { id: "about", href: "#about", label: copy.nav.about },
+        { id: "about", href: "#formats", label: copy.nav.formats },
+        { id: "about", href: "#logistics", label: copy.nav.logistics },
+        { id: "about", href: "#faq", label: copy.nav.faq },
+        { id: "about", href: "#portfolio", label: copy.nav.portfolio },
         { id: "contacts", href: "#contacts", label: copy.nav.contacts },
       ] as const,
     []
@@ -228,6 +228,13 @@ export default function Header() {
   const [active, setActive] = useState<NavId | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // NEW: авто-режим "burger only" если не вмещается
+  const headerRef = useRef<HTMLElement | null>(null);
+  const logoRef = useRef<HTMLAnchorElement | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
+  const phoneDesktopRef = useRef<HTMLAnchorElement | null>(null);
+  const [compact, setCompact] = useState(false);
 
   useEffect(() => {
     const ids = ["tours", "about", "contacts"] as const;
@@ -297,7 +304,53 @@ export default function Header() {
     };
   }, []);
 
-  const linkBase = "rounded-md px-2 py-1 text-sm uppercase transition-colors";
+  // NEW: измерение "влезает/не влезает"
+  useEffect(() => {
+    const measure = () => {
+      const header = headerRef.current;
+      if (!header) return;
+
+      const logo = logoRef.current;
+      const nav = navRef.current;
+      const phone = phoneDesktopRef.current;
+
+      const headerW = header.clientWidth;
+
+      // если каких-то элементов нет (например, nav скрыт по md) — не мешаем
+      if (!logo || !nav || !phone) {
+        setCompact(false);
+        return;
+      }
+
+      // Считаем “минимально нужную” ширину: logo + nav + phone + правый блок (burger) + зазоры
+      // Burger у нас всегда в DOM (кнопка), но на md скрыт — это ок, мы закладываем его ширину как 44.
+      const NEED_GAPS = 32; // суммарные безопасные отступы
+      const BURGER_W = 44;
+
+      const need =
+        Math.ceil(logo.getBoundingClientRect().width) +
+        Math.ceil(nav.scrollWidth) +
+        Math.ceil(phone.getBoundingClientRect().width) +
+        BURGER_W +
+        NEED_GAPS;
+
+      setCompact(need > headerW);
+    };
+
+    measure();
+
+    const ro = new ResizeObserver(() => measure());
+    if (headerRef.current) ro.observe(headerRef.current);
+
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  // как было (только linkBase уже уменьшен)
+  const linkBase = "rounded-md px-2 py-1 text-[11px] uppercase tracking-[0.14em] transition-colors";
   const linkInactive =
     "text-current/85 hover:text-current " +
     "group-data-[scrolled=false]:hover:bg-white/12 " +
@@ -310,32 +363,43 @@ export default function Header() {
   return (
     <>
       <header
+        ref={headerRef}
         data-scrolled={scrolled ? "true" : "false"}
         className={[
           "group fixed inset-x-0 top-0 z-50 border-b backdrop-blur transition-colors duration-200",
-          "border-white/15 bg-black/20 text-white",
+          "border-zinc-900/15 bg-white/70 text-zinc-950 dark:border-white/15 dark:bg-black/20 dark:text-white",
+
           "data-[scrolled=true]:border-black/10 data-[scrolled=true]:bg-white/85 data-[scrolled=true]:text-[color:var(--foreground)] data-[scrolled=true]:shadow-sm",
           "dark:data-[scrolled=true]:border-white/15 dark:data-[scrolled=true]:bg-black/35 dark:data-[scrolled=true]:text-white",
         ].join(" ")}
       >
-        <div className="mx-auto grid h-14 sm:h-[60px] max-w-6xl grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
-<a href="/" className="flex items-center gap-3">
-  <span className="inline-flex items-center justify-center">
-    <img
-      src="/images/logo.png"
-      alt={`${copy.brand.name} ${copy.brand.tagline}`}
-      className="h-8 w-8 object-cover"
-    />
-  </span>
+        <div
+          className={[
+            "mx-auto grid h-14 sm:h-[60px] max-w-6xl items-center px-4 sm:px-6",
+            // если compact => лого слева, телефон+бургер справа
+            compact ? "grid-cols-[1fr_auto]" : "grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr]",
+          ].join(" ")}
+        >
+          <a ref={logoRef} href="/" className="flex items-center gap-3">
+            <span className="inline-flex items-center justify-center">
+              <img
+                src="/images/logo.png"
+                alt={`${copy.brand.name} ${copy.brand.tagline}`}
+                className="h-8 w-8 object-cover"
+              />
+            </span>
 
-<span className="block text-base font-semibold tracking-tight leading-none">
-  {copy.brand.name}
-</span>
+            <span className="block text-base font-semibold tracking-tight leading-none">{copy.brand.name}</span>
+          </a>
 
-</a>
-
-
-          <nav className="hidden md:flex justify-self-center gap-4">
+          {/* NAV: скрываем, если compact */}
+          <nav
+            ref={navRef}
+            className={[
+              "hidden md:flex justify-self-center gap-4",
+              compact ? "md:hidden" : "",
+            ].join(" ")}
+          >
             {items.map((item) => {
               const isActive = active === item.id;
               return (
@@ -343,9 +407,11 @@ export default function Header() {
                   key={item.id}
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={[linkBase, isActive ? linkActive : linkInactive, isActive ? "hover:bg-transparent" : ""].join(
-                    " "
-                  )}
+                  className={[
+                    linkBase,
+                    isActive ? linkActive : linkInactive,
+                    isActive ? "hover:bg-transparent" : "",
+                  ].join(" ")}
                 >
                   {item.label}
                 </a>
@@ -353,25 +419,33 @@ export default function Header() {
             })}
           </nav>
 
+          {/* RIGHT */}
           <div className="flex items-center justify-self-end gap-2">
+            {/* Телефон на десктопе: в compact режиме показываем его ВСЕГДА (и рядом с бургером) */}
             <a
+              ref={phoneDesktopRef}
               href={phoneHref}
-              className="hidden lg:inline-flex items-center gap-2 rounded-full px-3 py-1 text-base font-semibold text-current/90 hover:text-[color:var(--accent)]"
+              className={[
+                "hidden lg:inline-flex items-center gap-2 rounded-full px-3 py-1 text-base font-semibold text-current/90 hover:text-[color:var(--accent)]",
+                compact ? "lg:inline-flex" : "",
+              ].join(" ")}
             >
               <IconPhone className="h-4 w-4" />
               <span className="font-medium">{phoneLabel}</span>
             </a>
 
+            {/* Телефон-иконка для малого экрана — как было */}
             <a
               href={phoneHref}
-              className="inline-flex lg:hidden items-center justify-center rounded-full p-2 hover:bg-white/10 hover:text-[color:var(--accent)]"
+              className="inline-flex lg:hidden ... rounded-full p-2 hover:bg-black/5 dark:hover:bg-white/10 hover:text-[color:var(--accent)]"
               aria-label={phoneLabel}
               title={phoneLabel}
             >
               <IconPhone className="h-6 w-6" />
             </a>
 
-            <div className="hidden lg:flex items-center">
+            {/* соц-иконки уже скрыты */}
+            <div className="hidden items-center">
               {social.map((s) => (
                 <a
                   key={s.label}
@@ -386,10 +460,14 @@ export default function Header() {
               ))}
             </div>
 
+            {/* Burger: показываем если compact ИЛИ как раньше (md:hidden) */}
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="inline-flex md:hidden items-center justify-center rounded-full p-2 hover:bg-white/10"
+              className={[
+                "inline-flex items-center justify-center rounded-full p-2 hover:bg-black/5 dark:hover:bg-white/10",
+                compact ? "md:inline-flex" : "md:hidden",
+              ].join(" ")}
               aria-label="Open menu"
             >
               <IconBurger className="h-6 w-6" />
