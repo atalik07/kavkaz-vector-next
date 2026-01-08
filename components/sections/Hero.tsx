@@ -70,9 +70,29 @@ export default function Hero() {
   const FADE_MS = 900;
 
   const s = slides?.[active];
+  const activeBg = slideImages[active] ?? slideImages[0];
 
   return (
     <div data-hero data-observe="hero" data-inview="false" className="relative isolate overflow-hidden h-[100svh]">
+
+{/* SECTION BG (blurred) */}
+<div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+  <div
+    className="absolute inset-0 bg-center bg-cover transition-opacity duration-700"
+    style={{
+      backgroundImage: `url(${activeBg})`,
+      filter: "blur(28px) saturate(1.15)",
+      transform: "scale(1.08)",
+      opacity: 0.15,
+    }}
+  />
+  {/* затемнение/читабельность */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35 dark:from-black/45 dark:to-black/55" />
+  {/* легкое зерно */}
+  <div className="absolute inset-0 opacity-[0.10] mix-blend-overlay heroGrain" />
+</div>
+
+
       <div className="relative z-20 mx-auto grid h-[100svh] max-w-6xl grid-cols-1 gap-10 px-4 pb-14 pt-24 sm:px-6 sm:pb-16 lg:grid-cols-2 lg:items-stretch">
         {/* LEFT */}
         <div className="min-h-0 lg:flex lg:items-center">
