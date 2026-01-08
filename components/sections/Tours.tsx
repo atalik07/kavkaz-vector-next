@@ -150,6 +150,42 @@ export default function Tours() {
             </Swiper>
           </div>
 
+{/* mobile/tablet arrows UNDER carousel */}
+<div className="mt-4 flex items-center justify-center gap-3 min-[1200px]:hidden">
+  <button
+    type="button"
+    aria-label="Предыдущий слайд"
+    onClick={() => swiperRef.current?.slidePrev()}
+    disabled={!canPrev}
+    className={[
+      "grid h-11 w-11 place-items-center rounded-full",
+      "border border-black/10 bg-white/85 text-black/70 shadow-sm backdrop-blur",
+      "hover:bg-white hover:text-black/90",
+      "disabled:pointer-events-none disabled:opacity-25",
+      "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
+    ].join(" ")}
+  >
+    <ArrowIcon dir="left" />
+  </button>
+
+  <button
+    type="button"
+    aria-label="Следующий слайд"
+    onClick={() => swiperRef.current?.slideNext()}
+    disabled={!canNext}
+    className={[
+      "grid h-11 w-11 place-items-center rounded-full",
+      "border border-black/10 bg-white/85 text-black/70 shadow-sm backdrop-blur",
+      "hover:bg-white hover:text-black/90",
+      "disabled:pointer-events-none disabled:opacity-25",
+      "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
+    ].join(" ")}
+  >
+    <ArrowIcon dir="right" />
+  </button>
+</div>
+
+
           <div className="pointer-events-none hidden min-[1200px]:block">
             <button
               type="button"

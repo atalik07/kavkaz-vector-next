@@ -7,9 +7,13 @@ export default function Footer() {
     <footer className="border-t border-[color:var(--border)] py-4 sm:py-5">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 text-sm text-[color:var(--muted)]">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>{copy.footer.copyright.replace("{year}", String(year))}</div>
+          {/* mobile: по центру, desktop: как было */}
+          <div className="text-center sm:text-left">
+            {copy.footer.copyright.replace("{year}", String(year))}
+          </div>
 
-          <div className="flex flex-col gap-2 sm:flex-row sm:gap-6 sm:justify-end">
+          {/* mobile: ссылки по центру столбиком, desktop: справа в строку */}
+          <div className="flex flex-col items-center gap-2 text-center sm:flex-row sm:items-center sm:gap-6 sm:justify-end sm:text-left">
             <a
               href={copy.footer.links.privacy.href}
               className="text-[color:var(--muted)] transition-colors hover:text-[color:var(--accent)]"

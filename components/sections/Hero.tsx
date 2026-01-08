@@ -4,6 +4,12 @@ import HeroUtilityBar from "@/components/HeroUtilityBar";
 import { ButtonLink } from "@/components/Button";
 
 export default function Hero() {
+  // перенос подзаголовка строго в 2 строки, текст берём из copy
+  const subtitle = copy.hero.subtitle;
+  const subtitleParts = subtitle.split(" в сердце ");
+  const subtitleLine1 = subtitleParts[0] ?? subtitle;
+  const subtitleLine2 = subtitleParts[1] ? `в сердце ${subtitleParts[1]}` : "";
+
   return (
     <div
       data-hero
@@ -46,7 +52,7 @@ export default function Hero() {
             data-hero-title="1"
             data-reveal
             data-reveal-delay="1"
-            className="block text-4xl sm:text-6xl lg:text-7xl xl:text-8xl"
+            className="block text-[44px] sm:text-6xl lg:text-7xl xl:text-8xl"
           >
             {copy.hero.titleLine1}
           </span>
@@ -55,7 +61,7 @@ export default function Hero() {
             data-hero-title="2"
             data-reveal
             data-reveal-delay="2"
-            className="block text-4xl sm:text-6xl lg:text-[68px] xl:text-[76px] lg:whitespace-nowrap"
+            className="block text-[44px] sm:text-6xl lg:text-[68px] xl:text-[76px] lg:whitespace-nowrap"
           >
             {copy.hero.titleLine2}
           </span>
@@ -65,9 +71,10 @@ export default function Hero() {
           data-hero-subtitle
           data-reveal
           data-reveal-delay="2"
-          className="subhead mt-6 text-pretty text-white/80 uppercase tracking-[0.06em] text-base sm:text-xl lg:text-2xl lg:whitespace-nowrap"
+          className="subhead mt-6 text-white/80 uppercase tracking-[0.06em] text-base sm:text-xl lg:text-2xl lg:whitespace-nowrap"
         >
-          {copy.hero.subtitle}
+          <span className="block">{subtitleLine1}</span>
+          {subtitleLine2 ? <span className="block">{subtitleLine2}</span> : null}
         </p>
 
         <div
@@ -76,21 +83,44 @@ export default function Hero() {
           data-reveal-delay="3"
           className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center uppercase"
         >
-          <ButtonLink href="#tours" variant="accentOutline" size="md" className="w-full sm:w-auto">
-            {copy.hero.ctaTours}
-          </ButtonLink>
+          {/* 1) фон кнопок в мобилке чуть белесее */}
+<ButtonLink
+  href="#tours"
+  variant="accentOutline"
+  size="md"
+  className={[
+    "w-full sm:w-auto",
+    // mobile: толще рамка + заметнее стекло
+    "border-2 bg-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.22)]",
+    "hover:bg-white/14",
+    // sm+: обратно к более спокойному виду
+    "sm:border",
+    "sm:bg-transparent sm:shadow-none",
+  ].join(" ")}
+>
+  {copy.hero.ctaTours}
+</ButtonLink>
 
-          <ButtonLink
-            href="#contacts"
-            variant="soft"
-            size="md"
-            className="w-full sm:w-auto bg-white/8 ring-white/20 hover:bg-white/12"
-          >
-            {copy.hero.ctaContacts}
-          </ButtonLink>
+<ButtonLink
+  href="#contacts"
+  variant="soft"
+  size="md"
+  className={[
+    "w-full sm:w-auto",
+    // mobile: толще рамка + белёсее подложка
+    "border-2 bg-white/12 ring-0 shadow-[0_8px_24px_rgba(0,0,0,0.18)]",
+    "hover:bg-white/16",
+    // sm+: как было
+    "sm:border",
+    "sm:bg-white/8 sm:ring-white/20 sm:hover:bg-white/12",
+    "sm:shadow-none",
+  ].join(" ")}
+>
+  {copy.hero.ctaContacts}
+</ButtonLink>
+
         </div>
 
-        {/* make sure the bar is above gradients */}
         <div className="relative z-20">
           <HeroUtilityBar />
         </div>
