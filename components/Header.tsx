@@ -179,7 +179,7 @@ function MobileMenu({
         </div>
 
         <div className="mt-4 space-y-3">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3">
             <div className="rounded-xl border border-black/10 p-3 dark:border-white/15">
               <div className="text-xs text-black/60 text-center dark:text-white/70">Тема</div>
               <div className="mt-2 flex justify-center">
@@ -187,33 +187,10 @@ function MobileMenu({
               </div>
             </div>
 
-            <div className="rounded-xl border border-black/10 p-3 dark:border-white/15">
-              <div className="text-xs text-black/60 text-center dark:text-white/70">Язык</div>
-              <div className="mt-2">
-                <div className="grid grid-cols-2 rounded-full border border-black/10 bg-black/5 p-0.5 dark:border-white/15 dark:bg-white/10">
-                  <button
-                    type="button"
-                    className="h-9 rounded-full bg-black/10 text-sm font-medium dark:bg-white/10"
-                  >
-                    RU
-                  </button>
-                  <button
-                    type="button"
-                    className="h-9 rounded-full text-sm font-medium text-black/70 hover:bg-black/10 dark:text-white/80 dark:hover:bg-white/10"
-                  >
-                    EN
-                  </button>
-                </div>
-              </div>
-            </div>
+
           </div>
 
-          <button
-            type="button"
-            className="mt-2 w-full rounded-xl border border-black/10 bg-black/5 px-4 py-3 text-center font-medium hover:bg-black/10 dark:border-white/15 dark:bg-white/10 dark:hover:bg-white/15"
-          >
-            Версия для слабовидящих
-          </button>
+          
         </div>
       </div>
     </div>
@@ -342,20 +319,21 @@ export default function Header() {
         ].join(" ")}
       >
         <div className="mx-auto grid h-14 sm:h-[60px] max-w-6xl grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
-          <a href="#hero" className="flex items-center gap-3">
-            <span className="inline-flex items-center justify-center rounded-full border border-current/15 p-1">
-              <img
-                src="/images/logo.svg"
-                alt={`${copy.brand.name} ${copy.brand.tagline}`}
-                className="h-8 w-8 rounded-full"
-              />
-            </span>
+<a href="/" className="flex items-center gap-3">
+  <span className="inline-flex items-center justify-center">
+    <img
+      src="/images/logo.png"
+      alt={`${copy.brand.name} ${copy.brand.tagline}`}
+      className="h-8 w-8 object-cover"
+    />
+  </span>
 
-            <span className="flex flex-col gap-0">
-              <span className="block text-base font-semibold tracking-tight leading-none">{copy.brand.name}</span>
-              <span className="block text-base font-semibold tracking-tight leading-none">{copy.brand.tagline}</span>
-            </span>
-          </a>
+<span className="block text-base font-semibold tracking-tight leading-none">
+  {copy.brand.name}
+</span>
+
+</a>
+
 
           <nav className="hidden md:flex justify-self-center gap-4">
             {items.map((item) => {

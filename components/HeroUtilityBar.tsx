@@ -13,28 +13,6 @@ export default function HeroUtilityBar() {
         ].join(" ")}
       >
         <ThemeToggle />
-
-        <div className="inline-flex items-center rounded-full border border-white/15 bg-white/5 p-0.5">
-          <button
-            type="button"
-            className="h-7 rounded-full px-3 text-sm font-medium text-[color:var(--accent)] bg-white/10"
-          >
-            RU
-          </button>
-          <button
-            type="button"
-            className="h-7 rounded-full px-3 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white"
-          >
-            EN
-          </button>
-        </div>
-
-        <button
-          type="button"
-          className="h-9 rounded-full border border-white/15 bg-white/10 px-4 text-sm font-semibold hover:bg-white/15"
-        >
-          Версия для слабовидящих
-        </button>
       </div>
     </div>
   );
