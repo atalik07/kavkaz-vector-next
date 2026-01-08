@@ -142,44 +142,39 @@ export default function Hero() {
 
                 <div className="heroRSlide">
                   {/* BG swiper fade */}
-                  <div className="heroRSlideBg">
-                    <Swiper
-                      modules={[EffectFade, Autoplay]}
-                      effect="fade"
-                      fadeEffect={{ crossFade: true }}
-                      slidesPerView={1}
-                      loop
-                      speed={FADE_MS}
-                      autoplay={{ delay: SLIDE_MS - FADE_MS, disableOnInteraction: false }}
-                      // preloadImages
-                      watchSlidesProgress
-                      onSlideChange={(sw) => {
-                        // realIndex — индекс без учёта loop-клонов
-                        const idx = sw.realIndex % slides.length;
-                        setActive(idx);
+                  
+<div className="heroRSlideBg">
+  <Swiper
+    modules={[EffectFade, Autoplay]}
+    effect="fade"
+    fadeEffect={{ crossFade: true }}
+    slidesPerView={1}
+    loop
+    speed={FADE_MS}
+    autoplay={{ delay: SLIDE_MS - FADE_MS, disableOnInteraction: false }}
+    onSlideChange={(sw) => {
+      const idx = sw.realIndex % slides.length;
+      setActive(idx);
+      setDrawerOpen(false);
+      window.setTimeout(() => setDrawerOpen(true), 120);
+    }}
+    className="h-full w-full"
+  >
+    {slideImages.map((src, i) => (
+      <SwiperSlide key={src + i} className="h-full w-full">
+        <img
+          src={src}
+          alt=""
+          className="h-full w-full object-cover opacity-45"
+          loading={i === 0 ? "eager" : "lazy"}
+          decoding="async"
+        />
+      </SwiperSlide>
+    ))}
+  </Swiper>
 
-                        // синхронизация “drawer”: закрываем на смене и открываем через чуть-чуть
-                        setDrawerOpen(false);
-                        window.setTimeout(() => setDrawerOpen(true), 120);
-                      }}
-                      className="absolute inset-0"
-                    >
-                      {slideImages.map((src, i) => (
-                        <SwiperSlide key={src + i}>
-                          {/* Важно: обычный img — меньше шансов на дерганье, чем next/image в fade */}
-                          <img
-                            src={src}
-                            alt=""
-                            className="absolute inset-0 h-full w-full object-cover opacity-45"
-                            loading={i === 0 ? "eager" : "lazy"}
-                            decoding="async"
-                          />
-                        </SwiperSlide>
-                      ))}
-                    </Swiper>
-
-                    <div className="heroRSlideOverlay" />
-                  </div>
+  <div className="heroRSlideOverlay" />
+</div>
 
                   {/* TOP text */}
                   <div
