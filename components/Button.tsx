@@ -10,7 +10,7 @@ function cx(...classes: Array<string | false | null | undefined>) {
 }
 
 const base =
-  "inline-flex items-center justify-center whitespace-nowrap rounded-[8px] font-semibold transition " +
+  "inline-flex items-center justify-center whitespace-nowrap ui-btn font-semibold transition " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:opacity-50 disabled:pointer-events-none";
 
 const sizes: Record<Size, string> = {

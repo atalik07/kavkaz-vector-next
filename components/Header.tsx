@@ -5,7 +5,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { copy } from "@/lib/copy";
 import { ButtonLink } from "@/components/Button";
 
-type NavId = "tours" | "about" | "contacts";
+type NavId = "services" | "terms" | "production" | "logistics" | "faq" | "portfolio" | "contacts";
 
 function IconTelegram(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -194,19 +194,20 @@ function MobileMenu({
 }
 
 export default function Header() {
-  const items = useMemo(
-    () =>
-      [
-        { id: "tours", href: "#tours", label: copy.nav.tours },
-        { id: "about", href: "#about", label: copy.nav.about },
-        { id: "about", href: "#formats", label: copy.nav.formats },
-        { id: "about", href: "#logistics", label: copy.nav.logistics },
-        { id: "about", href: "#faq", label: copy.nav.faq },
-        { id: "about", href: "#portfolio", label: copy.nav.portfolio },
-        { id: "contacts", href: "#contacts", label: copy.nav.contacts },
-      ] as const,
-    []
-  );
+const items = useMemo(
+  () =>
+    [
+      { id: "services", href: "#services", label: copy.nav.tours }, // или переименуешь copy.nav.services позже
+      { id: "terms", href: "#terms", label: copy.nav.terms },
+      { id: "production", href: "#production", label: copy.nav.about }, // или copy.nav.production
+      { id: "logistics", href: "#logistics", label: copy.nav.logistics },
+      { id: "faq", href: "#faq", label: copy.nav.faq },
+      { id: "portfolio", href: "#portfolio", label: copy.nav.portfolio },
+      { id: "contacts", href: "#contacts", label: copy.nav.contacts },
+    ] as const,
+  []
+);
+
 
   const phoneHref = copy.contacts.links.phoneHref;
   const phoneLabel = copy.contacts.values.phone;
@@ -237,7 +238,8 @@ export default function Header() {
   const [compact, setCompact] = useState(false);
 
   useEffect(() => {
-    const ids = ["tours", "about", "contacts"] as const;
+    const ids = ["services", "terms", "production", "logistics", "faq", "portfolio", "contacts"] as const;
+
 
     const getHeaderH = () => {
       const v = getComputedStyle(document.documentElement).getPropertyValue("--header-h").trim();
@@ -380,7 +382,19 @@ export default function Header() {
             compact ? "grid-cols-[1fr_auto]" : "grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr]",
           ].join(" ")}
         >
-          <a ref={logoRef} href="/" className="flex items-center gap-3">
+          <a
+  ref={logoRef}
+  href="#hero"
+  onClick={(e) => {
+    // чтобы не было резкого jump
+    e.preventDefault();
+    document.getElementById("hero")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // если было открыто мобильное меню — можно закрывать (не обязательно для лого)
+    setMobileOpen(false);
+  }}
+  className="flex items-center gap-3"
+>
+
             <span className="inline-flex items-center justify-center">
               <img
                 src="/images/logo.png"
@@ -395,10 +409,10 @@ export default function Header() {
           {/* NAV: скрываем, если compact */}
           <nav
             ref={navRef}
-            className={[
-              "hidden md:flex justify-self-center gap-4",
-              compact ? "md:hidden" : "",
-            ].join(" ")}
+className={[
+  "hidden md:flex justify-self-center gap-2 lg:gap-3 xl:gap-4",
+  compact ? "md:hidden" : "",
+].join(" ")}
           >
             {items.map((item) => {
               const isActive = active === item.id;

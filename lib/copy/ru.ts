@@ -17,7 +17,7 @@ export const ru = {
     tours: "Услуги",
     about: "Производство",
     contacts: "Контакты",
-    formats: "Условия",
+    terms: "Условия",
     logistics: "Логистика",
     faq: "FAQ",
     portfolio: "Примеры",
@@ -34,8 +34,9 @@ export const ru = {
     // текущие ключи — используемые компонентом
     titleLine1: "Контрактное производство",
     titleLine2: "корпусной мебели под ключ",
-    subtitle:
-      "Фокусируетесь на идеях, мы сделаем все остальное.",
+    subtitleLine1: "Фокусируетесь на идеях,",
+    subtitleLine2: "мы сделаем все остальное.",
+
     ctaPrimary: "ПОЛУЧИТЬ ПРАЙС В TELEGRAM",
     ctaPrimaryHref: "https://t.me/+gaG54XczoY40ZGVi",
     ctaSecondary: "Запросить условия",
@@ -235,8 +236,8 @@ export const ru = {
   },
 
   terms: {
-    eyebrow: "Условия",
-    title: "Сотрудничество — прозрачно и по делу",
+    eyebrow: "Сотрудничество — прозрачно и по делу",
+    itemsEyebrow: "Условия сотрудничества",
     items: [
       {
         title: "Кто может обратиться",

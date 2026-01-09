@@ -47,7 +47,7 @@ export default function Contacts() {
 
       <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.1fr]">
         {/* LEFT: контакты */}
-        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
+        <div className="ui-card border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
           <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.contacts.titleLeft}</h2>
 
           <div className="mt-6 space-y-5 text-sm">
@@ -87,7 +87,7 @@ export default function Contacts() {
               href={telegramHref}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+              className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
               onClick={() => setSent(true)}
             >
               {copy.contacts.social.telegram.label}
@@ -95,7 +95,7 @@ export default function Contacts() {
 
             <a
               href={mailto}
-              className="inline-flex h-11 items-center justify-center rounded-full border border-black/15 px-6 text-sm font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
+              className="inline-flex h-11 items-center justify-center ui-btn border border-black/15 px-6 text-sm font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
               onClick={() => setSent(true)}
             >
               Написать на Email
@@ -110,7 +110,7 @@ export default function Contacts() {
         </div>
 
         {/* RIGHT: форма + карта */}
-        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
+        <div className="ui-card border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
           <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.contacts.titleRight}</h3>
 
           <form
@@ -154,7 +154,7 @@ export default function Contacts() {
 
             <button
               type="submit"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+              className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
             >
               {copy.contacts.form.submit}
             </button>
@@ -164,7 +164,7 @@ export default function Contacts() {
             </div>
           </form>
 
-          <div className="mt-8 overflow-hidden rounded-2xl border border-black/10 dark:border-white/15">
+          <div className="mt-8 overflow-hidden ui-card border border-black/10 dark:border-white/15">
             <div className="px-4 py-3 text-sm font-semibold">{copy.contacts.map.title}</div>
             <iframe
               title={copy.contacts.map.title}

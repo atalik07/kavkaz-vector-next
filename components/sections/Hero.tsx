@@ -83,7 +83,7 @@ export default function Hero() {
       backgroundImage: `url(${activeBg})`,
       filter: "blur(28px) saturate(1.15)",
       transform: "scale(1.08)",
-      opacity: 0.15,
+      opacity: 0.1,
     }}
   />
   {/* затемнение/читабельность */}
@@ -111,7 +111,8 @@ export default function Hero() {
               data-reveal-delay="2"
               className="subhead mt-6 max-w-[48rem] text-zinc-950/80 dark:text-white/85 uppercase tracking-[0.06em] text-base sm:text-xl"
             >
-              {copy.hero.subtitle}
+                <span className="block">{copy.hero.subtitleLine1}</span>
+                <span className="block">{copy.hero.subtitleLine2}</span>
             </p>
 
             <div data-reveal="up" data-reveal-delay="3" className="mt-7 flex flex-wrap gap-3">

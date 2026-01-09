@@ -28,16 +28,16 @@ export default function About() {
           <div className="mt-6">
             <a
               href={copy.about.ctaHref}
-              className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+              className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
             >
               {copy.about.ctaMore}
             </a>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-black/10 bg-black/[0.02] p-6 shadow-sm dark:border-white/15 dark:bg-white/[0.06] dark:shadow-none">
+        <div className="ui-card border border-black/10 bg-black/[0.02] p-6 shadow-sm dark:border-white/15 dark:bg-white/[0.06] dark:shadow-none">
           <div className="text-base font-semibold tracking-tight text-black dark:text-white">
-            {copy.terms.title}
+            {/* {copy.terms.title} */}
           </div>
           <ul className="mt-4 space-y-3 text-sm text-black/70 dark:text-white/70">
             {copy.terms.items.slice(0, 5).map((it) => (
@@ -60,7 +60,7 @@ export default function About() {
         {copy.logistics.items.map((text) => (
           <div
             key={text}
-            className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none"
+            className="ui-card border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none"
           >
             <div className="text-sm text-black/70 dark:text-white/70">{text}</div>
           </div>
@@ -77,7 +77,7 @@ export default function About() {
         {copy.faq.items.map((q) => (
           <details
             key={q.q}
-            className="group rounded-2xl border border-black/10 bg-white p-6 shadow-sm open:shadow-md dark:border-white/15 dark:bg-white/5 dark:shadow-none"
+            className="group ui-card border border-black/10 bg-white p-6 shadow-sm open:shadow-md dark:border-white/15 dark:bg-white/5 dark:shadow-none"
           >
             <summary className="cursor-pointer list-none text-base font-semibold tracking-tight">
               {q.q}
