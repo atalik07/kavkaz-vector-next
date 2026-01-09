@@ -20,27 +20,47 @@ function Eyebrow({ children }: { children: string }) {
 export default function Terms() {
   const tgHref = copy.contacts.social.telegram.href;
 
-  return (
-    <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-<div data-reveal="up">
-  <Eyebrow>{copy.terms.eyebrow}</Eyebrow>
+return (
+  <>
+    {/* TOP full-bleed banner */}
+    <section className="w-full bg-black/[0.03] dark:bg-white/[0.05]">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-14" data-reveal="up">
+<p className="subhead text-zinc-950/80 dark:text-white/85 uppercase tracking-[0.09em] leading-snug text-lg sm:text-xl">
+  {copy.terms.lead}
+</p>
+
+      </div>
+    </section>
+
+    {/* MAIN content (как было) */}
+    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+
+{/* SEGMENTS intro */}
+<div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-center lg:gap-12" data-reveal="up">
+  <h2 className="subhead font-extrabold text-zinc-950 dark:text-white uppercase tracking-[0.09em] leading-snug text-2xl sm:text-3xl lg:text-right lg:justify-self-end lg:max-w-[28rem]">
+    {copy.terms.introTitle}
+  </h2>
+
+  <p className="text-base tracking-[0.02em] text-black/70 leading-relaxed dark:text-white/70 lg:text-left lg:justify-self-start lg:max-w-[30rem]">
+    {copy.terms.introText}
+  </p>
 </div>
 
 
-      {/* SEGMENTS */}
-      <div className="mt-10" data-reveal="up">
-        <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.segments.title}</h3>
-      </div>
-      <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {copy.segments.items.map((it) => (
-          <Card key={it.title} title={it.title} text={it.text} />
-        ))}
-      </div>
+{/* SEGMENTS items */}
+<div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
+  {copy.segments.items.map((it) => (
+    <Card key={it.title} title={it.title} text={it.text} />
+  ))}
+</div>
+
 
       {/* STEPS */}
       <div className="mt-14" data-reveal="up">
         <Eyebrow>{copy.steps.eyebrow}</Eyebrow>
-        <h3 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.steps.title}</h3>
+        <h3 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">
+          {copy.steps.title}
+        </h3>
       </div>
 
       <ol className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -74,12 +94,13 @@ export default function Terms() {
         <Eyebrow>{copy.terms.itemsEyebrow}</Eyebrow>
       </div>
 
-
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {copy.terms.items.map((it) => (
           <Card key={it.title} title={it.title} text={it.text} />
         ))}
       </div>
-    </div>
-  );
+    </section>
+  </>
+);
+
 }

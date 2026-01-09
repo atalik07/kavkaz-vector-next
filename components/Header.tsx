@@ -197,8 +197,8 @@ export default function Header() {
 const items = useMemo(
   () =>
     [
-      { id: "services", href: "#services", label: copy.nav.tours }, // или переименуешь copy.nav.services позже
       { id: "terms", href: "#terms", label: copy.nav.terms },
+      { id: "services", href: "#services", label: copy.nav.tours }, // или переименуешь copy.nav.services позже
       { id: "production", href: "#production", label: copy.nav.about }, // или copy.nav.production
       { id: "logistics", href: "#logistics", label: copy.nav.logistics },
       { id: "faq", href: "#faq", label: copy.nav.faq },

@@ -7,6 +7,11 @@ import About from "@/components/sections/About";
 import Contacts from "@/components/sections/Contacts";
 import InView from "@/components/InView";
 import Terms from "@/components/sections/Terms";
+import Logistics from "@/components/sections/Logistics";
+import Faq from "@/components/sections/Faq";
+import Portfolio from "@/components/sections/Portfolio";
+
+
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -30,12 +35,12 @@ export default function HomePage() {
           <Hero />
         </section>
 
-        <section id="services">
-          <Services />
-        </section>
-
         <section id="terms">
           <Terms />
+        </section>
+
+        <section id="services">
+          <Services />
         </section>
 
         <section id="production">
@@ -43,11 +48,11 @@ export default function HomePage() {
         </section>
 
         <section id="logistics">
-          <Placeholder title="Логистика" />
+          <Logistics />
         </section>
 
         <section id="faq">
-          <Placeholder title="FAQ" />
+          <Faq />
         </section>
 
         <section id="portfolio">
