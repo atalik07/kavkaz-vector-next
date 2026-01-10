@@ -1,4 +1,5 @@
 import { copy } from "@/lib/copy";
+import { BlueprintChestArt } from "@/components/BlueprintChestArt";
 
 function Card({ title, text }: { title: string; text: string }) {
   return (
@@ -78,16 +79,21 @@ export default function Terms() {
           <div className="h-px w-full bg-black/10 dark:bg-white/10" />
 
           {/* BLOCK 2 */}
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
+          <div className="relative grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
+            {/* Blueprint watermark (desktop only) */}
+            <div className="pointer-events-none absolute inset-0 hidden lg:block">
+              <BlueprintChestArt className="absolute left-0 top-1/2 w-[62rem] -translate-y-1/2 opacity-[0.10] dark:opacity-[0.12]" />
+            </div>
+
             {/* LEFT label (bigger) */}
-            <div className="lg:justify-self-end lg:max-w-[28rem] lg:text-right">
+            <div className="relative lg:justify-self-end lg:max-w-[28rem] lg:text-right">
               <div className="text-xl sm:text-2xl font-semibold uppercase tracking-[0.14em] text-black/60 dark:text-white/70">
                 {copy.segments.kicker}
               </div>
             </div>
 
             {/* RIGHT list */}
-            <div className="lg:justify-self-start lg:max-w-[30rem]">
+            <div className="relative lg:justify-self-start lg:max-w-[30rem]">
               <ul className="space-y-4 tracking-[0.02em]">
                 {copy.segments.items.slice(0, 2).map((it) => (
                   <li key={it.title} className="flex gap-3">
@@ -124,12 +130,11 @@ export default function Terms() {
         </div>
 
         {/* STEPS (wrapped in a single card/panel) */}
-<section
-  className="mt-14 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8"
-  style={{ borderRadius: "var(--radius-card)" }}
-  data-reveal="up"
->
-
+        <section
+          className="mt-14 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8"
+          style={{ borderRadius: "var(--radius-card)" }}
+          data-reveal="up"
+        >
           <Eyebrow>{copy.steps.eyebrow}</Eyebrow>
 
           <h3 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">
@@ -201,14 +206,64 @@ export default function Terms() {
         </section>
 
         {/* TERMS items */}
-        <div className="mt-14" data-reveal="up">
+        <div className="mt-14 pl-10" data-reveal="up">
           <Eyebrow>{copy.terms.itemsEyebrow}</Eyebrow>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {copy.terms.items.map((it) => (
-            <Card key={it.title} title={it.title} text={it.text} />
-          ))}
+        <div
+          className="mt-6 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8"
+          style={{ borderRadius: "var(--radius-card)" }}
+          data-reveal="up"
+        >
+          {/* Mobile: stack; Desktop: 2 equal columns + centered axis */}
+          <div className="flex flex-col gap-6 lg:relative lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-6">
+            {/* AXIS (desktop only) */}
+            <div
+              className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-2 -translate-x-1/2 bg-[color:var(--accent)]/80"
+              aria-hidden="true"
+            />
+
+            {/* LEFT */}
+            <div className="lg:pr-8 lg:text-right">
+              <div className="text-2xl font-extrabold tracking-tight leading-tight text-zinc-950 dark:text-white">
+                <span className="block text-[color:var(--accent)]/80">
+                  {copy.terms.highlight.left.line1}
+                </span>
+                <span className="block">{copy.terms.highlight.left.line2}</span>
+              </div>
+            </div>
+
+            {/* RIGHT */}
+            <div className="lg:pl-8">
+              <div className="text-2xl font-extrabold tracking-tight leading-tight text-zinc-950 dark:text-white">
+                <span className="block">{copy.terms.highlight.right.line1}</span>
+                <span className="block whitespace-nowrap">
+                  {copy.terms.highlight.right.line2Prefix}{" "}
+                  <span className="text-[color:var(--accent)]/80">
+                    {copy.terms.highlight.right.amount.replaceAll(" ", "\u00A0")}
+                  </span>{" "}
+                  {copy.terms.highlight.right.currency}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* LIST — bullets a bit left, text starts exactly at pl-10 like the Eyebrow */}
+        <div className="mt-8" data-reveal="up">
+          <ul className="list-disc space-y-4 pl-10 marker:text-black/40 dark:marker:text-white/35">
+            {copy.terms.items.map((it) => (
+              <li key={it.title} className="-ml-2 pl-2">
+                <span className="font-semibold text-zinc-950 dark:text-white">
+                  {it.title}
+                </span>
+                <span className="text-black/70 dark:text-white/70">
+                  {" "}
+                  — {it.text}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
     </>

@@ -60,7 +60,7 @@ function IconMail(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function SocialPill() {
+export function SocialPill({ className = "" }: { className?: string }) {
   const social = [
     { href: copy.contacts.links.emailHref, label: "Email", icon: <IconMail className="block h-5 w-5" /> },
     {
@@ -79,8 +79,9 @@ function SocialPill() {
     <div
       className={[
         "inline-flex items-center gap-1 rounded-full border p-1 backdrop-blur",
-  "border-zinc-900/15 bg-white/70 text-zinc-950",
-  "dark:border-white/15 dark:bg-black/20 dark:text-white",
+        "border-zinc-900/15 bg-white/70 text-zinc-950",
+        "dark:border-white/15 dark:bg-black/20 dark:text-white",
+        className,
       ].join(" ")}
     >
       {social.map((s) => (
@@ -98,6 +99,7 @@ function SocialPill() {
     </div>
   );
 }
+
 
 export default function HeroUtilityBar() {
   return (
