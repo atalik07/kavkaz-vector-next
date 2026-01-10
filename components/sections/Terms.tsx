@@ -80,9 +80,9 @@ export default function Terms() {
 
           {/* BLOCK 2 */}
           <div className="relative grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
-            {/* Blueprint watermark (desktop only) */}
-            <div className="pointer-events-none absolute inset-0 hidden lg:block">
-              <BlueprintChestArt className="absolute left-0 top-1/2 w-[62rem] -translate-y-1/2 opacity-[0.10] dark:opacity-[0.12]" />
+            {/* Blueprint watermark (desktop only) — confined to left + a tiny bleed into right */}
+            <div className="pointer-events-none absolute inset-0 hidden lg:block overflow-hidden">
+              <BlueprintChestArt className="absolute right-[calc(50%-2rem)] top-1/2 w-[36rem] -translate-y-1/2 opacity-[0.05] dark:opacity-[0.06]" />
             </div>
 
             {/* LEFT label (bigger) */}
