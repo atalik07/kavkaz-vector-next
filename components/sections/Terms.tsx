@@ -38,7 +38,7 @@ function TelegramIcon({ className = "h-4 w-4" }: { className?: string }) {
 
 export default function Terms() {
   const tgHref = copy.contacts.social.telegram.href;
-  const catalogHref = copy.catalog?.href ?? "/catalog";
+  const catalogHref = "/catalog";
 
   return (
     <>

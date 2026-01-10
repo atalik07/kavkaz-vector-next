@@ -9,9 +9,6 @@ import InView from "@/components/InView";
 import Terms from "@/components/sections/Terms";
 import Logistics from "@/components/sections/Logistics";
 import Faq from "@/components/sections/Faq";
-import Portfolio from "@/components/sections/Portfolio";
-
-
 
 function Placeholder({ title }: { title: string }) {
   return (
