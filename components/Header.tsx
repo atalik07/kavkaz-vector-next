@@ -5,7 +5,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { copy } from "@/lib/copy";
 import { ButtonLink } from "@/components/Button";
 
-type NavId = "services" | "terms" | "production" | "logistics" | "faq" | "portfolio" | "contacts";
+type NavId = "terms" | "production" | "logistics" | "faq" | "portfolio" | "contacts";
 
 function IconTelegram(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -194,20 +194,18 @@ function MobileMenu({
 }
 
 export default function Header() {
-const items = useMemo(
-  () =>
-    [
-      { id: "terms", href: "#terms", label: copy.nav.terms },
-      { id: "services", href: "#services", label: copy.nav.tours }, // или переименуешь copy.nav.services позже
-      { id: "production", href: "#production", label: copy.nav.about }, // или copy.nav.production
-      { id: "logistics", href: "#logistics", label: copy.nav.logistics },
-      { id: "faq", href: "#faq", label: copy.nav.faq },
-      { id: "portfolio", href: "#portfolio", label: copy.nav.portfolio },
-      { id: "contacts", href: "#contacts", label: copy.nav.contacts },
-    ] as const,
-  []
-);
-
+  const items = useMemo(
+    () =>
+      [
+        { id: "terms", href: "#terms", label: copy.nav.terms },
+        { id: "production", href: "#production", label: copy.nav.about },
+        { id: "logistics", href: "#logistics", label: copy.nav.logistics },
+        { id: "faq", href: "#faq", label: copy.nav.faq },
+        { id: "portfolio", href: "#portfolio", label: copy.nav.portfolio },
+        { id: "contacts", href: "#contacts", label: copy.nav.contacts },
+      ] as const,
+    []
+  );
 
   const phoneHref = copy.contacts.links.phoneHref;
   const phoneLabel = copy.contacts.values.phone;
@@ -230,7 +228,6 @@ const items = useMemo(
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // NEW: авто-режим "burger only" если не вмещается
   const headerRef = useRef<HTMLElement | null>(null);
   const logoRef = useRef<HTMLAnchorElement | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
@@ -238,8 +235,7 @@ const items = useMemo(
   const [compact, setCompact] = useState(false);
 
   useEffect(() => {
-    const ids = ["services", "terms", "production", "logistics", "faq", "portfolio", "contacts"] as const;
-
+    const ids = ["terms", "production", "logistics", "faq", "portfolio", "contacts"] as const;
 
     const getHeaderH = () => {
       const v = getComputedStyle(document.documentElement).getPropertyValue("--header-h").trim();
@@ -306,7 +302,6 @@ const items = useMemo(
     };
   }, []);
 
-  // NEW: измерение "влезает/не влезает"
   useEffect(() => {
     const measure = () => {
       const header = headerRef.current;
@@ -318,15 +313,12 @@ const items = useMemo(
 
       const headerW = header.clientWidth;
 
-      // если каких-то элементов нет (например, nav скрыт по md) — не мешаем
       if (!logo || !nav || !phone) {
         setCompact(false);
         return;
       }
 
-      // Считаем “минимально нужную” ширину: logo + nav + phone + правый блок (burger) + зазоры
-      // Burger у нас всегда в DOM (кнопка), но на md скрыт — это ок, мы закладываем его ширину как 44.
-      const NEED_GAPS = 32; // суммарные безопасные отступы
+      const NEED_GAPS = 32;
       const BURGER_W = 44;
 
       const need =
@@ -351,7 +343,6 @@ const items = useMemo(
     };
   }, []);
 
-  // как было (только linkBase уже уменьшен)
   const linkBase = "rounded-md px-2 py-1 text-[11px] uppercase tracking-[0.14em] transition-colors";
   const linkInactive =
     "text-current/85 hover:text-current " +
@@ -370,7 +361,6 @@ const items = useMemo(
         className={[
           "group fixed inset-x-0 top-0 z-50 border-b backdrop-blur transition-colors duration-200",
           "border-zinc-900/15 bg-white/70 text-zinc-950 dark:border-white/15 dark:bg-black/20 dark:text-white",
-
           "data-[scrolled=true]:border-black/10 data-[scrolled=true]:bg-white/85 data-[scrolled=true]:text-[color:var(--foreground)] data-[scrolled=true]:shadow-sm",
           "dark:data-[scrolled=true]:border-white/15 dark:data-[scrolled=true]:bg-black/35 dark:data-[scrolled=true]:text-white",
         ].join(" ")}
@@ -378,23 +368,19 @@ const items = useMemo(
         <div
           className={[
             "mx-auto grid h-14 sm:h-[60px] max-w-6xl items-center px-4 sm:px-6",
-            // если compact => лого слева, телефон+бургер справа
             compact ? "grid-cols-[1fr_auto]" : "grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr]",
           ].join(" ")}
         >
           <a
-  ref={logoRef}
-  href="#hero"
-  onClick={(e) => {
-    // чтобы не было резкого jump
-    e.preventDefault();
-    document.getElementById("hero")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    // если было открыто мобильное меню — можно закрывать (не обязательно для лого)
-    setMobileOpen(false);
-  }}
-  className="flex items-center gap-3"
->
-
+            ref={logoRef}
+            href="#hero"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("hero")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              setMobileOpen(false);
+            }}
+            className="flex items-center gap-3"
+          >
             <span className="inline-flex items-center justify-center">
               <img
                 src="/images/logo.png"
@@ -406,13 +392,11 @@ const items = useMemo(
             <span className="block text-base font-semibold tracking-tight leading-none">{copy.brand.name}</span>
           </a>
 
-          {/* NAV: скрываем, если compact */}
           <nav
             ref={navRef}
-className={[
-  "hidden md:flex justify-self-center gap-2 lg:gap-3 xl:gap-4",
-  compact ? "md:hidden" : "",
-].join(" ")}
+            className={["hidden md:flex justify-self-center gap-2 lg:gap-3 xl:gap-4", compact ? "md:hidden" : ""].join(
+              " "
+            )}
           >
             {items.map((item) => {
               const isActive = active === item.id;
@@ -421,11 +405,9 @@ className={[
                   key={item.id}
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={[
-                    linkBase,
-                    isActive ? linkActive : linkInactive,
-                    isActive ? "hover:bg-transparent" : "",
-                  ].join(" ")}
+                  className={[linkBase, isActive ? linkActive : linkInactive, isActive ? "hover:bg-transparent" : ""].join(
+                    " "
+                  )}
                 >
                   {item.label}
                 </a>
@@ -433,9 +415,7 @@ className={[
             })}
           </nav>
 
-          {/* RIGHT */}
           <div className="flex items-center justify-self-end gap-2">
-            {/* Телефон на десктопе: в compact режиме показываем его ВСЕГДА (и рядом с бургером) */}
             <a
               ref={phoneDesktopRef}
               href={phoneHref}
@@ -448,17 +428,15 @@ className={[
               <span className="font-medium">{phoneLabel}</span>
             </a>
 
-            {/* Телефон-иконка для малого экрана — как было */}
             <a
               href={phoneHref}
-              className="inline-flex lg:hidden ... rounded-full p-2 hover:bg-black/5 dark:hover:bg-white/10 hover:text-[color:var(--accent)]"
+              className="inline-flex lg:hidden rounded-full p-2 hover:bg-black/5 dark:hover:bg-white/10 hover:text-[color:var(--accent)]"
               aria-label={phoneLabel}
               title={phoneLabel}
             >
               <IconPhone className="h-6 w-6" />
             </a>
 
-            {/* соц-иконки уже скрыты */}
             <div className="hidden items-center">
               {social.map((s) => (
                 <a
@@ -474,7 +452,6 @@ className={[
               ))}
             </div>
 
-            {/* Burger: показываем если compact ИЛИ как раньше (md:hidden) */}
             <button
               type="button"
               onClick={() => setMobileOpen(true)}

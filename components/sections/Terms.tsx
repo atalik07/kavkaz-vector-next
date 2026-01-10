@@ -1,5 +1,5 @@
 import { copy } from "@/lib/copy";
-import { BlueprintChestArt } from "@/components/BlueprintChestArt";
+import { SocialPill } from "@/components/HeroUtilityBar";
 
 function Card({ title, text }: { title: string; text: string }) {
   return (
@@ -57,7 +57,7 @@ export default function Terms() {
       {/* MAIN content */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
         {/* SIMPLE: badge+text, then badge+text */}
-        <div className="mt-4 space-y-10" data-reveal="up">
+        <div className="space-y-10" data-reveal="up">
           {/* BLOCK 1 */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
             {/* LEFT title */}
@@ -79,12 +79,7 @@ export default function Terms() {
           <div className="h-px w-full bg-black/10 dark:bg-white/10" />
 
           {/* BLOCK 2 */}
-          <div className="relative grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
-            {/* Blueprint watermark (desktop only) — confined to left + a tiny bleed into right */}
-            <div className="pointer-events-none absolute inset-0 hidden lg:block overflow-hidden">
-              <BlueprintChestArt className="absolute right-[calc(50%-2rem)] top-1/2 w-[36rem] -translate-y-1/2 opacity-[0.05] dark:opacity-[0.06]" />
-            </div>
-
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
             {/* LEFT label (bigger) */}
             <div className="relative lg:justify-self-end lg:max-w-[28rem] lg:text-right">
               <div className="text-xl sm:text-2xl font-semibold uppercase tracking-[0.14em] text-black/60 dark:text-white/70">
@@ -215,15 +210,12 @@ export default function Terms() {
           style={{ borderRadius: "var(--radius-card)" }}
           data-reveal="up"
         >
-          {/* Mobile: stack; Desktop: 2 equal columns + centered axis */}
           <div className="flex flex-col gap-6 lg:relative lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-6">
-            {/* AXIS (desktop only) */}
             <div
               className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-2 -translate-x-1/2 bg-[color:var(--accent)]/80"
               aria-hidden="true"
             />
 
-            {/* LEFT */}
             <div className="lg:pr-8 lg:text-right">
               <div className="text-2xl font-extrabold tracking-tight leading-tight text-zinc-950 dark:text-white">
                 <span className="block text-[color:var(--accent)]/80">
@@ -233,7 +225,6 @@ export default function Terms() {
               </div>
             </div>
 
-            {/* RIGHT */}
             <div className="lg:pl-8">
               <div className="text-2xl font-extrabold tracking-tight leading-tight text-zinc-950 dark:text-white">
                 <span className="block">{copy.terms.highlight.right.line1}</span>
@@ -257,13 +248,43 @@ export default function Terms() {
                 <span className="font-semibold text-zinc-950 dark:text-white">
                   {it.title}
                 </span>
-                <span className="text-black/70 dark:text-white/70">
-                  {" "}
-                  — {it.text}
-                </span>
+                <span className="text-black/70 dark:text-white/70"> — {it.text}</span>
               </li>
             ))}
           </ul>
+        </div>
+
+        {/* MOVED CTA PANEL (from Services) — placed under the list */}
+        <div
+          className="mt-10 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 text-sm text-black/70 dark:border-white/15 dark:bg-[#2d2f31]/50 dark:text-white/70 sm:p-8"
+          style={{ borderRadius: "var(--radius-card)" }}
+          data-reveal="up"
+        >
+          <div className="text-lg sm:text-xl font-semibold tracking-[0.02em] leading-snug text-zinc-950 dark:text-white">
+            {copy.tours.bottomText}
+          </div>
+
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <a
+                href={tgHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+              >
+                {copy.tours.ctaMore}
+              </a>
+
+              <a
+                href="#contacts"
+                className="inline-flex h-11 items-center justify-center ui-btn border border-black/15 px-6 text-sm font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
+              >
+                {copy.hero.ctaSecondary}
+              </a>
+            </div>
+
+            <SocialPill className="shrink-0 self-start sm:self-auto" />
+          </div>
         </div>
       </section>
     </>
