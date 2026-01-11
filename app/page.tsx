@@ -6,8 +6,6 @@ import About from "@/components/sections/About";
 import Contacts from "@/components/sections/Contacts";
 import InView from "@/components/InView";
 import Terms from "@/components/sections/Terms";
-import Logistics from "@/components/sections/Logistics";
-import Faq from "@/components/sections/Faq";
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -37,14 +35,6 @@ export default function HomePage() {
 
         <section id="production">
           <About />
-        </section>
-
-        <section id="logistics">
-          <Logistics />
-        </section>
-
-        <section id="faq">
-          <Faq />
         </section>
 
         <section id="portfolio">

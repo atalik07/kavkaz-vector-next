@@ -4,40 +4,13 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { copy } from "@/lib/copy";
 import HeroUtilityBar from "@/components/HeroUtilityBar";
 import { ButtonLink } from "@/components/Button";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Autoplay } from "swiper/modules";
-
-import "swiper/css";
-import "swiper/css/effect-fade";
-
-function Dots({ count, active }: { count: number; active: number }) {
-  return (
-    <div className="flex flex-col gap-2 items-center pt-4">
-      {Array.from({ length: count }).map((_, i) => {
-        const on = i === active;
-        return (
-          <div
-            key={i}
-            className={[
-              "h-2 w-2 rounded-full transition",
-              on ? "bg-[color:var(--accent)]" : "bg-zinc-950/35 dark:bg-white/30",
-            ].join(" ")}
-          />
-        );
-      })}
-    </div>
-  );
-}
+import HeroRSlider from "@/components/HeroRSlider";
 
 export default function Hero() {
   const slides = copy.hero.slides;
 
   // лучше потом заменить на .webp
-  const slideImages = useMemo(
-    () => ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/4.jpg"],
-    []
-  );
+  const slideImages = useMemo(() => ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/4.jpg"], []);
 
   // высота правой карты = высоте левого контента
   const leftRef = useRef<HTMLDivElement | null>(null);
@@ -63,45 +36,44 @@ export default function Hero() {
     };
   }, []);
 
-  const [active, setActive] = useState(0);
-  const [drawerOpen, setDrawerOpen] = useState(true);
-
-  const SLIDE_MS = 8000;
-  const FADE_MS = 900;
-
-  const s = slides?.[active];
-  const activeBg = slideImages[active] ?? slideImages[0];
+  const activeBg = slideImages[0];
 
   return (
     <div data-hero data-observe="hero" data-inview="false" className="relative isolate overflow-hidden h-[100svh]">
-
-{/* SECTION BG (blurred) */}
-<div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-  <div
-    className="absolute inset-0 bg-center bg-cover transition-opacity duration-700"
-    style={{
-      backgroundImage: `url(${activeBg})`,
-      filter: "blur(28px) saturate(1.15)",
-      transform: "scale(1.08)",
-      opacity: 0.1,
-    }}
-  />
-  {/* затемнение/читабельность */}
-  <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35 dark:from-black/45 dark:to-black/55" />
-  {/* легкое зерно */}
-  <div className="absolute inset-0 opacity-[0.10] mix-blend-overlay heroGrain" />
-</div>
-
+      {/* SECTION BG (blurred) */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-center bg-cover transition-opacity duration-700"
+          style={{
+            backgroundImage: `url(${activeBg})`,
+            filter: "blur(28px) saturate(1.15)",
+            transform: "scale(1.08)",
+            opacity: 0.1,
+          }}
+        />
+        {/* затемнение/читабельность */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35 dark:from-black/45 dark:to-black/55" />
+        {/* легкое зерно */}
+        <div className="absolute inset-0 opacity-[0.10] mix-blend-overlay heroGrain" />
+      </div>
 
       <div className="relative z-20 mx-auto grid h-[100svh] max-w-6xl grid-cols-1 gap-10 px-4 pb-14 pt-24 sm:px-6 sm:pb-16 lg:grid-cols-2 lg:items-stretch">
         {/* LEFT */}
         <div className="min-h-0 lg:flex lg:items-center">
           <div ref={leftRef} className="w-full">
             <h1 className="font-extrabold uppercase text-zinc-950 dark:text-white leading-[0.94] tracking-tight">
-              <span data-reveal data-reveal-delay="1" className="block text-[40px] sm:text-6xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
+              <span
+                data-reveal
+                data-reveal-delay="1"
+                className="block text-[40px] sm:text-6xl lg:text-4xl xl:text-5xl 2xl:text-6xl"
+              >
                 {copy.hero.titleLine1}
               </span>
-              <span data-reveal data-reveal-delay="2" className="block text-[40px] sm:text-6xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
+              <span
+                data-reveal
+                data-reveal-delay="2"
+                className="block text-[40px] sm:text-6xl lg:text-4xl xl:text-5xl 2xl:text-6xl"
+              >
                 {copy.hero.titleLine2}
               </span>
             </h1>
@@ -111,8 +83,8 @@ export default function Hero() {
               data-reveal-delay="2"
               className="subhead mt-6 max-w-[48rem] text-zinc-950/80 dark:text-white/85 uppercase tracking-[0.06em] text-base sm:text-xl"
             >
-                <span className="block">{copy.hero.subtitleLine1}</span>
-                <span className="block">{copy.hero.subtitleLine2}</span>
+              <span className="block">{copy.hero.subtitleLine1}</span>
+              <span className="block">{copy.hero.subtitleLine2}</span>
             </p>
 
             <div data-reveal="up" data-reveal-delay="3" className="mt-7 flex flex-wrap gap-3">
@@ -157,69 +129,7 @@ export default function Hero() {
         {/* RIGHT */}
         <aside className="hidden lg:flex lg:items-center">
           <div className="w-full" style={rightH ? { height: rightH } : undefined}>
-            <div className="heroRCard">
-              <div className="heroRInner">
-                <Dots count={slides.length} active={active} />
-
-                <div className="heroRSlide">
-                  {/* BG swiper fade */}
-                  
-<div className="heroRSlideBg">
-  <Swiper
-    modules={[EffectFade, Autoplay]}
-    effect="fade"
-    fadeEffect={{ crossFade: true }}
-    slidesPerView={1}
-    loop
-    speed={FADE_MS}
-    autoplay={{ delay: SLIDE_MS - FADE_MS, disableOnInteraction: false }}
-    onSlideChange={(sw) => {
-      const idx = sw.realIndex % slides.length;
-      setActive(idx);
-      setDrawerOpen(false);
-      window.setTimeout(() => setDrawerOpen(true), 120);
-    }}
-    className="h-full w-full"
-  >
-    {slideImages.map((src, i) => (
-      <SwiperSlide key={src + i} className="h-full w-full">
-        <img
-          src={src}
-          alt=""
-          className="h-full w-full object-cover opacity-45"
-          loading={i === 0 ? "eager" : "lazy"}
-          decoding="async"
-        />
-      </SwiperSlide>
-    ))}
-  </Swiper>
-
-  <div className="heroRSlideOverlay" />
-</div>
-
-                  {/* TOP text */}
-                  <div
-                    className={[
-                      "relative",
-                      "transition-transform transition-opacity ease-out",
-                      "duration-[480ms]",
-                      drawerOpen ? "translate-y-0 opacity-100" : "-translate-y-3 opacity-0",
-                    ].join(" ")}
-                    style={{ zIndex: 1 }}
-                  >
-                    <div className="heroRSlideTop">
-                      <div className="text-xs font-semibold uppercase tracking-[0.14em] text-current/65">{s?.kicker}</div>
-                      <div className="mt-2 text-lg font-extrabold tracking-tight text-current">{s?.headline}</div>
-                    </div>
-                  </div>
-
-                  {/* Bottom drawer */}
-                  <div className={["heroRDrawer", drawerOpen ? "is-open" : ""].join(" ")}>
-                    <div className="text-sm leading-relaxed text-current/80">{s?.text}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <HeroRSlider slides={slides} images={slideImages} dotsAlign="left" slideMs={8000} fadeMs={900} />
           </div>
         </aside>
       </div>

@@ -5,7 +5,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { copy } from "@/lib/copy";
 import { ButtonLink } from "@/components/Button";
 
-type NavId = "terms" | "production" | "logistics" | "faq" | "portfolio" | "contacts";
+type NavId = "terms" | "production" | "portfolio" | "contacts";
 
 function IconTelegram(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -199,8 +199,6 @@ export default function Header() {
       [
         { id: "terms", href: "#terms", label: copy.nav.terms },
         { id: "production", href: "#production", label: copy.nav.about },
-        { id: "logistics", href: "#logistics", label: copy.nav.logistics },
-        { id: "faq", href: "#faq", label: copy.nav.faq },
         { id: "portfolio", href: "#portfolio", label: copy.nav.portfolio },
         { id: "contacts", href: "#contacts", label: copy.nav.contacts },
       ] as const,
@@ -235,7 +233,7 @@ export default function Header() {
   const [compact, setCompact] = useState(false);
 
   useEffect(() => {
-    const ids = ["terms", "production", "logistics", "faq", "portfolio", "contacts"] as const;
+    const ids = ["terms", "production", "portfolio", "contacts"] as const;
 
     const getHeaderH = () => {
       const v = getComputedStyle(document.documentElement).getPropertyValue("--header-h").trim();
