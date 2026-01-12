@@ -6,7 +6,6 @@ import HeroRSlider from "@/components/HeroRSlider";
 
 const slideImages = ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/4.jpg"] as const;
 
-
 function Eyebrow({ children }: { children: string }) {
   return (
     <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
@@ -30,7 +29,6 @@ function IconChevronDown(props: React.SVGProps<SVGSVGElement>) {
 }
 
 export default function About() {
-
   const faqItems = useMemo(() => copy.faq.items, []);
   const [open, setOpen] = useState(false);
 
@@ -53,34 +51,48 @@ export default function About() {
     return () => ro.disconnect();
   }, [faqItems.length]);
 
+  // Split point: everything starting from this line goes to the bottom full-width block (desktop only)
+  const SPLIT_AT = "Только хотите выйти на Маркетплейс:";
+
+  const splitIndex = useMemo(() => {
+    const idx = copy.about.paragraphs.findIndex((p) => p.trim() === SPLIT_AT);
+    return idx === -1 ? copy.about.paragraphs.length : idx;
+  }, []);
+
+  const topParagraphs = useMemo(
+    () => copy.about.paragraphs.slice(0, splitIndex),
+    [splitIndex]
+  );
+
+  const bottomParagraphs = useMemo(
+    () => copy.about.paragraphs.slice(splitIndex),
+    [splitIndex]
+  );
+
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
       <div className="pl-10" data-reveal="up">
         <Eyebrow>{copy.about.eyebrow}</Eyebrow>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-12">
-{/* LEFT */}
-<div className="w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
-  <HeroRSlider
-    slides={copy.hero.slides}
-    images={slideImages}
-    dotsAlign="right"
-    className="h-full"
-  />
-</div>
+      {/* MOBILE: one continuous list. DESKTOP: split into top (next to slider) + bottom full-width */}
+      <div className="mt-8">
+        {/* Mobile flow */}
+        <div className="grid grid-cols-1 gap-6 lg:hidden">
+          <div className="w-full aspect-[3/4]">
+            <HeroRSlider
+              slides={copy.hero.slides}
+              images={slideImages}
+              dotsAlign="right"
+              className="h-full"
+            />
+          </div>
 
-
-
-
-        {/* RIGHT: text */}
-        <div className="lg:flex lg:items-stretch">
-          <div className="py-4 lg:py-4 space-y-5 text-sm leading-relaxed text-black/70 dark:text-white/70">
+          <div className="py-4 space-y-5 text-sm leading-relaxed text-black/70 dark:text-white/70">
             {copy.about.paragraphs.map((p, i) => {
               const isLast = i === copy.about.paragraphs.length - 1;
-
               return (
-                <p key={i}>
+                <p key={`m-${i}`}>
                   {p}
                   {isLast && (
                     <>
@@ -95,9 +107,54 @@ export default function About() {
             })}
           </div>
         </div>
+
+        {/* Desktop split */}
+        <div className="hidden lg:block">
+          <div className="space-y-8">
+            {/* TOP ROW: slider + clipped text (same height) */}
+            <div className="grid grid-cols-2 gap-12 items-stretch">
+              <div className="w-full aspect-[3/4]">
+                <HeroRSlider
+                  slides={copy.hero.slides}
+                  images={slideImages}
+                  dotsAlign="right"
+                  className="h-full"
+                />
+              </div>
+
+              <div className="h-full overflow-hidden">
+                <div className="py-4 space-y-5 text-sm leading-relaxed text-black/70 dark:text-white/70">
+                  {topParagraphs.map((p, i) => (
+                    <p key={`top-${i}`}>{p}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* BOTTOM ROW: rest full width */}
+            <div className="space-y-5 text-sm leading-relaxed text-black/70 dark:text-white/70">
+              {bottomParagraphs.map((p, i) => {
+                const isLast = i === bottomParagraphs.length - 1;
+                return (
+                  <p key={`bottom-${i}`}>
+                    {p}
+                    {isLast && (
+                      <>
+                        {" "}
+                        <span className="font-semibold text-[color:var(--accent)]/80">
+                          {copy.about.closingAccent}
+                        </span>
+                      </>
+                    )}
+                  </p>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* CTA PANEL (same look as in Terms screenshot) */}
+      {/* CTA PANEL */}
       <div
         className="mt-10 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 text-sm text-black/70 dark:border-white/15 dark:bg-[#2d2f31]/50 dark:text-white/70 sm:p-8"
         style={{ borderRadius: "var(--radius-card)" }}
@@ -129,12 +186,11 @@ export default function About() {
         </div>
       </div>
 
-      {/* FAQ toggle row + slide-down list */}
+      {/* FAQ */}
       <div className="mt-6" data-reveal="up">
         <div className="flex items-center gap-3 text-base font-semibold tracking-[0.04em] text-[color:var(--accent)]/80">
           <span className="whitespace-nowrap">{copy.about.faqToggle.label}</span>
 
-          {/* dotted line */}
           <span
             aria-hidden="true"
             className="min-w-0 flex-1 opacity-70 dark:opacity-60"
@@ -144,7 +200,6 @@ export default function About() {
                 "repeating-linear-gradient(to right, currentColor 0 4px, transparent 6px 12px)",
             }}
           />
-          {/* icon button */}
 
           <button
             type="button"
@@ -165,10 +220,8 @@ export default function About() {
               ].join(" ")}
             />
           </button>
-
         </div>
 
-        {/* Slide-down container */}
         <div
           className="overflow-hidden transition-[max-height,opacity] duration-500 ease-out"
           style={{
@@ -177,7 +230,8 @@ export default function About() {
           }}
         >
           <div ref={innerRef} className="pt-4">
-           <div className="ui-card border border-[color:var(--accent)]/30 bg-[#ddd6cc]/10 p-5 text-sm text-black/70 tracking-[0.04em] dark:bg-[#2d2f31]/20 dark:text-white/70">             <ul className="space-y-4">
+            <div className="ui-card border border-[color:var(--accent)]/30 bg-[#ddd6cc]/10 p-5 text-sm text-black/70 tracking-[0.04em] dark:bg-[#2d2f31]/20 dark:text-white/70">
+              <ul className="space-y-4">
                 {faqItems.map((it, i) => (
                   <li key={`${it.q}-${i}`} className="space-y-1">
                     <div className="font-semibold text-zinc-950 dark:text-white">{it.q}</div>
