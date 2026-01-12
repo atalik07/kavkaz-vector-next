@@ -1,3 +1,4 @@
+// app/(...) or components/About.tsx (wherever your About lives)
 "use client";
 
 import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -51,33 +52,18 @@ export default function About() {
     return () => ro.disconnect();
   }, [faqItems.length]);
 
-  // Split point: everything starting from this line goes to the bottom full-width block (desktop only)
-  const SPLIT_AT = "Только хотите выйти на Маркетплейс:";
-
-  const splitIndex = useMemo(() => {
-    const idx = copy.about.paragraphs.findIndex((p) => p.trim() === SPLIT_AT);
-    return idx === -1 ? copy.about.paragraphs.length : idx;
-  }, []);
-
-  const topParagraphs = useMemo(
-    () => copy.about.paragraphs.slice(0, splitIndex),
-    [splitIndex]
-  );
-
-  const bottomParagraphs = useMemo(
-    () => copy.about.paragraphs.slice(splitIndex),
-    [splitIndex]
-  );
-
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-      <div className="pl-10" data-reveal="up">
-        <Eyebrow>{copy.about.eyebrow}</Eyebrow>
-      </div>
+<div className="pl-10" data-reveal="up">
+  <h2 className="subhead font-extrabold uppercase tracking-[0.09em] leading-snug text-zinc-950 dark:text-white text-2xl sm:text-3xl">
+    {copy.about.eyebrow}
+  </h2>
+</div>
 
-      {/* MOBILE: one continuous list. DESKTOP: split into top (next to slider) + bottom full-width */}
+
+
       <div className="mt-8">
-        {/* Mobile flow */}
+        {/* MOBILE: one continuous flow */}
         <div className="grid grid-cols-1 gap-6 lg:hidden">
           <div className="w-full aspect-[3/4]">
             <HeroRSlider
@@ -88,30 +74,59 @@ export default function About() {
             />
           </div>
 
-          <div className="py-4 space-y-5 text-sm leading-relaxed text-black/70 dark:text-white/70">
-            {copy.about.paragraphs.map((p, i) => {
-              const isLast = i === copy.about.paragraphs.length - 1;
-              return (
-                <p key={`m-${i}`}>
-                  {p}
-                  {isLast && (
-                    <>
-                      {" "}
-                      <span className="font-semibold text-[color:var(--accent)]/80">
-                        {copy.about.closingAccent}
-                      </span>
-                    </>
-                  )}
-                </p>
-              );
-            })}
+          <div className="py-4 space-y-4 text-sm leading-relaxed text-black/70 dark:text-white/70">
+            {copy.about.top.paragraphs.map((p, i) => (
+              <p key={`m-top-p-${i}`}>{p}</p>
+            ))}
+
+            <ul className="list-disc pl-5 space-y-2">
+              {copy.about.top.listAfterTraderHeader.map((it, i) => (
+                <li key={`m-top-li-${i}`}>{it}</li>
+              ))}
+            </ul>
+
+            {copy.about.top.tailParagraphs.map((p, i) => (
+              <p key={`m-top-tail-${i}`}>{p}</p>
+            ))}
+
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2 pt-2">
+              <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>
+              <div className="text-sm leading-relaxed text-black/70 dark:text-white/70">
+                {copy.about.bottom.lead}
+              </div>
+            </div>
+
+            <div className="space-y-6 pt-2">
+              {copy.about.bottom.columns.map((col, i) => (
+                <div key={`m-col-${i}`} className="space-y-3">
+                  <div className="font-semibold text-zinc-950 dark:text-white">
+                    {col.title}
+                  </div>
+                  <ul className="list-disc pl-5 space-y-2">
+                    {col.items.map((it, j) => (
+                      <li key={`m-col-${i}-li-${j}`}>{it}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            {/* {copy.about.bottom.afterColumnsParagraphs.map((p, i) => (
+              <p key={`m-bottom-after-${i}`}>{p}</p>
+            ))} */}
+
+            <p>
+              <span className="font-semibold text-[color:var(--accent)]/80">
+                {copy.about.closingAccent}
+              </span>
+            </p>
           </div>
         </div>
 
-        {/* Desktop split */}
+        {/* DESKTOP: split layout */}
         <div className="hidden lg:block">
-          <div className="space-y-8">
-            {/* TOP ROW: slider + clipped text (same height) */}
+          <div className="space-y-10">
+            {/* TOP ROW: slider + clipped right text */}
             <div className="grid grid-cols-2 gap-12 items-stretch">
               <div className="w-full aspect-[3/4]">
                 <HeroRSlider
@@ -123,32 +138,68 @@ export default function About() {
               </div>
 
               <div className="h-full overflow-hidden">
-                <div className="py-4 space-y-5 text-sm leading-relaxed text-black/70 dark:text-white/70">
-                  {topParagraphs.map((p, i) => (
-                    <p key={`top-${i}`}>{p}</p>
+                <div className="py-4 space-y-4 text-sm leading-relaxed text-black/70 dark:text-white/70">
+                  {copy.about.top.paragraphs.map((p, i) => (
+                    <p key={`d-top-p-${i}`}>{p}</p>
                   ))}
+
+                  <ul className="list-disc pl-5 space-y-2">
+                    {copy.about.top.listAfterTraderHeader.map((it, i) => (
+                      <li key={`d-top-li-${i}`}>{it}</li>
+                    ))}
+                  </ul>
+
+                  {copy.about.top.tailParagraphs.map((p, i) => (
+                    <p key={`d-top-tail-${i}`}>{p}</p>
+                  ))}
+
+                  <p>
+                    <span className="font-semibold text-[color:var(--accent)]/80">
+                      {copy.about.closingAccent}
+                    </span>
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* BOTTOM ROW: rest full width */}
-            <div className="space-y-5 text-sm leading-relaxed text-black/70 dark:text-white/70">
-              {bottomParagraphs.map((p, i) => {
-                const isLast = i === bottomParagraphs.length - 1;
-                return (
-                  <p key={`bottom-${i}`}>
-                    {p}
-                    {isLast && (
-                      <>
-                        {" "}
-                        <span className="font-semibold text-[color:var(--accent)]/80">
-                          {copy.about.closingAccent}
-                        </span>
-                      </>
-                    )}
-                  </p>
-                );
-              })}
+            {/* BOTTOM: kicker+lead, then 3 columns with subtle dividers */}
+            <div className="space-y-6 text-sm leading-relaxed text-black/70 dark:text-white/70 lg:px-10">
+
+<div className="text-center">
+  <div className="inline-flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2">
+    <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>
+    <div className="text-sm leading-relaxed">{copy.about.bottom.lead}</div>
+  </div>
+</div>
+
+
+              <div className="grid grid-cols-1 md:grid-cols-3 md:gap-8">
+                {copy.about.bottom.columns.map((col, idx) => (
+                  <div
+                    key={`d-col-${idx}`}
+                    className={[
+                      "space-y-3",
+                      "md:px-6",
+                      idx === 0 ? "md:pl-0" : "",
+                      idx === 2 ? "md:pr-0" : "",
+                      idx > 0 ? "md:border-l md:border-black/10 md:dark:border-white/15" : "",
+                    ].join(" ")}
+                  >
+                    <div className="font-semibold text-zinc-950 dark:text-white">
+                      {col.title}
+                    </div>
+                    <ul className="list-disc pl-5 space-y-2">
+                      {col.items.map((it, j) => (
+                        <li key={`d-col-${idx}-li-${j}`}>{it}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              {/* {copy.about.bottom.afterColumnsParagraphs.map((p, i) => (
+                <p key={`d-bottom-after-${i}`}>{p}</p>
+              ))} */}
             </div>
           </div>
         </div>
@@ -186,7 +237,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* FAQ */}
+      {/* FAQ toggle row + slide-down list */}
       <div className="mt-6" data-reveal="up">
         <div className="flex items-center gap-3 text-base font-semibold tracking-[0.04em] text-[color:var(--accent)]/80">
           <span className="whitespace-nowrap">{copy.about.faqToggle.label}</span>
