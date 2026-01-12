@@ -6,6 +6,7 @@ import About from "@/components/sections/About";
 import Contacts from "@/components/sections/Contacts";
 import InView from "@/components/InView";
 import Terms from "@/components/sections/Terms";
+import AdvantagesBento from "@/components/sections/AdvantagesBento";
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -36,6 +37,8 @@ export default function HomePage() {
         <section id="production">
           <About />
         </section>
+
+        <AdvantagesBento />
 
         <section id="portfolio">
           <Placeholder title="Портфолио" />

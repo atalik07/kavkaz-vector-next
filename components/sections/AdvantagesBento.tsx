@@ -1,0 +1,136 @@
+"use client";
+
+import React from "react";
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="text-base font-semibold uppercase tracking-[0.12em] text-black/50 dark:text-white/60">
+      {children}
+    </div>
+  );
+}
+
+
+type Advantage = {
+  title: string;
+  subtitle: string;
+  image: string;
+  variant: "big-left" | "stack-top" | "stack-bottom" | "bottom-left" | "bottom-right";
+  lightText?: boolean;
+};
+
+const advantages: Advantage[] = [
+  {
+    title: "Индустриальный парк совершенно новых станочных машин",
+    subtitle: "Современное оборудование — стабильная геометрия и повторяемость партий.",
+    image: "/images/prem_stanok.webp",
+    variant: "big-left",
+    lightText: true,
+  },
+  {
+    title: "Конструкторский отдел",
+    subtitle: "Проектируем изделия под ваш формат: от эскиза до спецификации и упаковки.",
+    image: "/images/prem_construct.webp",
+    variant: "stack-top",
+    lightText: true,
+  },
+  {
+    title: "Собственный сборочный цех и производство упаковки",
+    subtitle: "Комплектуем, проверяем, защищаем — под хранение и требования площадок.",
+    image: "/images/3.jpg",
+    variant: "stack-bottom",
+    lightText: true,
+  },
+  {
+    title: "Брендирование продукции",
+    subtitle: "Маркировка, шильды, упаковка и вложения — по вашему регламенту.",
+    image: "/images/prem_branding2.jpg",
+    variant: "bottom-left",
+    lightText: true,
+  },
+  {
+    title: "Логистика товара до ваших складов или маркетплейсов",
+    subtitle: "Отгрузка по согласованному сценарию: ТК / склад / фулфилмент.",
+    image: "/images/prem_logistic.webp",
+    variant: "bottom-right",
+    lightText: true,
+  },
+];
+
+
+function Tile({ item }: { item: Advantage }) {
+  const textClass = item.lightText ? "text-white" : "text-zinc-950 dark:text-white";
+  const subClass = item.lightText ? "text-white/80" : "text-black/70 dark:text-white/70";
+
+  const spanClass =
+    item.variant === "big-left"
+      ? "lg:col-span-7 lg:row-span-2"
+      : item.variant === "stack-top"
+        ? "lg:col-span-5 lg:row-span-1"
+        : item.variant === "stack-bottom"
+          ? "lg:col-span-5 lg:row-span-1"
+          : item.variant === "bottom-left"
+            ? "lg:col-span-6 lg:row-span-1"
+            : "lg:col-span-6 lg:row-span-1";
+
+  return (
+    <article
+      className={[
+        "ui-card relative overflow-hidden",
+        "border border-black/10 dark:border-white/15",
+        "bg-white dark:bg-white/5",
+        "min-h-[220px] sm:min-h-[240px]",
+        spanClass,
+      ].join(" ")}
+      data-reveal="up"
+    >
+      <div className="absolute inset-0">
+        <img src={item.image} alt="" className="h-full w-full object-cover" loading="lazy" />
+        <div className="absolute inset-0 bg-black/35 dark:bg-black/45" />
+        <div className="absolute inset-0 heroGrain opacity-20" aria-hidden="true" />
+      </div>
+
+      <div className="relative z-10 h-full p-6 sm:p-7 flex flex-col justify-between">
+        <div className="space-y-3">
+          <h3
+            className={[
+              "subhead font-extrabold tracking-[0.02em] leading-tight",
+              textClass,
+              "text-2xl sm:text-3xl",
+            ].join(" ")}
+          >
+            {item.title}
+          </h3>
+          <p className={["text-sm sm:text-base leading-relaxed tracking-[0.02em]", subClass].join(" ")}>
+            {item.subtitle}
+          </p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+export default function AdvantagesBento() {
+  return (
+    <section className="mx-auto -mt-2 max-w-6xl px-4 py-2 sm:px-6 sm:py-2">
+      <div className="pl-10" data-reveal="up">
+<Eyebrow>
+  Преимущества контрактного производства с{" "}
+  <span className="normal-case font-semibold tracking-tight text-[1.3em] text-zinc-950 dark:text-white">
+    ОптМебельЮг
+  </span>
+</Eyebrow>
+
+
+      </div>
+
+      <div className="mt-6">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:auto-rows-[240px]">
+          {advantages.map((it) => (
+            <Tile key={it.title} item={it} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

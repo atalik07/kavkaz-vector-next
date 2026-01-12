@@ -5,7 +5,7 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { copy } from "@/lib/copy";
 import HeroRSlider from "@/components/HeroRSlider";
 
-const slideImages = ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/4.jpg"] as const;
+const slideImages = ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/logistics.webp"] as const;
 
 function Eyebrow({ children }: { children: string }) {
   return (
@@ -99,7 +99,7 @@ export default function About() {
             <div className="space-y-6 pt-2">
               {copy.about.bottom.columns.map((col, i) => (
                 <div key={`m-col-${i}`} className="space-y-3">
-                  <div className="font-semibold text-zinc-950 dark:text-white">
+                  <div className="pl-5 font-semibold text-zinc-950 dark:text-white">
                     {col.title}
                   </div>
                   <ul className="list-disc pl-5 space-y-2">
@@ -163,7 +163,7 @@ export default function About() {
             </div>
 
             {/* BOTTOM: kicker+lead, then 3 columns with subtle dividers */}
-            <div className="space-y-6 text-sm leading-relaxed text-black/70 dark:text-white/70 lg:px-10">
+            <div className="py-4 space-y-6 text-sm leading-relaxed text-black/70 dark:text-white/70 lg:px-10">
 
 <div className="text-center">
   <div className="inline-flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2">
@@ -185,7 +185,7 @@ export default function About() {
                       idx > 0 ? "md:border-l md:border-black/10 md:dark:border-white/15" : "",
                     ].join(" ")}
                   >
-                    <div className="font-semibold text-zinc-950 dark:text-white">
+                    <div className="pl-5 font-semibold text-zinc-950 dark:text-white">
                       {col.title}
                     </div>
                     <ul className="list-disc pl-5 space-y-2">
