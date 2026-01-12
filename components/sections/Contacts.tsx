@@ -4,7 +4,11 @@ import { useMemo, useState } from "react";
 import { copy } from "@/lib/copy";
 
 function FieldLabel({ children }: { children: string }) {
-  return <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">{children}</div>;
+  return (
+    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+      {children}
+    </div>
+  );
 }
 
 export default function Contacts() {
@@ -33,147 +37,222 @@ export default function Contacts() {
       ].join("\n")
     );
 
-    // у тебя уже есть mailto в links.emailHref
     return `${copy.contacts.links.emailHref}?subject=${subject}&body=${body}`;
   }, []);
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-      <div data-reveal="up">
+<section className="w-full bg-[#ddd6cc]/30 dark:bg-[#2d2f31]/50">
+  <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+      {/* 1) Заголовок/eyebrow с отступом слева как в About/Advantages */}
+      <div className="pl-10" data-reveal="up">
         <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
           {copy.contacts.eyebrow}
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.1fr]">
-        {/* LEFT: контакты */}
-        <div className="ui-card border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
-          <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.contacts.titleLeft}</h2>
+      <div className="space-y-6">
+      {/* 2) Верхняя карточка: заголовок сверху, 2 колонки, кнопка+текст снизу */}
+{/* TOP: форма — без внешней рамки/карточности */}
+<div className="p-6 sm:p-8" data-reveal="up">
+  <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+    {copy.contacts.titleRight}
+  </h3>
 
-          <div className="mt-6 space-y-5 text-sm">
-            <div>
-              <FieldLabel>{copy.contacts.fields.phoneLabel}</FieldLabel>
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      window.open(telegramHref, "_blank", "noopener,noreferrer");
+      setSent(true);
+    }}
+    className="mt-9"
+  >
+    {/* 2 колонки одинаковой высоты на lg */}
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch">
+      {/* LEFT: поля */}
+      <div className="grid grid-cols-1 gap-4">
+        <label className="space-y-2">
+          <div className="px-4 text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+            Обращение <span className="text-[color:var(--accent)]">*</span>
+          </div>
+          <input
+            name="name"
+            required
+            placeholder={copy.contacts.form.namePlaceholder}
+            aria-label={copy.contacts.form.name}
+            className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
+          />
+        </label>
+
+        <label className="space-y-2">
+          <div className="px-4 text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+            Телефон <span className="text-[color:var(--accent)]">*</span>
+          </div>
+          <input
+            name="phone"
+            required
+            placeholder={copy.contacts.form.phonePlaceholder}
+            aria-label={copy.contacts.form.phone}
+            className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
+          />
+        </label>
+
+        <label className="space-y-2">
+          <div className="px-4 text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+            Email{" "}
+            <span className="font-normal normal-case tracking-normal">
+              (необязательно)
+            </span>
+          </div>
+          <input
+            name="email"
+            placeholder={copy.contacts.form.emailPlaceholder}
+            aria-label={copy.contacts.form.email}
+            className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
+          />
+        </label>
+      </div>
+
+      {/* RIGHT: сообщение — растягиваем через flex на высоту строки */}
+      <div className="h-full min-h-0">
+        <div className="flex h-full min-h-0 flex-col gap-2">
+          <div className="px-4 text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+            Сообщение{" "}
+            <span className="font-normal normal-case tracking-normal">
+              (необязательно)
+            </span>
+          </div>
+
+          <textarea
+            name="message"
+            placeholder={copy.contacts.form.messagePlaceholder}
+            aria-label={copy.contacts.form.message}
+            className={[
+              "w-full flex-1 min-h-0 rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none",
+              "focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5",
+              "resize-none overflow-y-auto",
+              "h-[220px] lg:h-auto",
+            ].join(" ")}
+          />
+        </div>
+      </div>
+    </div>
+{/* divider */}
+<div className="mt-6 h-px w-full bg-black/10 dark:bg-white/10" />
+
+    {/* bottom row: кнопка + текст справа */}
+    <div className="px-4 mt-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-6">
+      <button
+        type="submit"
+        className="inline-flex h-11 w-full sm:w-auto items-center justify-center ui-btn bg-[color:var(--accent)] px-10 text-sm font-semibold text-black transition hover:opacity-95"
+      >
+        {copy.contacts.form.submit}
+      </button>
+
+      <div className="text-xs leading-relaxed text-black/60 dark:text-white/60 sm:max-w-[520px]">
+        {copy.contacts.form.consent}
+      </div>
+    </div>
+
+    {sent ? (
+      <div className="mt-4 text-sm text-black/60 dark:text-white/70">
+        Сообщение можно отправить в Telegram или на Email. Для расчёта укажите позиции, партию,
+        точку отгрузки и сроки.
+      </div>
+    ) : null}
+  </form>
+</div>
+
+        
+
+        {/* 3) Ниже две карточки: контакты слева, карта справа; одинаковая высота (ориентир — контакты) */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2" data-reveal="up">
+          {/* LEFT: контакты */}
+          <div className="ui-card border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
+            <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+              {copy.contacts.titleLeft}
+            </h2>
+
+            <div className="mt-6 space-y-5 text-sm">
+              <div>
+                <FieldLabel>{copy.contacts.fields.phoneLabel}</FieldLabel>
+                <a
+                  href={copy.contacts.links.phoneHref}
+                  className="mt-1 block text-base font-semibold text-black/85 hover:text-[color:var(--accent)] dark:text-white/85"
+                >
+                  {copy.contacts.values.phone}
+                </a>
+              </div>
+
+              <div>
+                <FieldLabel>{copy.contacts.fields.emailLabel}</FieldLabel>
+                <a
+                  href={copy.contacts.links.emailHref}
+                  className="mt-1 block text-base font-semibold text-black/85 hover:text-[color:var(--accent)] dark:text-white/85"
+                >
+                  {copy.contacts.values.email}
+                </a>
+              </div>
+
+              <div>
+                <FieldLabel>{copy.contacts.fields.addressLabel}</FieldLabel>
+                <div className="mt-1 text-black/70 dark:text-white/70">
+                  {copy.contacts.values.address}
+                </div>
+              </div>
+
+              <div>
+                <FieldLabel>{copy.contacts.fields.hoursLabel}</FieldLabel>
+                <div className="mt-1 text-black/70 dark:text-white/70">
+                  {copy.contacts.values.hours}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <a
-                href={copy.contacts.links.phoneHref}
-                className="mt-1 block text-base font-semibold text-black/85 hover:text-[color:var(--accent)] dark:text-white/85"
+                href={telegramHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+                onClick={() => setSent(true)}
               >
-                {copy.contacts.values.phone}
+                {copy.contacts.social.telegram.label}
+              </a>
+
+              <a
+                href={mailto}
+                className="inline-flex h-11 items-center justify-center ui-btn border border-black/15 px-6 text-sm font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
+                onClick={() => setSent(true)}
+              >
+                Написать на Email
               </a>
             </div>
-
-            <div>
-              <FieldLabel>{copy.contacts.fields.emailLabel}</FieldLabel>
-              <a
-                href={copy.contacts.links.emailHref}
-                className="mt-1 block text-base font-semibold text-black/85 hover:text-[color:var(--accent)] dark:text-white/85"
-              >
-                {copy.contacts.values.email}
-              </a>
-            </div>
-
-            <div>
-              <FieldLabel>{copy.contacts.fields.addressLabel}</FieldLabel>
-              <div className="mt-1 text-black/70 dark:text-white/70">{copy.contacts.values.address}</div>
-            </div>
-
-            <div>
-              <FieldLabel>{copy.contacts.fields.hoursLabel}</FieldLabel>
-              <div className="mt-1 text-black/70 dark:text-white/70">{copy.contacts.values.hours}</div>
-            </div>
           </div>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a
-              href={telegramHref}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
-              onClick={() => setSent(true)}
-            >
-              {copy.contacts.social.telegram.label}
-            </a>
+          {/* RIGHT: карта — делаем высоту как у карточки контактов */}
+          <div className="ui-card border border-black/10 bg-white shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none overflow-hidden flex flex-col">
+<div className="px-6 pt-6 pb-3">
+  <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-white sm:text-3xl">
+    {copy.contacts.map.title}
+  </h2>
+</div>
 
-            <a
-              href={mailto}
-              className="inline-flex h-11 items-center justify-center ui-btn border border-black/15 px-6 text-sm font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
-              onClick={() => setSent(true)}
-            >
-              Написать на Email
-            </a>
-          </div>
 
-          {sent ? (
-            <div className="mt-4 text-sm text-black/60 dark:text-white/70">
-              Сообщение можно отправить в Telegram или на Email. Для расчёта укажите позиции, партию, точку отгрузки и сроки.
+            <div className="px-6 pb-6 flex-1">
+              <div className="h-full overflow-hidden ui-card border border-black/10 dark:border-white/15">
+                <iframe
+                  title={copy.contacts.map.title}
+                  src={copy.contacts.map.src}
+                  className="h-full w-full"
+                  loading="lazy"
+                />
+              </div>
             </div>
-          ) : null}
-        </div>
-
-        {/* RIGHT: форма + карта */}
-        <div className="ui-card border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
-          <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.contacts.titleRight}</h3>
-
-          <form
-            className="mt-6 grid grid-cols-1 gap-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              // Быстрое MVP: открываем Telegram группу (или можно собрать текст и открыть mailto)
-              window.open(telegramHref, "_blank", "noopener,noreferrer");
-              setSent(true);
-            }}
-          >
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <input
-                name="name"
-                placeholder={copy.contacts.form.namePlaceholder}
-                aria-label={copy.contacts.form.name}
-                className="h-11 rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
-              />
-              <input
-                name="phone"
-                placeholder={copy.contacts.form.phonePlaceholder}
-                aria-label={copy.contacts.form.phone}
-                className="h-11 rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
-              />
-            </div>
-
-            <input
-              name="email"
-              placeholder={copy.contacts.form.emailPlaceholder}
-              aria-label={copy.contacts.form.email}
-              className="h-11 rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
-            />
-
-            <textarea
-              name="message"
-              placeholder={copy.contacts.form.messagePlaceholder}
-              aria-label={copy.contacts.form.message}
-              rows={5}
-              className="rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
-            />
-
-            <button
-              type="submit"
-              className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
-            >
-              {copy.contacts.form.submit}
-            </button>
-
-            <div className="text-xs text-black/60 dark:text-white/60">
-              {copy.contacts.form.consent}
-            </div>
-          </form>
-
-          <div className="mt-8 overflow-hidden ui-card border border-black/10 dark:border-white/15">
-            <div className="px-4 py-3 text-sm font-semibold">{copy.contacts.map.title}</div>
-            <iframe
-              title={copy.contacts.map.title}
-              src={copy.contacts.map.src}
-              className="h-64 w-full"
-              loading="lazy"
-            />
           </div>
         </div>
+
+        {/* (мобилка) — по умолчанию всё уже будет друг под другом: форма, контакты, карта */}
+      </div>
       </div>
     </section>
   );

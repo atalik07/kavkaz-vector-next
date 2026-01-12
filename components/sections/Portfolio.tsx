@@ -1,4 +1,14 @@
+"use client";
+
+import Image from "next/image";
+import { useMemo, useRef, useState } from "react";
 import { copy } from "@/lib/copy";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { A11y } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper/types";
+
+import "swiper/css";
 
 function Eyebrow({ children }: { children: string }) {
   return (
@@ -8,20 +18,255 @@ function Eyebrow({ children }: { children: string }) {
   );
 }
 
+function ArrowIcon({ dir }: { dir: "left" | "right" }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6">
+      {dir === "left" ? (
+        <path
+          d="M14.5 5.5 8 12l6.5 6.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      ) : (
+        <path
+          d="M9.5 5.5 16 12l-6.5 6.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      )}
+    </svg>
+  );
+}
+
+type Slide = {
+  src: string;
+  alt: string;
+  title: string;
+  text: string;
+};
+
+function TrendCarousel({
+  title,
+  hint,
+  slides,
+}: {
+  title: string;
+  hint: string;
+  slides: Slide[];
+}) {
+  const swiperRef = useRef<SwiperType | null>(null);
+
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
+
+  const syncNavState = (s: SwiperType) => {
+    setCanPrev(!s.isBeginning);
+    setCanNext(!s.isEnd);
+  };
+
+return (
+    <section className="mt-10" data-reveal="up">
+      <div className="lg:pl-6">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
+          <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
+            {title}
+          </h3>
+
+          <div className="text-sm leading-relaxed text-black/70 dark:text-white/70">
+            {hint}
+          </div>
+        </div>
+      </div>
+
+      <div className="relative mt-5 overflow-visible">
+        <div className="swiper-clip">
+          <Swiper
+            modules={[A11y]}
+            onSwiper={(s) => {
+              swiperRef.current = s;
+              syncNavState(s);
+            }}
+            onSlideChange={syncNavState}
+            onResize={syncNavState}
+            slidesPerView={1}
+            spaceBetween={14}
+            watchOverflow
+            grabCursor
+            touchStartPreventDefault={false}
+            centeredSlides={false}
+            autoHeight={false}
+            breakpoints={{
+              640: { slidesPerView: 2, spaceBetween: 16 },
+              1024: { slidesPerView: 3, spaceBetween: 20 },
+            }}
+          >
+            {slides.map((s, idx) => (
+              <SwiperSlide key={`${s.src}-${idx}`} className="flex !h-auto">
+                <article
+                  className={[
+                    "flex w-full flex-col overflow-hidden",
+                    "ui-card border border-black/10 bg-white shadow-sm",
+                    "dark:border-white/15 dark:bg-white/5 dark:shadow-none",
+                  ].join(" ")}
+                  style={{ borderRadius: "var(--radius-card)" }}
+                >
+                  <div className="relative aspect-[4/3] w-full overflow-hidden">
+                    <Image
+                      src={s.src}
+                      alt={s.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <div className="flex flex-1 flex-col p-4 sm:p-5">
+                    <div className="text-sm font-semibold tracking-tight text-zinc-950 dark:text-white truncate">
+                      {s.title}
+                    </div>
+
+                    <div
+                      className="mt-1 text-sm leading-relaxed text-black/70 dark:text-white/70"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        height: "3em",
+                      }}
+                    >
+                      {s.text}
+                    </div>
+                  </div>
+                </article>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* MOBILE arrows UNDER carousel */}
+        <div className="mt-4 flex items-center justify-center gap-3 sm:hidden">
+          <button
+            type="button"
+            aria-label="Предыдущий слайд"
+            onClick={() => swiperRef.current?.slidePrev()}
+            disabled={!canPrev}
+            className={[
+              "grid h-11 w-11 place-items-center rounded-full",
+              "border border-black/10 bg-white/85 text-black/70 shadow-sm backdrop-blur",
+              "hover:bg-white hover:text-black/90",
+              "disabled:pointer-events-none disabled:opacity-25",
+              "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
+            ].join(" ")}
+          >
+            <ArrowIcon dir="left" />
+          </button>
+
+          <button
+            type="button"
+            aria-label="Следующий слайд"
+            onClick={() => swiperRef.current?.slideNext()}
+            disabled={!canNext}
+            className={[
+              "grid h-11 w-11 place-items-center rounded-full",
+              "border border-black/10 bg-white/85 text-black/70 shadow-sm backdrop-blur",
+              "hover:bg-white hover:text-black/90",
+              "disabled:pointer-events-none disabled:opacity-25",
+              "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
+            ].join(" ")}
+          >
+            <ArrowIcon dir="right" />
+          </button>
+        </div>
+
+        {/* TABLET + DESKTOP arrows OUTSIDE carousel */}
+        <div className="pointer-events-none hidden sm:block">
+          <button
+            type="button"
+            aria-label="Предыдущий слайд"
+            onClick={() => swiperRef.current?.slidePrev()}
+            disabled={!canPrev}
+            className={[
+              "pointer-events-auto",
+              "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[110%]",
+              "z-10 grid h-11 w-11 place-items-center rounded-full",
+              "border border-black/10 bg-white/80 text-black/70 shadow-sm backdrop-blur",
+              "hover:bg-white hover:text-black/90",
+              "disabled:pointer-events-none disabled:opacity-25",
+              "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
+            ].join(" ")}
+          >
+            <ArrowIcon dir="left" />
+          </button>
+
+          <button
+            type="button"
+            aria-label="Следующий слайд"
+            onClick={() => swiperRef.current?.slideNext()}
+            disabled={!canNext}
+            className={[
+              "pointer-events-auto",
+              "absolute right-0 top-1/2 -translate-y-1/2 translate-x-[110%]",
+              "z-10 grid h-11 w-11 place-items-center rounded-full",
+              "border border-black/10 bg-white/80 text-black/70 shadow-sm backdrop-blur",
+              "hover:bg-white hover:text-black/90",
+              "disabled:pointer-events-none disabled:opacity-25",
+              "dark:border-white/15 dark:bg-black/25 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
+            ].join(" ")}
+          >
+            <ArrowIcon dir="right" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Portfolio() {
+  const pf = copy.portfolio;
+
+  const baseSlides: Slide[] = useMemo(() => pf.slides as unknown as Slide[], [pf.slides]);
+
+  const sliders = useMemo(
+    () => pf.categories.map((c) => ({ title: c.title, hint: c.hint, slides: baseSlides })),
+    [pf.categories, baseSlides]
+  );
+
   return (
     <section id="portfolio" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
       <div data-reveal="up">
-        <Eyebrow>{copy.portfolio.eyebrow}</Eyebrow>
-        <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.portfolio.title}</h2>
-        <p className="mt-4 max-w-2xl text-sm text-black/70 dark:text-white/70">
-          {copy.portfolio.placeholder}
-        </p>
+        <Eyebrow>{pf.eyebrow}</Eyebrow>
+        <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{pf.title}</h2>
       </div>
 
-      <div className="mt-8 ui-card border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
-        <div className="text-sm text-black/70 dark:text-white/70">
-          Скоро добавим кейсы, фото и примеры изделий.
+      {sliders.map((s) => (
+       <TrendCarousel key={s.title} title={s.title} hint={s.hint} slides={s.slides} />
+      ))}
+
+      <div
+        className="mt-14 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8"
+        style={{ borderRadius: "var(--radius-card)" }}
+        data-reveal="up"
+      >
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-xl sm:text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+            {pf.cta.title}
+          </div>
+
+          <a
+            href={copy.contacts.social.telegram.href}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-11 w-full sm:w-auto items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+          >
+            {pf.cta.button}
+          </a>
         </div>
       </div>
     </section>

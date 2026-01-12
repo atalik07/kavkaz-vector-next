@@ -7,6 +7,7 @@ import Contacts from "@/components/sections/Contacts";
 import InView from "@/components/InView";
 import Terms from "@/components/sections/Terms";
 import AdvantagesBento from "@/components/sections/AdvantagesBento";
+import Portfolio from "@/components/sections/Portfolio";
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -41,7 +42,7 @@ export default function HomePage() {
         <AdvantagesBento />
 
         <section id="portfolio">
-          <Placeholder title="Портфолио" />
+          <Portfolio />
         </section>
 
         <section id="contacts">

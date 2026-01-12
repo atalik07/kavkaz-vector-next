@@ -271,3 +271,7 @@ html:not(.dark) .aboutFrame {
 html:not(.dark) .aboutFrameInner {
   background: rgba(255, 255, 255, 0.70);
 }
+/* add to globals.css if you don't have it already */
+.swiper-clip {
+  overflow: hidden;
+}
