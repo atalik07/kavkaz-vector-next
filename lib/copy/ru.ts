@@ -238,7 +238,9 @@ export const ru = {
       phoneHref: "tel:+79280808096",
       emailHref: "mailto:OptMebelUg@mail.ru",
     },
-
+    cta: {
+      telegramGroup: "Наша группа в Telegram",
+    },
     social: {
       telegram: { href: "https://t.me/+gaG54XczoY40ZGVi", label: "Telegram" },
       instagram: { href: "https://instagram.com/your", label: "Instagram" },

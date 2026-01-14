@@ -1,4 +1,3 @@
-// app/(...) or components/About.tsx (wherever your About lives)
 "use client";
 
 import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -9,7 +8,7 @@ const slideImages = ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images
 
 function Eyebrow({ children }: { children: string }) {
   return (
-    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+    <div className="text-sm font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
       {children}
     </div>
   );
@@ -54,25 +53,27 @@ export default function About() {
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
-<div className="pl-10" data-reveal="up">
-  <h2 className="subhead font-extrabold uppercase tracking-[0.09em] leading-snug text-zinc-950 dark:text-white text-2xl sm:text-3xl">
-    {copy.about.eyebrow}
-  </h2>
-</div>
-
-
+      <div className="pl-10" data-reveal="up">
+        <h2 className="subhead font-extrabold uppercase tracking-[0.09em] leading-snug text-zinc-950 dark:text-white text-2xl sm:text-3xl">
+          {copy.about.eyebrow}
+        </h2>
+      </div>
 
       <div className="mt-8">
         {/* MOBILE: one continuous flow */}
         <div className="grid grid-cols-1 gap-6 lg:hidden">
-          <div className="w-full aspect-[3/4]">
-            <HeroRSlider
-              slides={copy.hero.slides}
-              images={slideImages}
-              dotsAlign="right"
-              className="h-full"
-            />
-          </div>
+          {/* жесткий квадрат */}
+<div className="relative w-full aspect-square overflow-hidden rounded-[var(--radius-card)]">
+  <div className="absolute inset-0">
+    <HeroRSlider
+      slides={copy.hero.slides}
+      images={slideImages}
+      dotsAlign="right"
+      className="h-full w-full"
+    />
+  </div>
+</div>
+
 
           <div className="py-4 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
             {copy.about.top.paragraphs.map((p, i) => (
@@ -89,19 +90,19 @@ export default function About() {
               <p key={`m-top-tail-${i}`}>{p}</p>
             ))}
 
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2 pt-2">
-              <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>
-              <div className="text-base tracking-[0.02em] text-black/70 dark:text-white/70">
-                {copy.about.bottom.lead}
+            <div className="text-center pt-2">
+              <div className="inline-flex flex-col items-center gap-2">
+                <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>
+                <div className="text-base tracking-[0.02em] text-black/70 dark:text-white/70">
+                  {copy.about.bottom.lead}
+                </div>
               </div>
             </div>
 
             <div className="space-y-6 pt-2">
               {copy.about.bottom.columns.map((col, i) => (
                 <div key={`m-col-${i}`} className="space-y-3">
-                  <div className="pl-5 font-semibold text-zinc-950 dark:text-white">
-                    {col.title}
-                  </div>
+                  <div className="pl-5 font-semibold text-zinc-950 dark:text-white">{col.title}</div>
                   <ul className="list-disc pl-5 space-y-2">
                     {col.items.map((it, j) => (
                       <li key={`m-col-${i}-li-${j}`}>{it}</li>
@@ -111,10 +112,6 @@ export default function About() {
               ))}
             </div>
 
-            {/* {copy.about.bottom.afterColumnsParagraphs.map((p, i) => (
-              <p key={`m-bottom-after-${i}`}>{p}</p>
-            ))} */}
-
             <p>
               <span className="font-semibold text-[color:var(--accent)]/80">
                 {copy.about.closingAccent}
@@ -123,55 +120,70 @@ export default function About() {
           </div>
         </div>
 
-        {/* DESKTOP: split layout */}
+        {/* DESKTOP */}
         <div className="hidden lg:block">
           <div className="space-y-10">
-            {/* TOP ROW: slider + clipped right text */}
-            <div className="grid grid-cols-2 gap-12 items-stretch">
-              <div className="w-full aspect-[3/4]">
-                <HeroRSlider
-                  slides={copy.hero.slides}
-                  images={slideImages}
-                  dotsAlign="right"
-                  className="h-full"
-                />
-              </div>
-
-              <div className="h-full overflow-hidden">
-                <div className="py-4 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
-                  {copy.about.top.paragraphs.map((p, i) => (
-                    <p key={`d-top-p-${i}`}>{p}</p>
-                  ))}
-
-                  <ul className="list-disc pl-5 space-y-2">
-                    {copy.about.top.listAfterTraderHeader.map((it, i) => (
-                      <li key={`d-top-li-${i}`}>{it}</li>
-                    ))}
-                  </ul>
-
-                  {copy.about.top.tailParagraphs.map((p, i) => (
-                    <p key={`d-top-tail-${i}`}>{p}</p>
-                  ))}
-
-                  <p>
-                    <span className="font-semibold text-[color:var(--accent)]/80">
-                      {copy.about.closingAccent}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* BOTTOM: kicker+lead, then 3 columns with subtle dividers */}
-            <div className="py-4 space-y-6 text-base tracking-[0.02em] text-black/70 dark:text-white/70 lg:px-10">
-
-<div className="text-center">
-  <div className="inline-flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2">
-    <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>
-    <div className="text-base tracking-[0.02em]">{copy.about.bottom.lead}</div>
+            {/* TOP ROW: square slider + короткий правый текст */}
+            <div className="grid grid-cols-2 gap-12 items-start">
+              {/* жесткий квадрат + принудительная высота для вложенного слайдера */}
+<div className="relative w-full aspect-square overflow-hidden rounded-[var(--radius-card)]">
+  <div className="absolute inset-0">
+    <HeroRSlider
+      slides={copy.hero.slides}
+      images={slideImages}
+      dotsAlign="right"
+      className="h-full w-full"
+    />
   </div>
 </div>
 
+
+              <div className="py-4 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
+                {/* только вводные 2 абзаца */}
+                {copy.about.top.paragraphs.slice(0, 2).map((p, i) => (
+                  <p key={`d-top-p-${i}`}>{p}</p>
+                ))}
+              </div>
+            </div>
+
+            {/* FULL WIDTH: заголовок = “В связи с расширением...”, дальше весь блок */}
+            <div className="ui-card border border-black/10 bg-white/60 p-6 text-base tracking-[0.02em] text-black/70 shadow-sm dark:border-white/15 dark:bg-white/5 dark:text-white/70 dark:shadow-none lg:px-10">
+              <h3 className="text-lg font-semibold leading-snug text-zinc-950 dark:text-white">
+                {copy.about.top.paragraphs[2]}
+              </h3>
+
+              <p className="mt-4 font-medium text-zinc-950/90 dark:text-white/90">
+                {copy.about.top.paragraphs[3]}
+              </p>
+
+              <ul className="mt-4 list-disc pl-5 space-y-2">
+                {copy.about.top.listAfterTraderHeader.map((it, i) => (
+                  <li key={`d-moved-li-${i}`}>{it}</li>
+                ))}
+              </ul>
+
+              {/* берём только первый tailParagraphs; “последний абзац” не показываем */}
+              {copy.about.top.tailParagraphs[0] ? (
+                <p className="mt-4">{copy.about.top.tailParagraphs[0]}</p>
+              ) : null}
+
+              <p className="mt-4">
+                <span className="font-semibold text-[color:var(--accent)]/80">
+                  {copy.about.closingAccent}
+                </span>
+              </p>
+            </div>
+
+            {/* BOTTOM */}
+            <div className="py-4 space-y-6 text-base tracking-[0.02em] text-black/70 dark:text-white/70 lg:px-10">
+              <div className="text-center">
+                <div className="inline-flex flex-col items-center gap-2">
+                  <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>
+                  <div className="text-base tracking-[0.02em] text-black/70 dark:text-white/70">
+                    {copy.about.bottom.lead}
+                  </div>
+                </div>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 md:gap-8">
                 {copy.about.bottom.columns.map((col, idx) => (
@@ -185,9 +197,7 @@ export default function About() {
                       idx > 0 ? "md:border-l md:border-black/10 md:dark:border-white/15" : "",
                     ].join(" ")}
                   >
-                    <div className="pl-5 font-semibold text-zinc-950 dark:text-white">
-                      {col.title}
-                    </div>
+                    <div className="pl-5 font-semibold text-zinc-950 dark:text-white">{col.title}</div>
                     <ul className="list-disc pl-5 space-y-2">
                       {col.items.map((it, j) => (
                         <li key={`d-col-${idx}-li-${j}`}>{it}</li>
@@ -196,7 +206,6 @@ export default function About() {
                   </div>
                 ))}
               </div>
-
             </div>
           </div>
         </div>

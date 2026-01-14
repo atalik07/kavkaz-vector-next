@@ -71,7 +71,7 @@ function TrendCarousel({
   };
 
   return (
-    <section className="mt-10" data-reveal="up">
+    <section data-reveal="up">
       <div className="lg:pl-6">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
           <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
@@ -260,9 +260,12 @@ export default function Portfolio() {
         <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{pf.title}</h2>
       </div>
 
-      {sliders.map((s) => (
-        <TrendCarousel key={s.title} title={s.title} hint={s.hint} slides={s.slides} />
-      ))}
+<div className="mt-8 space-y-10 sm:space-y-12 lg:space-y-14">
+  {sliders.map((s) => (
+    <TrendCarousel key={s.title} title={s.title} hint={s.hint} slides={s.slides} />
+  ))}
+</div>
+
 
       <div
         className="mt-14 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8"

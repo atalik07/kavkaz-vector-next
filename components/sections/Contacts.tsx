@@ -2,6 +2,25 @@
 
 import { useMemo, useState } from "react";
 import { copy } from "@/lib/copy";
+import { SocialPill } from "@/components/HeroUtilityBar";
+
+function IconTelegram(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M10 14l11 -11" />
+      <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 .1l-3.5 -7l-7 -3.5a.55 .55 0 0 1 .1 -1z" />
+    </svg>
+  );
+}
 
 function FieldLabel({ children }: { children: string }) {
   return (
@@ -195,38 +214,36 @@ export default function Contacts() {
 
               <div>
                 <FieldLabel>{copy.contacts.fields.addressLabel}</FieldLabel>
-                <div className="mt-1 text-black/70 dark:text-white/70">
+                <div className="mt-1 text-base font-semibold text-black/85 dark:text-white/85">
                   {copy.contacts.values.address}
                 </div>
+
               </div>
 
               <div>
                 <FieldLabel>{copy.contacts.fields.hoursLabel}</FieldLabel>
-                <div className="mt-1 text-black/70 dark:text-white/70">
+                <div className="mt-1 text-base font-semibold text-black/85 dark:text-white/85">
                   {copy.contacts.values.hours}
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <a
-                href={telegramHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-base font-semibold text-black transition hover:opacity-95"
-                onClick={() => setSent(true)}
-              >
-                {copy.contacts.social.telegram.label}
-              </a>
+<div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+  <a
+    href={telegramHref}
+    target="_blank"
+    rel="noreferrer"
+    onClick={() => setSent(true)}
+    className="inline-flex h-11 w-full items-center justify-center gap-2 ui-btn bg-[color:var(--accent)] px-6 text-base font-semibold text-black transition hover:opacity-95 sm:w-auto sm:justify-start"
+  >
+    <IconTelegram className="h-4 w-4" />
+    {copy.contacts.cta.telegramGroup}
+  </a>
 
-              <a
-                href={mailto}
-                className="inline-flex h-11 items-center justify-center ui-btn border border-black/15 px-6 text-base font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
-                onClick={() => setSent(true)}
-              >
-                Написать на Email
-              </a>
-            </div>
+  <SocialPill className="self-center sm:self-auto shrink-0" />
+</div>
+
+
           </div>
 
           {/* RIGHT: карта — делаем высоту как у карточки контактов */}
