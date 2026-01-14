@@ -126,7 +126,7 @@ export default function HeroRSlider({
 
       {/* Bottom drawer */}
       <div className={["heroRDrawer", drawerOpen ? "is-open" : ""].join(" ")}>
-        <div className="text-sm leading-relaxed text-current/80">{s?.text}</div>
+        <div className="text-base tracking-[0.02em] text-current">{s?.text}</div>
       </div>
     </div>
   );

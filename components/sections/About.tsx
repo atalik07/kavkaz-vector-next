@@ -74,7 +74,7 @@ export default function About() {
             />
           </div>
 
-          <div className="py-4 space-y-4 text-sm leading-relaxed text-black/70 dark:text-white/70">
+          <div className="py-4 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
             {copy.about.top.paragraphs.map((p, i) => (
               <p key={`m-top-p-${i}`}>{p}</p>
             ))}
@@ -91,7 +91,7 @@ export default function About() {
 
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2 pt-2">
               <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>
-              <div className="text-sm leading-relaxed text-black/70 dark:text-white/70">
+              <div className="text-base tracking-[0.02em] text-black/70 dark:text-white/70">
                 {copy.about.bottom.lead}
               </div>
             </div>
@@ -138,7 +138,7 @@ export default function About() {
               </div>
 
               <div className="h-full overflow-hidden">
-                <div className="py-4 space-y-4 text-sm leading-relaxed text-black/70 dark:text-white/70">
+                <div className="py-4 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
                   {copy.about.top.paragraphs.map((p, i) => (
                     <p key={`d-top-p-${i}`}>{p}</p>
                   ))}
@@ -163,12 +163,12 @@ export default function About() {
             </div>
 
             {/* BOTTOM: kicker+lead, then 3 columns with subtle dividers */}
-            <div className="py-4 space-y-6 text-sm leading-relaxed text-black/70 dark:text-white/70 lg:px-10">
+            <div className="py-4 space-y-6 text-base tracking-[0.02em] text-black/70 dark:text-white/70 lg:px-10">
 
 <div className="text-center">
   <div className="inline-flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2">
     <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>
-    <div className="text-sm leading-relaxed">{copy.about.bottom.lead}</div>
+    <div className="text-base tracking-[0.02em]">{copy.about.bottom.lead}</div>
   </div>
 </div>
 
@@ -197,9 +197,6 @@ export default function About() {
                 ))}
               </div>
 
-              {/* {copy.about.bottom.afterColumnsParagraphs.map((p, i) => (
-                <p key={`d-bottom-after-${i}`}>{p}</p>
-              ))} */}
             </div>
           </div>
         </div>

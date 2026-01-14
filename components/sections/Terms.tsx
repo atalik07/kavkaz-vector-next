@@ -5,9 +5,7 @@ function Card({ title, text }: { title: string; text: string }) {
   return (
     <div className="ui-card border border-black/10 bg-white p-5 shadow-sm dark:border-white/15 dark:bg-white/5 dark:shadow-none">
       <div className="text-base font-semibold tracking-tight">{title}</div>
-      <div className="mt-2 text-sm text-black/70 leading-relaxed dark:text-white/70">
-        {text}
-      </div>
+      <div className="mt-2 text-base text-black/70 leading-relaxed dark:text-white/70">{text}</div>
     </div>
   );
 }
@@ -113,7 +111,7 @@ export default function Terms() {
                       <div className="text-base font-semibold tracking-[0.02em] text-zinc-950 dark:text-white">
                         {it.title}
                       </div>
-                      <div className="mt-1 text-sm tracking-[0.02em] text-black/70 leading-relaxed dark:text-white/70">
+                      <div className="mt-1 text-base tracking-[0.02em] text-black/70 leading-relaxed dark:text-white/70">
                         {it.text}
                       </div>
                     </div>
@@ -167,7 +165,7 @@ export default function Terms() {
                   <div className="text-base font-semibold tracking-tight">
                     {s.title}
                   </div>
-                  <div className="mt-2 text-sm text-black/70 leading-relaxed dark:text-white/70">
+                  <div className="mt-2 text-base tracking-[0.02em] text-black/70 leading-relaxed dark:text-white/70">
                     {s.text}
                   </div>
                 </div>
