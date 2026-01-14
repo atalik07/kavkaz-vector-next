@@ -78,7 +78,7 @@ return (
             {title}
           </h3>
 
-          <div className="text-sm leading-relaxed text-black/70 dark:text-white/70">
+          <div className="text-base leading-relaxed text-black/70 dark:text-white/70">
             {hint}
           </div>
         </div>
@@ -127,12 +127,12 @@ return (
                   </div>
 
                   <div className="flex flex-1 flex-col p-4 sm:p-5">
-                    <div className="text-sm font-semibold tracking-tight text-zinc-950 dark:text-white truncate">
+                    <div className="text-base font-semibold tracking-tight text-zinc-950 dark:text-white truncate">
                       {s.title}
                     </div>
 
                     <div
-                      className="mt-1 text-sm leading-relaxed text-black/70 dark:text-white/70"
+                      className="mt-1 text-base leading-relaxed text-black/70 dark:text-white/70"
                       style={{
                         display: "-webkit-box",
                         WebkitLineClamp: 2,
@@ -263,7 +263,7 @@ export default function Portfolio() {
             href={copy.contacts.social.telegram.href}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-11 w-full sm:w-auto items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+            className="inline-flex h-11 w-full sm:w-auto items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-base font-semibold text-black transition hover:opacity-95"
           >
             {pf.cta.button}
           </a>
