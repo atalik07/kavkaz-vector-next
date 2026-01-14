@@ -52,6 +52,7 @@ export default function HeroRSlider({
   slideMs = 8000,
   fadeMs = 900,
   className = "",
+  viewportClassName = "",
   onActiveChange,
 }: {
   slides: readonly Slide[];
@@ -61,6 +62,8 @@ export default function HeroRSlider({
   slideMs?: number;
   fadeMs?: number;
   className?: string;
+  /** Доп. классы для “рамки/вьюпорта” (удобно для About: h-[40vh], min/max-h, радиус, overflow) */
+  viewportClassName?: string;
   onActiveChange?: (activeIndex: number) => void;
 }) {
   const safeImages = useMemo(() => (images.length ? images : ["/images/1.jpg"]), [images]);
@@ -77,10 +80,12 @@ export default function HeroRSlider({
     window.setTimeout(() => setDrawerOpen(true), 120);
   };
 
+  const DotsBlock =
+    dots !== "none" ? <HeroRSliderDots count={slides.length} active={active} align={dotsAlign} /> : null;
+
   const SlideBlock = (
-    <div className="heroRSlide">
-      {/* BG swiper fade */}
-      <div className="heroRSlideBg">
+    <div className="heroRSlide h-full w-full">
+      <div className="heroRSlideBg h-full w-full">
         <Swiper
           modules={[EffectFade, Autoplay]}
           effect="fade"
@@ -108,7 +113,6 @@ export default function HeroRSlider({
         <div className="heroRSlideOverlay" />
       </div>
 
-      {/* TOP text */}
       <div
         className={[
           "relative",
@@ -124,35 +128,34 @@ export default function HeroRSlider({
         </div>
       </div>
 
-      {/* Bottom drawer */}
       <div className={["heroRDrawer", drawerOpen ? "is-open" : ""].join(" ")}>
-        <div className="text-base tracking-[0.02em] text-current/90">{s?.text}</div>
+        <div className="text-base tracking-[0.02em] text-current">{s?.text}</div>
       </div>
     </div>
   );
 
-  const DotsBlock =
-    dots !== "none" ? <HeroRSliderDots count={slides.length} active={active} align={dotsAlign} /> : null;
-
   return (
-<div className={["heroRCard", className].join(" ")}>
-  <div
-    className={[
-      "heroRInner",
-      dotsAlign === "right" ? "heroRInner--dotsRight" : "",
-    ].join(" ")}
-  >
-    {dotsAlign === "right" ? (
-          <>
-            {SlideBlock}
-            {DotsBlock}
-          </>
-        ) : (
-          <>
-            {DotsBlock}
-            {SlideBlock}
-          </>
-        )}
+    <div className={["heroRCard", className].join(" ")}>
+      {/* Вьюпорт: если задан — ограничиваем высоту/радиус/overflow тут, не в компоненте-родителе */}
+      <div className={["h-full w-full", viewportClassName].join(" ")}>
+        <div
+          className={[
+            "heroRInner h-full w-full",
+            dotsAlign === "right" ? "heroRInner--dotsRight" : "",
+          ].join(" ")}
+        >
+          {dotsAlign === "right" ? (
+            <>
+              {SlideBlock}
+              {DotsBlock}
+            </>
+          ) : (
+            <>
+              {DotsBlock}
+              {SlideBlock}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

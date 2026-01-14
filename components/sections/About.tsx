@@ -4,7 +4,7 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { copy } from "@/lib/copy";
 import HeroRSlider from "@/components/HeroRSlider";
 
-const slideImages = ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/logistics.webp"] as const;
+const aboutImages = ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/logistics.webp"] as const;
 
 function Eyebrow({ children }: { children: string }) {
   return (
@@ -39,10 +39,7 @@ export default function About() {
     const el = innerRef.current;
     if (!el) return;
 
-    const measure = () => {
-      const h = Math.ceil(el.scrollHeight);
-      setMaxH(h);
-    };
+    const measure = () => setMaxH(Math.ceil(el.scrollHeight));
 
     measure();
     const ro = new ResizeObserver(measure);
@@ -50,6 +47,13 @@ export default function About() {
 
     return () => ro.disconnect();
   }, [faqItems.length]);
+
+  // рамка/вьюпорт слайдера именно для About:
+  // 40vh как ты просил + ограничители, чтобы не было гиганта/крошки
+// сделай больше ТОЛЬКО на lg — меняешь только эти 3 значения:
+const aboutSliderViewport =
+  "overflow-hidden rounded-[var(--radius-card)] h-[32vh] min-h-[260px] max-h-[420px] sm:h-[34vh] sm:min-h-[280px] sm:max-h-[460px] lg:h-[44vh] lg:min-h-[380px] lg:max-h-[580px] xl:h-[60vh] xl:h-[66vh] xl:min-h-[360px] xl:max-h-[720px]";
+
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
@@ -60,20 +64,15 @@ export default function About() {
       </div>
 
       <div className="mt-8">
-        {/* MOBILE: one continuous flow */}
+        {/* MOBILE */}
         <div className="grid grid-cols-1 gap-6 lg:hidden">
-          {/* жесткий квадрат */}
-<div className="relative w-full aspect-square overflow-hidden rounded-[var(--radius-card)]">
-  <div className="absolute inset-0">
-    <HeroRSlider
-      slides={copy.hero.slides}
-      images={slideImages}
-      dotsAlign="right"
-      className="h-full w-full"
-    />
-  </div>
-</div>
-
+          <HeroRSlider
+            slides={copy.hero.slides}
+            images={aboutImages}
+            dotsAlign="right"
+            className="w-full"
+            viewportClassName={aboutSliderViewport}
+          />
 
           <div className="py-4 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
             {copy.about.top.paragraphs.map((p, i) => (
@@ -123,32 +122,26 @@ export default function About() {
         {/* DESKTOP */}
         <div className="hidden lg:block">
           <div className="space-y-10">
-            {/* TOP ROW: square slider + короткий правый текст */}
+            {/* TOP ROW */}
             <div className="grid grid-cols-2 gap-12 items-start">
-              {/* жесткий квадрат + принудительная высота для вложенного слайдера */}
-<div className="relative w-full aspect-square overflow-hidden rounded-[var(--radius-card)]">
-  <div className="absolute inset-0">
-    <HeroRSlider
-      slides={copy.hero.slides}
-      images={slideImages}
-      dotsAlign="right"
-      className="h-full w-full"
-    />
-  </div>
-</div>
+              <HeroRSlider
+                slides={copy.hero.slides}
+                images={aboutImages}
+                dotsAlign="right"
+                className="w-full"
+                viewportClassName={aboutSliderViewport}
+              />
 
-
-              <div className="py-4 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
-                {/* только вводные 2 абзаца */}
+              <div className="py-2 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
                 {copy.about.top.paragraphs.slice(0, 2).map((p, i) => (
                   <p key={`d-top-p-${i}`}>{p}</p>
                 ))}
               </div>
             </div>
 
-            {/* FULL WIDTH: заголовок = “В связи с расширением...”, дальше весь блок */}
-            <div className="ui-card border border-black/10 bg-white/60 p-6 text-base tracking-[0.02em] text-black/70 shadow-sm dark:border-white/15 dark:bg-white/5 dark:text-white/70 dark:shadow-none lg:px-10">
-              <h3 className="text-lg font-semibold leading-snug text-zinc-950 dark:text-white">
+            {/* FULL WIDTH */}
+      <div className="ui-card border border-black/10 bg-white/60 p-6 text-base tracking-[0.02em] text-black/70 shadow-sm dark:border-white/15 dark:bg-white/[0.03] dark:text-white/70 dark:shadow-none lg:px-10">
+        <h3 className="text-lg font-semibold leading-snug text-zinc-950 dark:text-white">
                 {copy.about.top.paragraphs[2]}
               </h3>
 
@@ -162,10 +155,7 @@ export default function About() {
                 ))}
               </ul>
 
-              {/* берём только первый tailParagraphs; “последний абзац” не показываем */}
-              {copy.about.top.tailParagraphs[0] ? (
-                <p className="mt-4">{copy.about.top.tailParagraphs[0]}</p>
-              ) : null}
+              {copy.about.top.tailParagraphs[0] ? <p className="mt-4">{copy.about.top.tailParagraphs[0]}</p> : null}
 
               <p className="mt-4">
                 <span className="font-semibold text-[color:var(--accent)]/80">
@@ -243,7 +233,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* FAQ toggle row + slide-down list */}
+      {/* FAQ */}
       <div className="mt-6" data-reveal="up">
         <div className="flex items-center gap-3 text-base font-semibold tracking-[0.04em] text-[color:var(--accent)]/80">
           <span className="whitespace-nowrap">{copy.about.faqToggle.label}</span>
