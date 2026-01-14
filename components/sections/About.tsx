@@ -53,7 +53,7 @@ export default function About() {
   }, [faqItems.length]);
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+    <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
 <div className="pl-10" data-reveal="up">
   <h2 className="subhead font-extrabold uppercase tracking-[0.09em] leading-snug text-zinc-950 dark:text-white text-2xl sm:text-3xl">
     {copy.about.eyebrow}
@@ -278,7 +278,7 @@ export default function About() {
           }}
         >
           <div ref={innerRef} className="pt-4">
-            <div className="ui-card border border-[color:var(--accent)]/30 bg-[#ddd6cc]/10 p-5 text-sm text-black/70 tracking-[0.04em] dark:bg-[#2d2f31]/20 dark:text-white/70">
+            <div className="ui-card border border-[color:var(--accent)]/30 bg-[#ddd6cc]/10 p-5 text-base text-black/70 tracking-[0.04em] dark:bg-[#2d2f31]/20 dark:text-white/70">
               <ul className="space-y-4">
                 {faqItems.map((it, i) => (
                   <li key={`${it.q}-${i}`} className="space-y-1">

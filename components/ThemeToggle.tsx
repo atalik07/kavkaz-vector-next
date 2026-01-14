@@ -7,7 +7,7 @@ import { copy } from "@/lib/copy";
 type Mode = "system" | "light" | "dark";
 
 function Icon({ mode }: { mode: Mode }) {
-  const common = "h-4 w-4 text-current";
+  const common = "h-3.5 w-3.5 text-current";
   const strokeProps = {
     fill: "none",
     stroke: "currentColor",
@@ -66,20 +66,19 @@ export default function ThemeToggle({
 
   const mode = (theme ?? "system") as Mode;
 
- const groupDesktop = "border-zinc-900/15 bg-white/60 text-zinc-950 dark:border-white/15 dark:bg-white/5 dark:text-white";
+  const groupDesktop =
+    "border-zinc-900/15 bg-white/60 text-zinc-950 dark:border-white/15 dark:bg-white/5 dark:text-white";
 
-
-  // mobile: подстраивается под тему (в light темные бордеры/иконки)
   const groupMobile = "border-black/10 bg-black/5 dark:border-white/15 dark:bg-white/10";
 
   const group =
-    "inline-flex items-center rounded-full border p-0.5 backdrop-blur transition-colors " +
+    "inline-flex items-center rounded-full border p-[3px] backdrop-blur transition-colors " +
     (ui === "mobile" ? groupMobile : groupDesktop) +
     " " +
     className;
 
   const base =
-    "inline-flex h-9 w-9 items-center justify-center rounded-full border border-transparent " +
+    "inline-flex h-8 w-8 items-center justify-center rounded-full border border-transparent " +
     "appearance-none no-underline select-none outline-none transition-colors";
 
   // active
@@ -88,8 +87,8 @@ export default function ThemeToggle({
     "shadow-sm text-[color:var(--accent)] bg-black/10 border-black/10 dark:bg-white/10 dark:border-white/20";
 
   // inactive
-const inactiveDesktop =
-  "text-zinc-950/70 hover:text-zinc-950 hover:bg-black/5 dark:text-white/75 dark:hover:text-white dark:hover:bg-white/10";
+  const inactiveDesktop =
+    "text-zinc-950/70 hover:text-zinc-950 hover:bg-black/5 dark:text-white/75 dark:hover:text-white dark:hover:bg-white/10";
 
   const inactiveMobile =
     "text-black/70 hover:text-black hover:bg-black/10 dark:text-white/75 dark:hover:text-white dark:hover:bg-white/10";
@@ -103,22 +102,21 @@ const inactiveDesktop =
     value === "system" ? copy.theme.system : value === "light" ? copy.theme.light : copy.theme.dark;
 
   return (
-<div role="radiogroup" aria-label={copy.theme.label} className={group}>
-  {(["system", "light", "dark"] as const).map((value) => (
-    <button
-      key={value}
-      type="button"
-      role="radio"
-      aria-checked={mode === value}
-      onClick={() => setTheme(value)}
-      className={btnClass(value)}
-      title={labelFor(value)}
-    >
-      <Icon mode={value} />
-      <span className="sr-only">{labelFor(value)}</span>
-    </button>
-  ))}
-</div>
-
+    <div role="radiogroup" aria-label={copy.theme.label} className={group}>
+      {(["system", "light", "dark"] as const).map((value) => (
+        <button
+          key={value}
+          type="button"
+          role="radio"
+          aria-checked={mode === value}
+          onClick={() => setTheme(value)}
+          className={btnClass(value)}
+          title={labelFor(value)}
+        >
+          <Icon mode={value} />
+          <span className="sr-only">{labelFor(value)}</span>
+        </button>
+      ))}
+    </div>
   );
 }

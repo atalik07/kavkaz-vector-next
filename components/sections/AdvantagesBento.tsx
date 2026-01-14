@@ -44,7 +44,7 @@ const advantages: Advantage[] = [
   {
     title: "Брендирование продукции",
     subtitle: "Маркировка, шильды, упаковка и вложения — по вашему регламенту.",
-    image: "/images/prem_branding2.jpg",
+    image: "/images/prem_branding.webp",
     variant: "bottom-left",
     lightText: true,
   },
@@ -101,7 +101,7 @@ function Tile({ item }: { item: Advantage }) {
           >
             {item.title}
           </h3>
-          <p className={["text-sm sm:text-base leading-relaxed tracking-[0.02em]", subClass].join(" ")}>
+          <p className={["text-base leading-relaxed tracking-[0.02em]", subClass].join(" ")}>
             {item.subtitle}
           </p>
         </div>

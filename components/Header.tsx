@@ -181,7 +181,7 @@ function MobileMenu({
         <div className="mt-4 space-y-3">
           <div className="grid grid-cols-1 gap-3">
             <div className="rounded-xl border border-black/10 p-3 dark:border-white/15">
-              <div className="text-xs text-black/60 text-center dark:text-white/70">Тема</div>
+              <div className="text-sm text-black/60 text-center dark:text-white/70">Тема</div>
               <div className="mt-2 flex justify-center">
                 <ThemeToggle ui="mobile" className="w-full justify-between" />
               </div>
@@ -341,7 +341,7 @@ export default function Header() {
     };
   }, []);
 
-  const linkBase = "rounded-md px-2 py-1 text-[11px] uppercase tracking-[0.14em] transition-colors";
+  const linkBase = "rounded-md px-2 py-1 text-xs uppercase tracking-[0.14em] transition-colors";
   const linkInactive =
     "text-current/85 hover:text-current " +
     "group-data-[scrolled=false]:hover:bg-white/12 " +

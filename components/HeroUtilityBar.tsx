@@ -62,23 +62,23 @@ function IconMail(props: React.SVGProps<SVGSVGElement>) {
 
 export function SocialPill({ className = "" }: { className?: string }) {
   const social = [
-    { href: copy.contacts.links.emailHref, label: "Email", icon: <IconMail className="block h-5 w-5" /> },
+    { href: copy.contacts.links.emailHref, label: "Email", icon: <IconMail className="block h-4 w-4" /> },
     {
       href: copy.contacts.social.telegram.href,
       label: copy.contacts.social.telegram.label,
-      icon: <IconTelegram className="block h-5 w-5 scale-[0.92]" />,
+      icon: <IconTelegram className="block h-4 w-4 scale-[0.92]" />,
     },
     {
       href: copy.contacts.social.instagram.href,
       label: copy.contacts.social.instagram.label,
-      icon: <IconInstagram className="block h-5 w-5" />,
+      icon: <IconInstagram className="block h-4 w-4" />,
     },
   ];
 
   return (
     <div
       className={[
-        "inline-flex items-center gap-1 rounded-full border p-1 backdrop-blur",
+        "inline-flex items-center gap-0.5 rounded-full border p-[3px] backdrop-blur",
         "border-zinc-900/15 bg-white/70 text-zinc-950",
         "dark:border-white/15 dark:bg-black/20 dark:text-white",
         className,
@@ -91,27 +91,25 @@ export function SocialPill({ className = "" }: { className?: string }) {
           target="_blank"
           rel="noreferrer"
           aria-label={s.label}
-          className="inline-flex h-9 w-9 items-center justify-center text-current/85 hover:text-[color:var(--accent)]"
+          className="inline-flex h-8 w-8 items-center justify-center text-current/85 hover:text-[color:var(--accent)]"
         >
-          <span className="grid h-5 w-5 place-items-center">{s.icon}</span>
+          <span className="grid h-4 w-4 place-items-center">{s.icon}</span>
         </a>
       ))}
     </div>
   );
 }
 
-
 export default function HeroUtilityBar() {
   return (
     <div data-hero-bar data-reveal="up" data-reveal-delay="4" className="mt-5 hidden md:block">
-      <div className="inline-flex items-center gap-2">
+      <div className="inline-flex items-center gap-1.5">
         <div
-className={[
-  "inline-flex items-center gap-2 rounded-full border p-1 backdrop-blur",
-  "border-zinc-900/15 bg-white/70 text-zinc-950",
-  "dark:border-white/15 dark:bg-black/20 dark:text-white",
-].join(" ")}
-
+          className={[
+            "inline-flex items-center gap-2 rounded-full border p-[3px] backdrop-blur",
+            "border-zinc-900/15 bg-white/70 text-zinc-950",
+            "dark:border-white/15 dark:bg-black/20 dark:text-white",
+          ].join(" ")}
         >
           <ThemeToggle />
         </div>

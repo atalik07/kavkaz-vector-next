@@ -14,8 +14,10 @@ const base =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:opacity-50 disabled:pointer-events-none";
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-sm",
-  md: "h-10 px-5 text-sm",
+  // было: h-9 px-4 text-sm
+  sm: "h-8 px-3.5 text-sm",
+  // было: h-10 px-5 text-sm
+  md: "h-9 px-4 text-sm",
 };
 
 const variants: Record<Variant, string> = {
@@ -32,13 +34,11 @@ const variants: Record<Variant, string> = {
     "bg-white/10 text-white ring-1 ring-white/20 backdrop-blur " +
     "hover:bg-white/15 hover:ring-white/30",
 
-  // FIX: в светлой теме текст/рамка должны быть тёмные, не белые
   accentOutline:
     "border border-[color:var(--accent)] bg-white/40 text-zinc-950 backdrop-blur-md " +
     "dark:bg-white/[0.02] dark:text-white/85 " +
     "hover:bg-[color:var(--accent)] hover:text-white hover:border-[color:var(--accent)]",
 
-  // FIX: в светлой теме вторичная должна быть видимой (тёмная рамка + тёмный текст)
   soft:
     "bg-black/[0.02] text-zinc-950/80 border border-black/20 backdrop-blur-md " +
     "dark:bg-white/[0.01] dark:text-white/85 dark:border-white/18 " +

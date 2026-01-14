@@ -70,7 +70,7 @@ function TrendCarousel({
     setCanNext(!s.isEnd);
   };
 
-return (
+  return (
     <section className="mt-10" data-reveal="up">
       <div className="lg:pl-6">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
@@ -78,9 +78,7 @@ return (
             {title}
           </h3>
 
-          <div className="text-base leading-relaxed text-black/70 dark:text-white/70">
-            {hint}
-          </div>
+          <div className="text-base leading-relaxed text-black/70 dark:text-white/70">{hint}</div>
         </div>
       </div>
 
@@ -127,7 +125,7 @@ return (
                   </div>
 
                   <div className="flex flex-1 flex-col p-4 sm:p-5">
-                    <div className="text-base font-semibold tracking-tight text-zinc-950 dark:text-white truncate">
+                    <div className="truncate text-base font-semibold tracking-tight text-zinc-950 dark:text-white">
                       {s.title}
                     </div>
 
@@ -229,24 +227,41 @@ return (
 }
 
 export default function Portfolio() {
-  const pf = copy.portfolio;
+  const pf = copy.portfolio as unknown as {
+    eyebrow: string;
+    title: string;
+    categories: { title: string; hint: string; prefix: string }[];
+    slides: Slide[];
+    cta: { title: string; button: string };
+  };
 
-  const baseSlides: Slide[] = useMemo(() => pf.slides as unknown as Slide[], [pf.slides]);
+  // используем первые 6 текстовых карточек как шаблон
+  const textSlides = useMemo(() => pf.slides.slice(0, 6), [pf.slides]);
 
-  const sliders = useMemo(
-    () => pf.categories.map((c) => ({ title: c.title, hint: c.hint, slides: baseSlides })),
-    [pf.categories, baseSlides]
-  );
+  const sliders = useMemo(() => {
+    return pf.categories.map((c) => {
+      const slides: Slide[] = textSlides.map((t, i) => {
+        const n = String(i + 1).padStart(2, "0");
+        return {
+          ...t,
+          src: `/images/portfolio/${c.prefix}-${n}.webp`,
+          alt: `${c.title} — пример ${i + 1}`,
+        };
+      });
+
+      return { title: c.title, hint: c.hint, slides };
+    });
+  }, [pf.categories, textSlides]);
 
   return (
-    <section id="portfolio" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+    <section id="portfolio" className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
       <div data-reveal="up">
         <Eyebrow>{pf.eyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{pf.title}</h2>
       </div>
 
       {sliders.map((s) => (
-       <TrendCarousel key={s.title} title={s.title} hint={s.hint} slides={s.slides} />
+        <TrendCarousel key={s.title} title={s.title} hint={s.hint} slides={s.slides} />
       ))}
 
       <div
@@ -263,7 +278,7 @@ export default function Portfolio() {
             href={copy.contacts.social.telegram.href}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-11 w-full sm:w-auto items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-base font-semibold text-black transition hover:opacity-95"
+            className="inline-flex h-11 w-full items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-base font-semibold text-black transition hover:opacity-95 sm:w-auto"
           >
             {pf.cta.button}
           </a>

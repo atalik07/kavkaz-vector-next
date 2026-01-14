@@ -5,7 +5,7 @@ import { copy } from "@/lib/copy";
 
 function FieldLabel({ children }: { children: string }) {
   return (
-    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+    <div className="text-sm font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
       {children}
     </div>
   );
@@ -45,7 +45,7 @@ export default function Contacts() {
   <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
       {/* 1) Заголовок/eyebrow с отступом слева как в About/Advantages */}
       <div className="pl-10" data-reveal="up">
-        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+        <div className="text-sm font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
           {copy.contacts.eyebrow}
         </div>
       </div>
@@ -71,7 +71,7 @@ export default function Contacts() {
       {/* LEFT: поля */}
       <div className="grid grid-cols-1 gap-4">
         <label className="space-y-2">
-          <div className="px-4 text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+          <div className="px-4 text-sm font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
             Обращение <span className="text-[color:var(--accent)]">*</span>
           </div>
           <input
@@ -79,12 +79,12 @@ export default function Contacts() {
             required
             placeholder={copy.contacts.form.namePlaceholder}
             aria-label={copy.contacts.form.name}
-            className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
+            className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-base outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
           />
         </label>
 
         <label className="space-y-2">
-          <div className="px-4 text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+          <div className="px-4 text-sm font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
             Телефон <span className="text-[color:var(--accent)]">*</span>
           </div>
           <input
@@ -92,12 +92,12 @@ export default function Contacts() {
             required
             placeholder={copy.contacts.form.phonePlaceholder}
             aria-label={copy.contacts.form.phone}
-            className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
+            className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-base outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
           />
         </label>
 
         <label className="space-y-2">
-          <div className="px-4 text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+          <div className="px-4 text-sm font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
             Email{" "}
             <span className="font-normal normal-case tracking-normal">
               (необязательно)
@@ -107,7 +107,7 @@ export default function Contacts() {
             name="email"
             placeholder={copy.contacts.form.emailPlaceholder}
             aria-label={copy.contacts.form.email}
-            className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
+            className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-base outline-none focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5"
           />
         </label>
       </div>
@@ -115,7 +115,7 @@ export default function Contacts() {
       {/* RIGHT: сообщение — растягиваем через flex на высоту строки */}
       <div className="h-full min-h-0">
         <div className="flex h-full min-h-0 flex-col gap-2">
-          <div className="px-4 text-xs font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
+          <div className="px-4 text-sm font-semibold uppercase tracking-[0.16em] text-black/50 dark:text-white/60">
             Сообщение{" "}
             <span className="font-normal normal-case tracking-normal">
               (необязательно)
@@ -127,7 +127,7 @@ export default function Contacts() {
             placeholder={copy.contacts.form.messagePlaceholder}
             aria-label={copy.contacts.form.message}
             className={[
-              "w-full flex-1 min-h-0 rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none",
+              "w-full flex-1 min-h-0 rounded-xl border border-black/10 bg-white px-4 py-3 text-base outline-none",
               "focus:border-[color:var(--accent)] dark:border-white/15 dark:bg-white/5",
               "resize-none overflow-y-auto",
               "h-[220px] lg:h-auto",
@@ -143,18 +143,18 @@ export default function Contacts() {
     <div className="px-4 mt-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-6">
       <button
         type="submit"
-        className="inline-flex h-11 w-full sm:w-auto items-center justify-center ui-btn bg-[color:var(--accent)] px-10 text-sm font-semibold text-black transition hover:opacity-95"
+        className="inline-flex h-11 w-full sm:w-auto items-center justify-center ui-btn bg-[color:var(--accent)] px-10 text-base font-semibold text-black transition hover:opacity-95"
       >
         {copy.contacts.form.submit}
       </button>
 
-      <div className="text-xs leading-relaxed text-black/60 dark:text-white/60 sm:max-w-[520px]">
+      <div className="text-sm leading-relaxed text-black/60 dark:text-white/60 sm:max-w-[639px]">
         {copy.contacts.form.consent}
       </div>
     </div>
 
     {sent ? (
-      <div className="mt-4 text-sm text-black/60 dark:text-white/70">
+      <div className="mt-4 text-base text-black/60 dark:text-white/70">
         Сообщение можно отправить в Telegram или на Email. Для расчёта укажите позиции, партию,
         точку отгрузки и сроки.
       </div>
@@ -172,7 +172,7 @@ export default function Contacts() {
               {copy.contacts.titleLeft}
             </h2>
 
-            <div className="mt-6 space-y-5 text-sm">
+            <div className="mt-6 space-y-5 text-base">
               <div>
                 <FieldLabel>{copy.contacts.fields.phoneLabel}</FieldLabel>
                 <a
@@ -213,7 +213,7 @@ export default function Contacts() {
                 href={telegramHref}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+                className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-base font-semibold text-black transition hover:opacity-95"
                 onClick={() => setSent(true)}
               >
                 {copy.contacts.social.telegram.label}
@@ -221,7 +221,7 @@ export default function Contacts() {
 
               <a
                 href={mailto}
-                className="inline-flex h-11 items-center justify-center ui-btn border border-black/15 px-6 text-sm font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
+                className="inline-flex h-11 items-center justify-center ui-btn border border-black/15 px-6 text-base font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
                 onClick={() => setSent(true)}
               >
                 Написать на Email
