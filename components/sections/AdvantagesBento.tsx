@@ -90,18 +90,18 @@ function Tile({ item }: { item: Advantage }) {
         <div className="absolute inset-0 heroGrain opacity-20" aria-hidden="true" />
       </div>
 
-      <div className="relative z-10 h-full p-6 sm:p-7 flex flex-col justify-between">
-        <div className="space-y-3">
+     <div className="relative z-10 h-full px-6 pb-6 pt-5 sm:px-7 sm:pb-7 sm:pt-6 flex flex-col">
+        <div className="space-y-2">
           <h3
             className={[
-              "subhead font-extrabold tracking-[0.02em] leading-tight",
+              "subhead font-extrabold tracking-[0.02em] leading-[1.05]",
               textClass,
               "text-2xl sm:text-3xl",
             ].join(" ")}
           >
             {item.title}
           </h3>
-          <p className={["text-base leading-relaxed tracking-[0.02em]", subClass].join(" ")}>
+          <p className={["text-base leading-[1.35] tracking-[0.02em]", subClass].join(" ")}>
             {item.subtitle}
           </p>
         </div>
