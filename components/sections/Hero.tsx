@@ -16,14 +16,20 @@ export default function Hero() {
 
   const activeBg = slideImages[0];
 
+  // Мобайл-раскладка заголовка из строк copy (без правок ru.ts):
+  // line1 = copy.hero.titleLine1
+  // line2 = copy.hero.titleLine2, пробуем красиво разбить на 2 строки
+  const title2 = copy.hero.titleLine2?.trim() ?? "";
+  const title2Words = title2.split(/\s+/).filter(Boolean);
+  const title2a = title2Words.slice(0, 2).join(" "); // напр. "корпусной мебели"
+  const title2b = title2Words.slice(2).join(" "); // напр. "под ключ"
+
   return (
     <section
       data-hero
       data-observe="hero"
       data-inview="false"
       className="relative isolate h-[100svh] overflow-hidden"
-      // ВАЖНО: если у тебя нет --header-h в CSS, поставь здесь временно:
-      // style={{ ["--header-h" as any]: "80px" }}
     >
       {/* BG */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -44,82 +50,104 @@ export default function Hero() {
       <div
         className="relative z-20 h-full"
         style={{
-          // если --header-h задан глобально (лучше), это будет работать.
-          // иначе раскомментируй style выше на section
           paddingTop: "var(--header-h)",
         }}
       >
-        {/* Внутри body — симметричные отступы сверху/снизу = X */}
         <div className="w-full h-[calc(100svh-var(--header-h))] px-4 sm:px-6 md:mx-auto md:max-w-5xl">
-
-          <div className="grid h-full grid-cols-1 gap-10 py-10 lg:grid-cols-2 lg:items-stretch">
+          <div className="grid h-full grid-cols-1 gap-8 py-12 sm:py-10 lg:grid-cols-2 lg:items-stretch">
             {/* LEFT */}
             <div className="min-h-0 lg:flex lg:items-center">
-              {/* важно: min-h-0, чтобы левая часть не ломала высоту сетки */}
-              <div className="min-h-0 w-full">
-                <h1 className="font-extrabold uppercase text-zinc-950 dark:text-white leading-[0.94] tracking-tight">
-<span
-  data-reveal
-  data-reveal-delay="1"
-  className="block text-[clamp(28px,3.2vw,56px)]"
->
-  {copy.hero.titleLine1}
-</span>
-<span
-  data-reveal
-  data-reveal-delay="2"
-  className="block text-[clamp(28px,3.2vw,56px)]"
->
-  {copy.hero.titleLine2}
-</span>
-
-
-                </h1>
-
-                <p
-                  data-reveal
-                  data-reveal-delay="2"
-                  className="subhead mt-6 max-w-[48rem] text-zinc-950/80 dark:text-white/85 uppercase tracking-[0.06em] text-base sm:text-xl"
-                >
-                  <span className="block">{copy.hero.subtitleLine1}</span>
-                  <span className="block">{copy.hero.subtitleLine2}</span>
-                </p>
-
-                <div data-reveal="up" data-reveal-delay="3" className="mt-7 flex flex-wrap gap-3">
-                  <ButtonLink
-                    href={copy.hero.ctaPrimaryHref}
-                    variant="accentOutline"
-                    size="md"
-                    className="uppercase tracking-[0.10em]"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {copy.hero.ctaPrimary}
-                  </ButtonLink>
-
-                  <ButtonLink
-                    href={copy.hero.ctaSecondaryHref}
-                    variant="soft"
-                    size="md"
-                    className="uppercase tracking-[0.10em]"
-                  >
-                    {copy.hero.ctaSecondary}
-                  </ButtonLink>
-                </div>
-
-                <div data-reveal="up" data-reveal-delay="4" className="mt-6 flex flex-wrap gap-2">
-                  {copy.hero.trust.map((t) => (
+              {/* На мобиле делаем колонку на всю высоту, чтобы низ (CTA) прижать вниз */}
+              <div className="min-h-0 w-full flex h-full flex-col">
+                {/* TOP */}
+                <div>
+                  <h1 className="font-extrabold uppercase text-zinc-950 dark:text-white leading-[0.92] tracking-tight">
                     <span
-                      key={t}
-                      className="rounded-xl border px-3 py-1 text-[11px] font-normal uppercase tracking-[0.08em] backdrop-blur border-zinc-900/10 bg-white/50 text-zinc-950/55 dark:border-white/10 dark:bg-black/10 dark:text-white/55"
+                      data-reveal
+                      data-reveal-delay="1"
+                      className="block text-[clamp(34px,9vw,56px)] sm:text-[clamp(28px,3.2vw,56px)]"
                     >
-                      {t}
+                      {copy.hero.titleLine1}
                     </span>
-                  ))}
+
+                    {/* Mobile: превращаем вторую строку в 2 строки (итого 3 строки заголовка) */}
+                    <span
+                      data-reveal
+                      data-reveal-delay="2"
+                      className="block sm:hidden text-[clamp(34px,9vw,56px)]"
+                    >
+                      {title2a || title2}
+                    </span>
+                    {title2b ? (
+                      <span
+                        data-reveal
+                        data-reveal-delay="2"
+                        className="block sm:hidden text-[clamp(34px,9vw,56px)]"
+                      >
+                        {title2b}
+                      </span>
+                    ) : null}
+
+                    {/* Sm+ оставляем как было: одной строкой */}
+                    <span
+                      data-reveal
+                      data-reveal-delay="2"
+                      className="hidden sm:block text-[clamp(28px,3.2vw,56px)]"
+                    >
+                      {copy.hero.titleLine2}
+                    </span>
+                  </h1>
+
+                  <p
+                    data-reveal
+                    data-reveal-delay="2"
+                    className="subhead mt-6 text-zinc-950/80 dark:text-white/85 uppercase tracking-[0.04em] text-lg sm:text-xl sm:max-w-[48rem]"
+                  >
+                    <span className="block">{copy.hero.subtitleLine1}</span>
+                    <span className="block">{copy.hero.subtitleLine2}</span>
+                  </p>
                 </div>
 
-                <div className="relative z-20 mt-10">
-                  <HeroUtilityBar />
+                {/* BOTTOM (прижать вниз) */}
+                <div className="mt-auto pt-8">
+                  {/* Кнопки: строго в одну колонку на мобиле */}
+                  <div data-reveal="up" data-reveal-delay="3" className="flex flex-col gap-4">
+                    <ButtonLink
+                      href={copy.hero.ctaPrimaryHref}
+                      variant="accentOutline"
+                      size="md"
+                      className="uppercase tracking-[0.10em] w-full justify-center"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {copy.hero.ctaPrimary}
+                    </ButtonLink>
+
+                    <ButtonLink
+                      href={copy.hero.ctaSecondaryHref}
+                      variant="soft"
+                      size="md"
+                      className="uppercase tracking-[0.10em] w-full justify-center"
+                    >
+                      {copy.hero.ctaSecondary}
+                    </ButtonLink>
+                  </div>
+
+                  <div data-reveal="up" data-reveal-delay="4" className="mt-6 flex flex-wrap gap-2">
+                    {copy.hero.trust.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-xl border px-3 py-1 text-[11px] font-normal uppercase tracking-[0.08em] backdrop-blur border-zinc-900/10 bg-white/50 text-zinc-950/55 dark:border-white/10 dark:bg-black/10 dark:text-white/55"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Бар на мобиле скрыт как и было (md:block) */}
+                  <div className="relative z-20 mt-8 hidden md:block">
+                    <HeroUtilityBar />
+                  </div>
                 </div>
               </div>
             </div>
@@ -127,7 +155,6 @@ export default function Hero() {
             {/* RIGHT */}
             <aside className="hidden lg:flex lg:min-h-0 lg:items-stretch">
               <div className="min-h-0 h-full w-full">
-                {/* Ключ: HeroRSlider должен уметь тянуться по высоте родителя */}
                 <HeroRSlider
                   slides={slides}
                   images={slideImages}

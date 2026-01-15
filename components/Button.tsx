@@ -14,10 +14,8 @@ const base =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:opacity-50 disabled:pointer-events-none";
 
 const sizes: Record<Size, string> = {
-  // было: h-9 px-4 text-sm
-  sm: "h-8 px-3.5 text-sm",
-  // было: h-10 px-5 text-sm
-  md: "h-9 px-4 text-sm",
+  sm: "h-10 px-4 text-sm",  // было h-8
+  md: "h-12 px-5 text-sm",  // было h-9
 };
 
 const variants: Record<Variant, string> = {
