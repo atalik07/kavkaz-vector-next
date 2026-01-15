@@ -4,7 +4,7 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { copy } from "@/lib/copy";
 import HeroRSlider from "@/components/HeroRSlider";
 
-const aboutImages = ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/logistics.webp"] as const;
+const aboutImages = ["/images/tz_chertezh.webp", "/images/control_quality.webp", "/images/upakovka.webp", "/images/logistics_sklad.webp"] as const;
 
 function Eyebrow({ children }: { children: string }) {
   return (

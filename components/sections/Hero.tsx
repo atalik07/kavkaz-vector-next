@@ -10,7 +10,7 @@ export default function Hero() {
   const slides = copy.hero.slides;
 
   const slideImages = useMemo(
-    () => ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/4.jpg"],
+    () => ["/images/1.webp", "/images/2.jpg", "/images/3.webp", "/images/4.webp"],
     []
   );
 
