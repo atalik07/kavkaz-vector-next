@@ -418,7 +418,8 @@ export default function Header() {
             })}
           </nav>
 
-          <div className="flex shrink-0 items-center justify-self-end gap-2">
+          <div className="flex min-w-0 items-center justify-self-end gap-2 overflow-hidden">
+
             <a
               ref={phoneDesktopRef}
               href={phoneHref}
@@ -432,8 +433,8 @@ export default function Header() {
             </a>
 
             <a
-              href={phoneHref}
-              className="inline-flex lg:hidden rounded-full p-2 hover:bg-black/5 dark:hover:bg-white/10 hover:text-[color:var(--accent)]"
+  href={phoneHref}
+  className="inline-flex shrink-0 lg:hidden rounded-full p-2 hover:bg-black/5 dark:hover:bg-white/10 hover:text-[color:var(--accent)]"
               aria-label={phoneLabel}
               title={phoneLabel}
             >
@@ -460,7 +461,7 @@ export default function Header() {
   onClick={() => setMobileOpen(true)}
   aria-label="Open menu"
   className={[
-    "inline-flex items-center justify-center rounded-full p-2 md:hidden",
+    "inline-flex shrink-0 items-center justify-center rounded-full p-2 md:hidden",
     "text-zinc-950 bg-white/80 ring-1 ring-black/10",
     "hover:bg-white hover:text-[color:var(--accent)]",
     "dark:text-white dark:bg-black/30 dark:ring-white/15 dark:hover:bg-black/45",

@@ -50,7 +50,8 @@ export default function Hero() {
         }}
       >
         {/* Внутри body — симметричные отступы сверху/снизу = X */}
-        <div className="mx-auto h-[calc(100svh-var(--header-h))] max-w-5xl px-4 sm:px-6">
+        <div className="w-full h-[calc(100svh-var(--header-h))] px-4 sm:px-6 md:mx-auto md:max-w-5xl">
+
           <div className="grid h-full grid-cols-1 gap-10 py-10 lg:grid-cols-2 lg:items-stretch">
             {/* LEFT */}
             <div className="min-h-0 lg:flex lg:items-center">
