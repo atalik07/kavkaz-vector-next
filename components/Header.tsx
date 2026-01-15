@@ -365,8 +365,10 @@ export default function Header() {
       >
         <div
           className={[
-            "mx-auto grid h-14 sm:h-[60px] max-w-6xl items-center px-4 sm:px-6",
-            compact ? "grid-cols-[1fr_auto]" : "grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr]",
+            "mx-auto grid h-14 sm:h-[60px] max-w-5xl items-center px-4 sm:px-6",
+            compact
+              ? "grid-cols-[minmax(0,1fr)_auto]"
+              : "grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[1fr_auto_1fr]",
           ].join(" ")}
         >
           <a
@@ -377,17 +379,20 @@ export default function Header() {
               document.getElementById("hero")?.scrollIntoView({ behavior: "smooth", block: "start" });
               setMobileOpen(false);
             }}
-            className="flex items-center gap-3"
+            className="flex min-w-0 items-center gap-2 sm:gap-3"
+
           >
             <span className="inline-flex items-center justify-center">
               <img
-                src="/images/logo.png"
+                src="/images/logo.webp"
                 alt={`${copy.brand.name} ${copy.brand.tagline}`}
                 className="h-8 w-8 object-cover"
               />
             </span>
 
-            <span className="block text-base font-semibold tracking-tight leading-none">{copy.brand.name}</span>
+            <span className="block min-w-0 truncate text-[15px] font-semibold tracking-tight leading-none sm:text-base">
+              {copy.brand.name}
+            </span>
           </a>
 
           <nav
@@ -413,7 +418,7 @@ export default function Header() {
             })}
           </nav>
 
-          <div className="flex items-center justify-self-end gap-2">
+          <div className="flex shrink-0 items-center justify-self-end gap-2">
             <a
               ref={phoneDesktopRef}
               href={phoneHref}
@@ -450,17 +455,21 @@ export default function Header() {
               ))}
             </div>
 
-            <button
-              type="button"
-              onClick={() => setMobileOpen(true)}
-              className={[
-                "inline-flex items-center justify-center rounded-full p-2 hover:bg-black/5 dark:hover:bg-white/10",
-                compact ? "md:inline-flex" : "md:hidden",
-              ].join(" ")}
-              aria-label="Open menu"
-            >
-              <IconBurger className="h-6 w-6" />
-            </button>
+<button
+  type="button"
+  onClick={() => setMobileOpen(true)}
+  aria-label="Open menu"
+  className={[
+    "inline-flex items-center justify-center rounded-full p-2 md:hidden",
+    "text-zinc-950 bg-white/80 ring-1 ring-black/10",
+    "hover:bg-white hover:text-[color:var(--accent)]",
+    "dark:text-white dark:bg-black/30 dark:ring-white/15 dark:hover:bg-black/45",
+  ].join(" ")}
+>
+  <IconBurger className="h-6 w-6" />
+</button>
+
+
           </div>
         </div>
       </header>

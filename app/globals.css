@@ -69,8 +69,14 @@ body {
 }
 
 html {
-  font-size: 20px; /* mobile default */
+  font-size: 18px; /* mobile default */
   scroll-behavior: smooth;
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 20px; /* desktop/tablet+ */
+  }
 }
 
 /* мягкий фокус по умолчанию */
