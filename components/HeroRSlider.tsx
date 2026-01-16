@@ -13,18 +13,22 @@ export function HeroRSliderDots({
   count,
   active,
   align = "left",
+  direction = "vertical",
   className = "",
 }: {
   count: number;
   active: number;
   align?: "left" | "right";
+  direction?: "vertical" | "horizontal";
   className?: string;
 }) {
   return (
     <div
       className={[
-        "flex flex-col gap-2 items-center pt-4",
-        align === "right" ? "ml-auto" : "",
+        direction === "horizontal"
+          ? "flex flex-row gap-2 items-center"
+          : "flex flex-col gap-2 items-center pt-4",
+        align === "right" && direction === "vertical" ? "ml-auto" : "",
         className,
       ].join(" ")}
     >
@@ -58,7 +62,7 @@ export default function HeroRSlider({
   slides: readonly Slide[];
   images: readonly string[];
   dotsAlign?: "left" | "right";
-  dots?: "inside" | "none";
+  dots?: "inside" | "bottom" | "none";
   slideMs?: number;
   fadeMs?: number;
   className?: string;
@@ -80,8 +84,18 @@ export default function HeroRSlider({
     window.setTimeout(() => setDrawerOpen(true), 120);
   };
 
-  const DotsBlock =
-    dots !== "none" ? <HeroRSliderDots count={slides.length} active={active} align={dotsAlign} /> : null;
+  const SideDots =
+    dots === "inside" ? (
+      <HeroRSliderDots count={slides.length} active={active} align={dotsAlign} />
+    ) : null;
+
+const BottomDots =
+  dots === "bottom" ? (
+    <div className="flex justify-center pt-3 pb-1">
+      <HeroRSliderDots count={slides.length} active={active} direction="horizontal" />
+    </div>
+  ) : null;
+
 
   const SlideBlock = (
     <div className="heroRSlide h-full w-full">
@@ -123,7 +137,9 @@ export default function HeroRSlider({
         style={{ zIndex: 1 }}
       >
         <div className="heroRSlideTop">
-          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-current/65">{s?.kicker}</div>
+          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-current/65">
+            {s?.kicker}
+          </div>
           <div className="mt-2 text-lg font-extrabold tracking-tight text-current">{s?.headline}</div>
         </div>
       </div>
@@ -134,29 +150,40 @@ export default function HeroRSlider({
     </div>
   );
 
-  return (
-    <div className={["heroRCard", className].join(" ")}>
-      {/* Вьюпорт: если задан — ограничиваем высоту/радиус/overflow тут, не в компоненте-родителе */}
-      <div className={["h-full w-full", viewportClassName].join(" ")}>
-        <div
-          className={[
-            "heroRInner h-full w-full",
-            dotsAlign === "right" ? "heroRInner--dotsRight" : "",
-          ].join(" ")}
-        >
-          {dotsAlign === "right" ? (
+return (
+  <div className={["heroRCard", className].join(" ")}>
+    <div className={["h-full w-full relative", viewportClassName].join(" ")}>
+      {BottomDots}
+
+      <div
+        className={[
+          "heroRInner h-full w-full",
+          // ВАЖНО: правую “сетку под точки” включаем только для inside-режима
+          dots === "inside" && dotsAlign === "right" ? "heroRInner--dotsRight" : "",
+          dots === "bottom" || dots === "none" ? "heroRInner--dotsBottom" : "",
+
+        ].join(" ")}
+      >
+        {dots === "inside" ? (
+          dotsAlign === "right" ? (
             <>
               {SlideBlock}
-              {DotsBlock}
+              {SideDots}
             </>
           ) : (
             <>
-              {DotsBlock}
+              {SideDots}
               {SlideBlock}
             </>
-          )}
-        </div>
+          )
+        ) : (
+          // bottom/none: только слайд (рамка остаётся, потому что heroRInner остаётся)
+          SlideBlock
+        )}
       </div>
     </div>
-  );
+  </div>
+);
+
+
 }

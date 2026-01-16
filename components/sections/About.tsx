@@ -56,8 +56,8 @@ const aboutSliderViewport =
 
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
-      <div className="pl-10" data-reveal="up">
+    <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20" data-observe>
+      <div className="pl-10" data-reveal>
         <h2 className="subhead font-extrabold uppercase tracking-[0.09em] leading-snug text-zinc-950 dark:text-white text-2xl sm:text-3xl">
           {copy.about.eyebrow}
         </h2>
@@ -69,7 +69,8 @@ const aboutSliderViewport =
           <HeroRSlider
             slides={copy.hero.slides}
             images={aboutImages}
-            dotsAlign="right"
+            dots="bottom"
+            // dotsAlign="left"
             className="w-full"
             viewportClassName={aboutSliderViewport}
           />
@@ -165,7 +166,7 @@ const aboutSliderViewport =
             </div>
 
             {/* BOTTOM */}
-            <div className="py-4 space-y-6 text-base tracking-[0.02em] text-black/70 dark:text-white/70 lg:px-10">
+            <div className="py-4 space-y-6 text-base tracking-[0.02em] text-black/70 dark:text-white/70 lg:px-10" data-reveal>
               <div className="text-center">
                 <div className="inline-flex flex-col items-center gap-2">
                   <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>

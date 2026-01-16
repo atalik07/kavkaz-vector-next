@@ -193,6 +193,50 @@ export const ru = {
     },
   },
 
+
+  advantagesBento: {
+    eyebrowPrefix: "Преимущества контрактного производства с",
+    items: [
+      {
+        title: "Индустриальный парк совершенно новых станочных машин",
+        subtitle: "Современное оборудование — стабильная геометрия и повторяемость партий.",
+        image: "/images/prem_stanok.webp",
+        variant: "big-left",
+        lightText: true,
+      },
+      {
+        title: "Конструкторский отдел",
+        subtitle: "Проектируем изделия под ваш формат: от эскиза до спецификации и упаковки.",
+        image: "/images/prem_construct.webp",
+        variant: "stack-top",
+        lightText: true,
+      },
+      {
+        title: "Собственный сборочный цех и производство упаковки",
+        subtitle: "Комплектуем, проверяем, защищаем — под хранение и требования площадок.",
+        image: "/images/3.jpg",
+        variant: "stack-bottom",
+        lightText: true,
+      },
+      {
+        title: "Брендирование продукции",
+        subtitle: "Маркировка, шильды, упаковка и вложения — по вашему регламенту.",
+        image: "/images/prem_branding.webp",
+        variant: "bottom-left",
+        lightText: true,
+      },
+      {
+        title: "Логистика товара до ваших складов или маркетплейсов",
+        subtitle: "Отгрузка по согласованному сценарию: ТК / склад / фулфилмент.",
+        image: "/images/prem_logistic.webp",
+        variant: "bottom-right",
+        lightText: true,
+      },
+    ],
+  },
+
+
+
   contacts: {
     eyebrow: "Связаться с нами",
     titleLeft: "Контакты",

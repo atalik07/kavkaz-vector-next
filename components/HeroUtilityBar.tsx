@@ -62,23 +62,24 @@ function IconMail(props: React.SVGProps<SVGSVGElement>) {
 
 export function SocialPill({ className = "" }: { className?: string }) {
   const social = [
-    { href: copy.contacts.links.emailHref, label: "Email", icon: <IconMail className="block h-4 w-4" /> },
+    { href: copy.contacts.links.emailHref, label: "Email", icon: <IconMail className="block h-5 w-5 md:h-4 md:w-4" /> },
     {
       href: copy.contacts.social.telegram.href,
       label: copy.contacts.social.telegram.label,
-      icon: <IconTelegram className="block h-4 w-4 scale-[0.92]" />,
+      icon: <IconTelegram className="block h-5 w-5 md:h-4 md:w-4 scale-[0.92] md:scale-100" />,
     },
     {
       href: copy.contacts.social.instagram.href,
       label: copy.contacts.social.instagram.label,
-      icon: <IconInstagram className="block h-4 w-4" />,
+      icon: <IconInstagram className="block h-5 w-5 md:h-4 md:w-4" />,
     },
   ];
 
   return (
     <div
       className={[
-        "inline-flex items-center gap-0.5 rounded-full border p-[3px] backdrop-blur",
+    "inline-flex items-center gap-1 rounded-full border p-1 backdrop-blur md:gap-0.5 md:p-[3px]",
+
         "border-zinc-900/15 bg-white/70 text-zinc-950",
         "dark:border-white/15 dark:bg-black/20 dark:text-white",
         className,
@@ -91,9 +92,10 @@ export function SocialPill({ className = "" }: { className?: string }) {
           target="_blank"
           rel="noreferrer"
           aria-label={s.label}
-          className="inline-flex h-8 w-8 items-center justify-center text-current/85 hover:text-[color:var(--accent)]"
+         className="inline-flex h-11 w-11 items-center justify-center text-current/85 hover:text-[color:var(--accent)] md:h-8 md:w-8"
+
         >
-          <span className="grid h-4 w-4 place-items-center">{s.icon}</span>
+          <span className="grid h-5 w-5 place-items-center md:h-4 md:w-4">{s.icon}</span>
         </a>
       ))}
     </div>
@@ -102,7 +104,13 @@ export function SocialPill({ className = "" }: { className?: string }) {
 
 export default function HeroUtilityBar() {
   return (
-    <div data-hero-bar data-reveal="up" data-reveal-delay="4" className="mt-5 hidden md:block">
+    <div
+  data-hero-bar
+  data-reveal="up"
+  data-reveal-delay="4"
+  className="mt-5 hidden md:block lg:mt-3"
+>
+
       <div className="inline-flex items-center gap-1.5">
         <div
           className={[

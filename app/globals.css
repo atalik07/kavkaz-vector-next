@@ -180,6 +180,15 @@ h1, h2, h3, h4, h5, h6 {
   grid-template-columns: 1fr 24px;
 }
 
+.heroRInner--dotsBottom {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 12px;          /* расстояние между слайдом и точками */
+  padding-bottom: 18px; /* чуть больше воздуха снизу */
+}
+
+
 
 .heroRSlide {
   position: relative;

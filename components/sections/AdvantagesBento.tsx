@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { copy } from "@/lib/copy";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +11,6 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
-
 type Advantage = {
   title: string;
   subtitle: string;
@@ -18,45 +18,6 @@ type Advantage = {
   variant: "big-left" | "stack-top" | "stack-bottom" | "bottom-left" | "bottom-right";
   lightText?: boolean;
 };
-
-const advantages: Advantage[] = [
-  {
-    title: "Индустриальный парк совершенно новых станочных машин",
-    subtitle: "Современное оборудование — стабильная геометрия и повторяемость партий.",
-    image: "/images/prem_stanok.webp",
-    variant: "big-left",
-    lightText: true,
-  },
-  {
-    title: "Конструкторский отдел",
-    subtitle: "Проектируем изделия под ваш формат: от эскиза до спецификации и упаковки.",
-    image: "/images/prem_construct.webp",
-    variant: "stack-top",
-    lightText: true,
-  },
-  {
-    title: "Собственный сборочный цех и производство упаковки",
-    subtitle: "Комплектуем, проверяем, защищаем — под хранение и требования площадок.",
-    image: "/images/3.jpg",
-    variant: "stack-bottom",
-    lightText: true,
-  },
-  {
-    title: "Брендирование продукции",
-    subtitle: "Маркировка, шильды, упаковка и вложения — по вашему регламенту.",
-    image: "/images/prem_branding.webp",
-    variant: "bottom-left",
-    lightText: true,
-  },
-  {
-    title: "Логистика товара до ваших складов или маркетплейсов",
-    subtitle: "Отгрузка по согласованному сценарию: ТК / склад / фулфилмент.",
-    image: "/images/prem_logistic.webp",
-    variant: "bottom-right",
-    lightText: true,
-  },
-];
-
 
 function Tile({ item }: { item: Advantage }) {
   const textClass = item.lightText ? "text-white" : "text-zinc-950 dark:text-white";
@@ -90,7 +51,7 @@ function Tile({ item }: { item: Advantage }) {
         <div className="absolute inset-0 heroGrain opacity-20" aria-hidden="true" />
       </div>
 
-     <div className="relative z-10 h-full px-6 pb-6 pt-5 sm:px-7 sm:pb-7 sm:pt-6 flex flex-col">
+      <div className="relative z-10 flex h-full flex-col px-6 pb-6 pt-5 sm:px-7 sm:pb-7 sm:pt-6">
         <div className="space-y-2">
           <h3
             className={[
@@ -111,22 +72,22 @@ function Tile({ item }: { item: Advantage }) {
 }
 
 export default function AdvantagesBento() {
+  const items = copy.advantagesBento.items as unknown as Advantage[];
+
   return (
     <section className="mx-auto -mt-2 max-w-6xl px-4 py-2 sm:px-6 sm:py-2">
       <div className="pl-10" data-reveal="up">
-<Eyebrow>
-  Преимущества контрактного производства с{" "}
-  <span className="normal-case font-semibold tracking-tight text-[1.3em] text-zinc-950 dark:text-white">
-    ОптМебельЮг
-  </span>
-</Eyebrow>
-
-
+        <Eyebrow>
+          {copy.advantagesBento.eyebrowPrefix}{" "}
+          <span className="normal-case font-semibold tracking-tight text-[1.3em] text-zinc-950 dark:text-white">
+            {copy.brand.name}
+          </span>
+        </Eyebrow>
       </div>
 
       <div className="mt-6">
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:auto-rows-[240px]">
-          {advantages.map((it) => (
+          {items.map((it) => (
             <Tile key={it.title} item={it} />
           ))}
         </div>

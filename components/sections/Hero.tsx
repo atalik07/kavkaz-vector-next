@@ -54,7 +54,8 @@ export default function Hero() {
         }}
       >
         <div className="w-full h-[calc(100svh-var(--header-h))] px-4 sm:px-6 md:mx-auto md:max-w-5xl">
-          <div className="grid h-full grid-cols-1 gap-8 py-12 sm:py-10 lg:grid-cols-2 lg:items-stretch">
+         <div className="grid h-full grid-cols-1 gap-8 py-12 sm:py-10 lg:grid-cols-2 lg:items-stretch lg:py-8">
+
             {/* LEFT */}
             <div className="min-h-0 lg:flex lg:items-center">
               {/* На мобиле делаем колонку на всю высоту, чтобы низ (CTA) прижать вниз */}
@@ -109,31 +110,37 @@ export default function Hero() {
                 </div>
 
                 {/* BOTTOM (прижать вниз) */}
-                <div className="mt-auto pt-8">
-                  {/* Кнопки: строго в одну колонку на мобиле */}
-                  <div data-reveal="up" data-reveal-delay="3" className="flex flex-col gap-4">
-                    <ButtonLink
-                      href={copy.hero.ctaPrimaryHref}
-                      variant="accentOutline"
-                      size="md"
-                      className="uppercase tracking-[0.10em] w-full justify-center"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {copy.hero.ctaPrimary}
-                    </ButtonLink>
+<div className="mt-auto pt-8 lg:mt-6 lg:pt-2">
 
-                    <ButtonLink
-                      href={copy.hero.ctaSecondaryHref}
-                      variant="soft"
-                      size="md"
-                      className="uppercase tracking-[0.10em] w-full justify-center"
-                    >
-                      {copy.hero.ctaSecondary}
-                    </ButtonLink>
-                  </div>
+                  {/* Кнопки: везде колонка, на мобиле — во всю ширину, на lg+ — по контенту */}
+<div
+  data-reveal="up"
+  data-reveal-delay="3"
+  className="flex flex-col gap-4 lg:gap-3"
+>
+  <ButtonLink
+    href={copy.hero.ctaPrimaryHref}
+    variant="accentOutline"
+    size="md"
+    className="uppercase tracking-[0.10em] w-full justify-center lg:w-auto lg:self-start"
+    target="_blank"
+    rel="noreferrer"
+  >
+    {copy.hero.ctaPrimary}
+  </ButtonLink>
 
-                  <div data-reveal="up" data-reveal-delay="4" className="mt-6 flex flex-wrap gap-2">
+  <ButtonLink
+    href={copy.hero.ctaSecondaryHref}
+    variant="soft"
+    size="md"
+    className="uppercase tracking-[0.10em] w-full justify-center lg:w-auto lg:self-start"
+  >
+    {copy.hero.ctaSecondary}
+  </ButtonLink>
+</div>
+
+
+                  <div data-reveal="up" data-reveal-delay="4" className="mt-6 lg:mt-4 flex flex-wrap gap-2">
                     {copy.hero.trust.map((t) => (
                       <span
                         key={t}

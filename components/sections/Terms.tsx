@@ -222,6 +222,7 @@ export default function Terms() {
                 <span className="block">{copy.terms.highlight.left.line2}</span>
               </div>
             </div>
+<div className="h-px w-full bg-black/10 dark:bg-white/10 lg:hidden" />
 
             <div className="lg:pl-8">
               <div className="text-2xl font-extrabold tracking-tight leading-tight text-zinc-950 dark:text-white">
@@ -281,7 +282,8 @@ export default function Terms() {
               </a>
             </div>
 
-            <SocialPill className="shrink-0 self-start sm:self-auto" />
+<SocialPill className="shrink-0 self-center sm:self-auto" />
+
           </div>
         </div>
       </section>
