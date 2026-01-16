@@ -18,10 +18,28 @@ export const ru = {
   },
 
   theme: {
+    accentColor: "#ff4b2b",
     label: "Тема",
     system: "Авто",
     light: "Светлая",
     dark: "Тёмная",
+  },
+  
+  telegram: {
+    account: "https://t.me/+gaG54XczoY40ZGVi",
+    group: "https://t.me/+gaG54XczoY40ZGVi",
+  },
+
+  cta: {
+    heroPrimary: { mode: "tgAccount", override: "" },
+
+    portfolio: { mode: "tgGroup", override: "" },
+
+    stepsManager: { mode: "tgAccount", override: "" },
+    stepsCatalog: { mode: "tgGroup", override: "" },
+
+    bottomCalc: { mode: "tgAccount", override: "" },
+    bottomTerms: { mode: "tgAccount", override: "" },
   },
 
   hero: {
@@ -214,7 +232,7 @@ export const ru = {
       {
         title: "Собственный сборочный цех и производство упаковки",
         subtitle: "Комплектуем, проверяем, защищаем — под хранение и требования площадок.",
-        image: "/images/3.jpg",
+        image: "/images/3.webp",
         variant: "stack-bottom",
         lightText: true,
       },

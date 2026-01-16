@@ -2,13 +2,15 @@
 
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
-import { copy } from "@/lib/copy";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper/types";
 
 import "swiper/css";
+
+type Props = {
+  copy: any;
+};
 
 function Eyebrow({ children }: { children: string }) {
   return (
@@ -230,7 +232,7 @@ function TrendCarousel({
   );
 }
 
-export default function Portfolio() {
+export default function Portfolio({ copy }: Props) {
   const pf = copy.portfolio as unknown as {
     eyebrow: string;
     title: string;

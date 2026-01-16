@@ -1,6 +1,8 @@
-import { copy } from "@/lib/copy";
+import type { Copy } from "@/lib/copy/ru";
 
-export default function Footer() {
+type Props = { copy: Copy };
+
+export default function Footer({ copy }: Props) {
   const year = new Date().getFullYear();
   const copyright = copy.footer.copyright.replace("{year}", String(year));
 

@@ -1,12 +1,16 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { copy } from "@/lib/copy";
 import HeroUtilityBar from "@/components/HeroUtilityBar";
 import { ButtonLink } from "@/components/Button";
 import HeroRSlider from "@/components/HeroRSlider";
+import type { Copy } from "@/lib/copy/ru";
+import { resolveCtaHref } from "@/lib/cta";
 
-export default function Hero() {
+
+type Props = { copy: Copy };
+
+export default function Hero({ copy }: Props) {
   const slides = copy.hero.slides;
 
   const slideImages = useMemo(
@@ -119,7 +123,7 @@ export default function Hero() {
   className="flex flex-col gap-4 lg:gap-3"
 >
   <ButtonLink
-    href={copy.hero.ctaPrimaryHref}
+    href={resolveCtaHref(copy, copy?.cta?.heroPrimary)}
     variant="accentOutline"
     size="md"
     className="uppercase tracking-[0.10em] w-full justify-center lg:w-auto lg:self-start"
@@ -153,7 +157,8 @@ export default function Hero() {
 
                   {/* Бар на мобиле скрыт как и было (md:block) */}
                   <div className="relative z-20 mt-8 hidden md:block">
-                    <HeroUtilityBar />
+                    <HeroUtilityBar copy={copy} />
+
                   </div>
                 </div>
               </div>

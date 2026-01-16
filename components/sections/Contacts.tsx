@@ -1,8 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { copy } from "@/lib/copy";
 import { SocialPill } from "@/components/HeroUtilityBar";
+import type { Copy } from "@/lib/copy/ru";
+
+type Props = { copy: Copy };
+
 
 function IconTelegram(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -30,7 +33,7 @@ function FieldLabel({ children }: { children: string }) {
   );
 }
 
-export default function Contacts() {
+export default function Contacts({ copy }: Props) {
   const [sent, setSent] = useState(false);
 
   const telegramHref = copy.contacts.social.telegram.href;
@@ -247,7 +250,8 @@ export default function Contacts() {
                   {copy.contacts.cta.telegramGroup}
                 </a>
 
-                <SocialPill className="shrink-0 self-center sm:self-auto" />
+                <SocialPill copy={copy} className="shrink-0 self-center sm:self-auto" />
+
               </div>
             </div>
 

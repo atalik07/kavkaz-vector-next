@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
-import { copy } from "@/lib/copy";
 import HeroRSlider from "@/components/HeroRSlider";
+import type { Copy } from "@/lib/copy/ru";
+
+type Props = { copy: Copy };
+
 
 const aboutImages = [
   "/images/tz_chertezh.webp",
@@ -33,8 +36,8 @@ function IconChevronDown(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export default function About() {
-  const faqItems = useMemo(() => copy.faq.items, []);
+export default function About({ copy }: Props) {
+  const faqItems = copy.faq.items;
   const [open, setOpen] = useState(false);
 
   const innerRef = useRef<HTMLDivElement | null>(null);
@@ -213,9 +216,10 @@ export default function About() {
                   >
                     <div className="pl-5 font-semibold text-zinc-950 dark:text-white">{col.title}</div>
                     <ul className="list-disc pl-5 space-y-2">
-                      {col.items.map((it, j) => (
-                        <li key={`d-col-${idx}-li-${j}`}>{it}</li>
-                      ))}
+{col.items.map((it: string, j: number) => (
+  <li key={`d-col-${idx}-li-${j}`}>{it}</li>
+))}
+
                     </ul>
                   </div>
                 ))}
@@ -226,11 +230,11 @@ export default function About() {
       </div>
 
       {/* CTA PANEL */}
-      <div
-        className="mt-10 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 text-sm text-black/70 dark:border-white/15 dark:bg-[#2d2f31]/50 dark:text-white/70 sm:p-8"
-        style={{ borderRadius: "var(--radius-card)" }}
-        data-reveal="up"
-      >
+<div
+  className="mt-10 ui-card rounded-[var(--radius-card)] border border-black/10 bg-[#ddd6cc]/30 p-6 text-sm text-black/70 dark:border-white/15 dark:bg-[#2d2f31]/50 dark:text-white/70 sm:p-8"
+  data-reveal="up"
+>
+
         <div className="text-lg sm:text-xl font-semibold tracking-[0.02em] leading-snug text-zinc-950 dark:text-white whitespace-pre-line">
           {copy.about.ctaPanel.text}
         </div>
@@ -264,12 +268,12 @@ export default function About() {
 
           <span
             aria-hidden="true"
-            className="min-w-0 flex-1 opacity-70 dark:opacity-60"
-            style={{
-              height: 1,
-              backgroundImage:
-                "repeating-linear-gradient(to right, currentColor 0 4px, transparent 6px 12px)",
-            }}
+            className="min-w-0 flex-1 opacity-70 dark:opacity-60 h-px bg-[repeating-linear-gradient(to_right,currentColor_0_4px,transparent_6px_12px)]"
+            // style={{
+            //   height: 1,
+            //   backgroundImage:
+            //     "repeating-linear-gradient(to right, currentColor 0 4px, transparent 6px 12px)",
+            // }}
           />
 
           <button
@@ -296,23 +300,21 @@ export default function About() {
 
       {/* FAQ content (анимируется как блок, когда он реально появляется) */}
       <div data-reveal="up">
-        <div
-          className="overflow-hidden transition-[max-height,opacity] duration-500 ease-out"
-          style={{
-            maxHeight: open ? maxH : 0,
-            opacity: open ? 1 : 0,
-          }}
-        >
+<div className="overflow-hidden transition-[max-height,opacity] duration-500 ease-out aboutCollapse"
+  data-open={open ? "true" : "false"}
+  style={{ ["--about-max-h" as any]: `${maxH}px` }}
+>
+
           <div ref={innerRef} className="pt-4">
             <div className="ui-card border border-[color:var(--accent)]/30 bg-[#ddd6cc]/10 p-5 text-base text-black/70 tracking-[0.04em] dark:bg-[#2d2f31]/20 dark:text-white/70">
-              <ul className="space-y-4">
-                {faqItems.map((it, i) => (
-                  <li key={`${it.q}-${i}`} className="space-y-1">
-                    <div className="font-semibold text-zinc-950 dark:text-white">{it.q}</div>
-                    <div className="leading-relaxed">{it.a}</div>
-                  </li>
-                ))}
-              </ul>
+<ul className="space-y-4">
+  {faqItems.map((it: { q: string; a: string }, i: number) => (
+    <li key={`${it.q}-${i}`} className="space-y-1">
+      <div className="font-semibold text-zinc-950 dark:text-white">{it.q}</div>
+      <div className="leading-relaxed">{it.a}</div>
+    </li>
+  ))}
+</ul>
             </div>
           </div>
         </div>

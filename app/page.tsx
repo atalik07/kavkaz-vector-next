@@ -8,6 +8,7 @@ import InView from "@/components/InView";
 import Terms from "@/components/sections/Terms";
 import AdvantagesBento from "@/components/sections/AdvantagesBento";
 import Portfolio from "@/components/sections/Portfolio";
+import { getRuCopy } from "@/lib/copy";
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -21,36 +22,38 @@ function Placeholder({ title }: { title: string }) {
 }
 
 export default function HomePage() {
+  const copy = getRuCopy();
   return (
     <>
-      <Header />
+      <Header copy={copy} />
       <InView />
 
       <main>
         <section id="hero">
-          <Hero />
+          {/* ✅ измени только это */}
+          <Hero copy={copy} />
         </section>
 
         <section id="terms">
-          <Terms />
+        <Terms copy={copy} />
         </section>
 
         <section id="production">
-          <About />
+          <About copy={copy} />
         </section>
 
-        <AdvantagesBento />
+        <AdvantagesBento copy={copy} />
 
         <section id="portfolio">
-          <Portfolio />
+          <Portfolio copy={copy} />
         </section>
 
         <section id="contacts">
-          <Contacts />
+          <Contacts copy={copy} />
         </section>
       </main>
 
-      <Footer />
+      <Footer copy={copy} />
     </>
   );
 }

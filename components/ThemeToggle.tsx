@@ -1,8 +1,10 @@
 "use client";
 
+type Props = {
+  copy: any;
+};
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { copy } from "@/lib/copy";
 
 type Mode = "system" | "light" | "dark";
 
@@ -54,10 +56,13 @@ function Icon({ mode }: { mode: Mode }) {
 export default function ThemeToggle({
   className = "",
   ui = "desktop",
+  copy,
 }: {
   className?: string;
   ui?: "desktop" | "mobile";
+  copy: any;
 }) {
+
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -104,15 +109,17 @@ export default function ThemeToggle({
   return (
     <div role="radiogroup" aria-label={copy.theme.label} className={group}>
       {(["system", "light", "dark"] as const).map((value) => (
-        <button
-          key={value}
-          type="button"
-          role="radio"
-          aria-checked={mode === value}
-          onClick={() => setTheme(value)}
-          className={btnClass(value)}
-          title={labelFor(value)}
-        >
+<button
+  key={value}
+  type="button"
+  role="radio"
+  aria-checked={mode === value ? "true" : "false"}
+  aria-label={labelFor(value)}
+  onClick={() => setTheme(value)}
+  className={btnClass(value)}
+  title={labelFor(value)}
+>
+
           <Icon mode={value} />
           <span className="sr-only">{labelFor(value)}</span>
         </button>

@@ -1,5 +1,7 @@
-import { copy } from "@/lib/copy";
+import type { Copy } from "@/lib/copy/ru";
 import { SocialPill } from "@/components/HeroUtilityBar";
+
+type Props = { copy: Copy };
 
 function Card({ title, text }: { title: string; text: string }) {
   return (
@@ -29,7 +31,7 @@ function TelegramIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-export default function Terms() {
+export default function Terms({ copy }: Props) {
   const tgHref = copy.contacts.social.telegram.href;
   const catalogHref = "/catalog";
 
@@ -75,14 +77,22 @@ export default function Terms() {
           {/* BLOCK 2 */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
             {/* LEFT label (bigger) */}
-            <div className="relative lg:justify-self-end lg:max-w-[28rem] lg:text-right" data-reveal data-reveal-delay="1">
+            <div
+              className="relative lg:justify-self-end lg:max-w-[28rem] lg:text-right"
+              data-reveal
+              data-reveal-delay="1"
+            >
               <div className="text-xl sm:text-2xl font-semibold uppercase tracking-[0.14em] text-black/60 dark:text-white/70">
                 {copy.segments.kicker}
               </div>
             </div>
 
             {/* RIGHT list */}
-            <div className="relative lg:justify-self-start lg:max-w-[30rem]" data-reveal data-reveal-delay="2">
+            <div
+              className="relative lg:justify-self-start lg:max-w-[30rem]"
+              data-reveal
+              data-reveal-delay="2"
+            >
               <ul className="space-y-4 tracking-[0.02em]">
                 {copy.segments.items.slice(0, 2).map((it) => (
                   <li key={it.title} className="flex gap-3">
@@ -114,20 +124,19 @@ export default function Terms() {
         </div>
 
         {/* STEPS (wrapped in a single card/panel) */}
-        <section
-          className="mt-14 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8"
-          style={{ borderRadius: "var(--radius-card)" }}
-          data-reveal="up"
-        >
+        <section className="mt-14 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8 rounded-[var(--radius-card)]" data-reveal="up" >
           <Eyebrow>{copy.steps.eyebrow}</Eyebrow>
 
-          <h3 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">
-            {copy.steps.title}
-          </h3>
+          <h3 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">{copy.steps.title}</h3>
 
           <ol className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-3">
             {copy.steps.items.map((s, i) => (
-              <li key={s.title} className="flex gap-5" data-reveal data-reveal-delay={String(((i % 3) + 1) as 1 | 2 | 3)}>
+              <li
+                key={s.title}
+                className="flex gap-5"
+                data-reveal
+                data-reveal-delay={String(((i % 3) + 1) as 1 | 2 | 3)}
+              >
                 <div className="shrink-0 text-black/25 dark:text-white/20" aria-hidden="true">
                   <svg width="72" height="72" viewBox="0 0 80 80" className="h-18 w-18">
                     <text
@@ -171,8 +180,7 @@ export default function Terms() {
 
             <a
               href={catalogHref}
-              className="inline-flex h-11 items-center justify-center ui-btn border border-black/10 bg-white px-6 text-sm font-semibold text-zinc-950 transition hover:bg-black/[0.03] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/[0.08]"
-              style={{ borderRadius: "var(--radius-card)" }}
+              className="inline-flex h-11 items-center justify-center ui-btn border border-black/10 bg-white px-6 text-sm font-semibold text-zinc-950 transition hover:bg-black/[0.03] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/[0.08] rounded-[var(--radius-card)]"
             >
               {copy.steps.catalog}
             </a>
@@ -185,8 +193,7 @@ export default function Terms() {
         </div>
 
         <div
-          className="mt-6 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8"
-          style={{ borderRadius: "var(--radius-card)" }}
+          className="mt-6 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8 rounded-[var(--radius-card)]"
           data-reveal="up"
         >
           <div className="flex flex-col gap-6 lg:relative lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-6">
@@ -233,15 +240,18 @@ export default function Terms() {
 
         {/* MOVED CTA PANEL (from Services) — placed under the list */}
         <div
-          className="mt-10 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 text-sm text-black/70 dark:border-white/15 dark:bg-[#2d2f31]/50 dark:text-white/70 sm:p-8"
-          style={{ borderRadius: "var(--radius-card)" }}
+          className="mt-10 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 text-sm text-black/70 dark:border-white/15 dark:bg-[#2d2f31]/50 dark:text-white/70 sm:p-8 rounded-[var(--radius-card)]"
           data-reveal="up"
         >
           <div className="text-lg sm:text-xl font-semibold tracking-[0.02em] leading-snug text-zinc-950 dark:text-white">
             {copy.tours.bottomText}
           </div>
 
-          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-4" data-reveal data-reveal-delay="2">
+          <div
+            className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-4"
+            data-reveal
+            data-reveal-delay="2"
+          >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <a
                 href={tgHref}
@@ -260,7 +270,7 @@ export default function Terms() {
               </a>
             </div>
 
-            <SocialPill className="shrink-0 self-center sm:self-auto" />
+            <SocialPill copy={copy} className="shrink-0 self-center sm:self-auto" />
           </div>
         </div>
       </section>

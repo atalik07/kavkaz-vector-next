@@ -1,8 +1,10 @@
+// app/layout.tsx
 import type { Metadata } from "next";
-import { copy } from "@/lib/copy";
 import localFont from "next/font/local";
-import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
+import "./globals.css";
+
+import { getRuCopy } from "@/lib/copy";
 
 const gilroyDisplay = localFont({
   variable: "--font-gilroy-display",
@@ -19,30 +21,34 @@ const gilroySubhead = localFont({
   display: "swap",
 });
 
+export const metadata: Metadata = (() => {
+  const copy = getRuCopy();
+  return {
+    title: {
+      default: copy.seo.title,
+      template: `%s — ${copy.seo.title}`,
+    },
+    description: copy.seo.description,
+  };
+})();
 
-export const metadata: Metadata = {
-  title: {
-    default: copy.seo.title,
-    template: `%s — ${copy.seo.title}`,
-  },
-  description: copy.seo.description,
-};
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const copy = getRuCopy();
+  const accent = copy?.theme?.accentColor; 
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  // ВАЖНО: если accent undefined — style будет undefined и переменная не переопределится
+  const style = accent
+    ? ({ ["--accent" as any]: accent } as React.CSSProperties)
+    : undefined;
+
   return (
     <html lang="ru" suppressHydrationWarning>
-<body
-    className={`${gilroyDisplay.variable} ${gilroySubhead.variable} 
-    antialiased bg-[var(--background)] text-[var(--foreground)]`}
-  >
-  <ThemeProvider>{children}</ThemeProvider>
-</body>
-
+      <body
+        style={style}
+        className={`${gilroyDisplay.variable} ${gilroySubhead.variable} antialiased bg-[var(--background)] text-[var(--foreground)]`}
+      >
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
-
 }

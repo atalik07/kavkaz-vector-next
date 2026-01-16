@@ -1,0 +1,15 @@
+{
+  "telegram": {
+    "account": "https://t.me/USERNAME",
+    "group": "https://t.me/+INVITE_OR_CHANNEL"
+  },
+  "cta": {
+    "heroPrimary": { "mode": "tgAccount", "override": "" },
+    "portfolio": { "mode": "tgGroup", "override": "" },
+    "stepsManager": { "mode": "tgAccount", "override": "" },
+    "stepsCatalog": { "mode": "tgGroup", "override": "" },
+    "bottomCalc": { "mode": "tgAccount", "override": "" },
+    "bottomTerms": { "mode": "tgAccount", "override": "" }
+  }
+}
+

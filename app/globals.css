@@ -308,3 +308,14 @@ html:not(.dark) .aboutFrameInner {
 .swiper-clip {
   overflow: hidden;
 }
+
+.aboutCollapse {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 300ms ease, opacity 300ms ease;
+}
+.aboutCollapse[data-open="true"] {
+  max-height: var(--about-max-h);
+  opacity: 1;
+}

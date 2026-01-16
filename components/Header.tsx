@@ -2,8 +2,10 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
-import { copy } from "@/lib/copy";
 import { ButtonLink } from "@/components/Button";
+import type { Copy } from "@/lib/copy/ru";
+
+type Props = { copy: Copy };
 
 type NavId = "terms" | "production" | "portfolio" | "contacts";
 
@@ -95,6 +97,7 @@ function IconClose(props: React.SVGProps<SVGSVGElement>) {
 }
 
 function MobileMenu({
+  copy,
   open,
   onClose,
   items,
@@ -102,6 +105,7 @@ function MobileMenu({
   phoneLabel,
   social,
 }: {
+  copy: Copy;
   open: boolean;
   onClose: () => void;
   items: readonly { id: NavId; href: string; label: string }[];
@@ -183,7 +187,7 @@ function MobileMenu({
             <div className="rounded-xl border border-black/10 p-3 dark:border-white/15">
               <div className="text-sm text-black/60 text-center dark:text-white/70">Тема</div>
               <div className="mt-2 flex justify-center">
-                <ThemeToggle ui="mobile" className="w-full justify-between" />
+            <ThemeToggle copy={copy} ui="mobile" className="w-full justify-between" />
               </div>
             </div>
           </div>
@@ -193,7 +197,7 @@ function MobileMenu({
   );
 }
 
-export default function Header() {
+export default function Header({ copy }: Props) {
   const items = useMemo(
     () =>
       [
@@ -476,6 +480,7 @@ export default function Header() {
       </header>
 
       <MobileMenu
+        copy={copy}
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         items={items}

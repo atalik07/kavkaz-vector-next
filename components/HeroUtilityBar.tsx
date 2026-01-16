@@ -1,9 +1,12 @@
 // components/HeroUtilityBar.tsx
 "use client";
+type Props = {
+  copy: any;
+};
 
 import React from "react";
 import ThemeToggle from "@/components/ThemeToggle";
-import { copy } from "@/lib/copy";
+
 
 function IconTelegram(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -60,26 +63,39 @@ function IconMail(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function SocialPill({ className = "" }: { className?: string }) {
+export function SocialPill({
+  className = "",
+  copy,
+}: {
+  className?: string;
+  copy: any;
+}) {
+  const emailHref = copy?.contacts?.links?.emailHref;
+  const tg = copy?.contacts?.social?.telegram;
+  const ig = copy?.contacts?.social?.instagram;
+
   const social = [
-    { href: copy.contacts.links.emailHref, label: "Email", icon: <IconMail className="block h-5 w-5 md:h-4 md:w-4" /> },
-    {
-      href: copy.contacts.social.telegram.href,
-      label: copy.contacts.social.telegram.label,
-      icon: <IconTelegram className="block h-5 w-5 md:h-4 md:w-4 scale-[0.92] md:scale-100" />,
-    },
-    {
-      href: copy.contacts.social.instagram.href,
-      label: copy.contacts.social.instagram.label,
-      icon: <IconInstagram className="block h-5 w-5 md:h-4 md:w-4" />,
-    },
-  ];
+    emailHref
+      ? { href: emailHref, label: "Email", icon: <IconMail className="block h-5 w-5 md:h-4 md:w-4" /> }
+      : null,
+    tg?.href
+      ? {
+          href: tg.href,
+          label: tg.label ?? "Telegram",
+          icon: <IconTelegram className="block h-5 w-5 md:h-4 md:w-4 scale-[0.92] md:scale-100" />,
+        }
+      : null,
+    ig?.href
+      ? { href: ig.href, label: ig.label ?? "Instagram", icon: <IconInstagram className="block h-5 w-5 md:h-4 md:w-4" /> }
+      : null,
+  ].filter(Boolean) as Array<{ href: string; label: string; icon: React.ReactNode }>;
+
+  if (social.length === 0) return null;
 
   return (
     <div
       className={[
-    "inline-flex items-center gap-1 rounded-full border p-1 backdrop-blur md:gap-0.5 md:p-[3px]",
-
+        "inline-flex items-center gap-1 rounded-full border p-1 backdrop-blur md:gap-0.5 md:p-[3px]",
         "border-zinc-900/15 bg-white/70 text-zinc-950",
         "dark:border-white/15 dark:bg-black/20 dark:text-white",
         className,
@@ -92,8 +108,7 @@ export function SocialPill({ className = "" }: { className?: string }) {
           target="_blank"
           rel="noreferrer"
           aria-label={s.label}
-         className="inline-flex h-11 w-11 items-center justify-center text-current/85 hover:text-[color:var(--accent)] md:h-8 md:w-8"
-
+          className="inline-flex h-11 w-11 items-center justify-center text-current/85 hover:text-[color:var(--accent)] md:h-8 md:w-8"
         >
           <span className="grid h-5 w-5 place-items-center md:h-4 md:w-4">{s.icon}</span>
         </a>
@@ -102,7 +117,8 @@ export function SocialPill({ className = "" }: { className?: string }) {
   );
 }
 
-export default function HeroUtilityBar() {
+
+export default function HeroUtilityBar({ copy }: Props) {
   return (
     <div
   data-hero-bar
@@ -119,10 +135,10 @@ export default function HeroUtilityBar() {
             "dark:border-white/15 dark:bg-black/20 dark:text-white",
           ].join(" ")}
         >
-          <ThemeToggle />
+          <ThemeToggle copy={copy} />
         </div>
 
-        <SocialPill />
+        <SocialPill copy={copy} />
       </div>
     </div>
   );
