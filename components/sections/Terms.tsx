@@ -20,12 +20,7 @@ function Eyebrow({ children }: { children: string }) {
 
 function TelegramIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      className={className}
-      aria-hidden="true"
-      focusable="false"
-    >
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true" focusable="false">
       <path
         fill="currentColor"
         d="M9.04 15.47 8.86 19.4c.44 0 .63-.19.86-.41l2.06-1.97 4.27 3.12c.78.43 1.34.2 1.54-.72l2.79-13.11c.25-1.16-.42-1.62-1.2-1.33L2.63 9.27c-1.12.44-1.1 1.07-.19 1.35l4.56 1.42 10.6-6.69c.5-.31.96-.14.58.17L9.04 15.47Z"
@@ -41,11 +36,8 @@ export default function Terms() {
   return (
     <>
       {/* TOP full-bleed banner */}
-      <section className="w-full bg-[#ddd6cc]/30 dark:bg-[#2d2f31]/50">
-        <div
-          className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-14"
-          data-reveal="up"
-        >
+      <section className="w-full bg-[#ddd6cc]/30 dark:bg-[#2d2f31]/50" data-observe>
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-14" data-reveal="up">
           <p className="subhead text-zinc-950/80 dark:text-white/85 uppercase tracking-[0.09em] leading-snug text-lg sm:text-xl">
             {copy.terms.lead}
           </p>
@@ -53,7 +45,11 @@ export default function Terms() {
       </section>
 
       {/* MAIN content */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+      <section
+        className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20"
+        data-observe
+        data-reveal-mode="items"
+      >
         {/* SIMPLE: badge+text, then badge+text */}
         <div className="space-y-10" data-reveal="up">
           {/* BLOCK 1 */}
@@ -79,24 +75,19 @@ export default function Terms() {
           {/* BLOCK 2 */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
             {/* LEFT label (bigger) */}
-            <div className="relative lg:justify-self-end lg:max-w-[28rem] lg:text-right">
+            <div className="relative lg:justify-self-end lg:max-w-[28rem] lg:text-right" data-reveal data-reveal-delay="1">
               <div className="text-xl sm:text-2xl font-semibold uppercase tracking-[0.14em] text-black/60 dark:text-white/70">
                 {copy.segments.kicker}
               </div>
             </div>
 
             {/* RIGHT list */}
-            <div className="relative lg:justify-self-start lg:max-w-[30rem]">
+            <div className="relative lg:justify-self-start lg:max-w-[30rem]" data-reveal data-reveal-delay="2">
               <ul className="space-y-4 tracking-[0.02em]">
                 {copy.segments.items.slice(0, 2).map((it) => (
                   <li key={it.title} className="flex gap-3">
                     <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center text-black/60 dark:text-white/60">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        className="h-5 w-5"
-                        aria-hidden="true"
-                      >
+                      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
                         <path
                           d="M20 6L9 17l-5-5"
                           stroke="currentColor"
@@ -136,17 +127,9 @@ export default function Terms() {
 
           <ol className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-3">
             {copy.steps.items.map((s, i) => (
-              <li key={s.title} className="flex gap-5">
-                <div
-                  className="shrink-0 text-black/25 dark:text-white/20"
-                  aria-hidden="true"
-                >
-                  <svg
-                    width="72"
-                    height="72"
-                    viewBox="0 0 80 80"
-                    className="h-18 w-18"
-                  >
+              <li key={s.title} className="flex gap-5" data-reveal data-reveal-delay={String(((i % 3) + 1) as 1 | 2 | 3)}>
+                <div className="shrink-0 text-black/25 dark:text-white/20" aria-hidden="true">
+                  <svg width="72" height="72" viewBox="0 0 80 80" className="h-18 w-18">
                     <text
                       x="50%"
                       y="50%"
@@ -162,9 +145,7 @@ export default function Terms() {
                 </div>
 
                 <div>
-                  <div className="text-base font-semibold tracking-tight">
-                    {s.title}
-                  </div>
+                  <div className="text-base font-semibold tracking-tight">{s.title}</div>
                   <div className="mt-2 text-base tracking-[0.02em] text-black/70 leading-relaxed dark:text-white/70">
                     {s.text}
                   </div>
@@ -177,7 +158,7 @@ export default function Terms() {
           <div className="mt-8 h-px w-full bg-black/10 dark:bg-white/10" />
 
           {/* CTAs */}
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center" data-reveal data-reveal-delay="2">
             <a
               href={tgHref}
               target="_blank"
@@ -214,17 +195,16 @@ export default function Terms() {
               aria-hidden="true"
             />
 
-            <div className="lg:pr-8 lg:text-right">
+            <div className="lg:pr-8 lg:text-right" data-reveal data-reveal-delay="1">
               <div className="text-2xl font-extrabold tracking-tight leading-tight text-zinc-950 dark:text-white">
-                <span className="block text-[color:var(--accent)]/80">
-                  {copy.terms.highlight.left.line1}
-                </span>
+                <span className="block text-[color:var(--accent)]/80">{copy.terms.highlight.left.line1}</span>
                 <span className="block">{copy.terms.highlight.left.line2}</span>
               </div>
             </div>
-<div className="h-px w-full bg-black/10 dark:bg-white/10 lg:hidden" />
 
-            <div className="lg:pl-8">
+            <div className="h-px w-full bg-black/10 dark:bg-white/10 lg:hidden" />
+
+            <div className="lg:pl-8" data-reveal data-reveal-delay="2">
               <div className="text-2xl font-extrabold tracking-tight leading-tight text-zinc-950 dark:text-white">
                 <span className="block">{copy.terms.highlight.right.line1}</span>
                 <span className="block whitespace-nowrap">
@@ -244,9 +224,7 @@ export default function Terms() {
           <ul className="list-disc space-y-4 pl-10 marker:text-black/40 dark:marker:text-white/35">
             {copy.terms.items.map((it) => (
               <li key={it.title} className="-ml-2 pl-2">
-                <span className="font-semibold text-zinc-950 dark:text-white">
-                  {it.title}
-                </span>
+                <span className="font-semibold text-zinc-950 dark:text-white">{it.title}</span>
                 <span className="text-black/70 dark:text-white/70"> — {it.text}</span>
               </li>
             ))}
@@ -263,7 +241,7 @@ export default function Terms() {
             {copy.tours.bottomText}
           </div>
 
-          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-4">
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-4" data-reveal data-reveal-delay="2">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <a
                 href={tgHref}
@@ -282,8 +260,7 @@ export default function Terms() {
               </a>
             </div>
 
-<SocialPill className="shrink-0 self-center sm:self-auto" />
-
+            <SocialPill className="shrink-0 self-center sm:self-auto" />
           </div>
         </div>
       </section>

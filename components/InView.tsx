@@ -14,18 +14,17 @@ export default function InView({
   threshold = 0.15,
 }: Props) {
   useEffect(() => {
-    const nodes = Array.from(document.querySelectorAll<HTMLElement>(selector));
-    if (!nodes.length) return;
+    const scopes = Array.from(document.querySelectorAll<HTMLElement>(selector));
+    if (!scopes.length) return;
 
-    // Сначала "выключаем" анимации, чтобы браузер применил стартовые стили
-    nodes.forEach((n) => (n.dataset.ready = "false"));
+    // 1) Возвращаем поведение как было: ready/inview на контейнерах
+    scopes.forEach((n) => (n.dataset.ready = "false"));
 
-    // Включаем на следующем кадре
     const raf = requestAnimationFrame(() => {
-      nodes.forEach((n) => (n.dataset.ready = "true"));
+      scopes.forEach((n) => (n.dataset.ready = "true"));
     });
 
-    const io = new IntersectionObserver(
+    const ioScopes = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           const el = e.target as HTMLElement;
@@ -35,11 +34,29 @@ export default function InView({
       { root: null, rootMargin, threshold }
     );
 
-    nodes.forEach((n) => io.observe(n));
+    scopes.forEach((n) => ioScopes.observe(n));
+
+    // 2) Новое: наблюдаем каждый [data-reveal] внутри этих контейнеров
+    const revealTargets = scopes.flatMap((scope) =>
+      Array.from(scope.querySelectorAll<HTMLElement>("[data-reveal]"))
+    );
+
+    const ioReveal = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const el = e.target as HTMLElement;
+          el.dataset.inview = e.isIntersecting ? "true" : "false";
+        }
+      },
+      { root: null, rootMargin, threshold }
+    );
+
+    revealTargets.forEach((el) => ioReveal.observe(el));
 
     return () => {
       cancelAnimationFrame(raf);
-      io.disconnect();
+      ioScopes.disconnect();
+      ioReveal.disconnect();
     };
   }, [selector, rootMargin, threshold]);
 

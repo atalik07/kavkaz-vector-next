@@ -55,10 +55,12 @@ function TrendCarousel({
   title,
   hint,
   slides,
+  index,
 }: {
   title: string;
   hint: string;
   slides: Slide[];
+  index: number;
 }) {
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -70,11 +72,13 @@ function TrendCarousel({
     setCanNext(!s.isEnd);
   };
 
+  const headerDelay = (index % 3) + 1; // 1..3 — лёгкая “волна”, не обязательно
+
   return (
-    <section data-reveal="up">
-      <div className="lg:pl-6">
+    <div>
+      <div className="lg:pl-6" data-reveal="up" data-reveal-delay={String(headerDelay)}>
         <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-          <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
+          <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white sm:text-xl">
             {title}
           </h3>
 
@@ -82,7 +86,7 @@ function TrendCarousel({
         </div>
       </div>
 
-      <div className="relative mt-5 overflow-visible">
+      <div className="relative mt-5 overflow-visible" data-reveal data-reveal-delay={String(headerDelay)}>
         <div className="swiper-clip">
           <Swiper
             modules={[A11y]}
@@ -149,7 +153,7 @@ function TrendCarousel({
         </div>
 
         {/* MOBILE arrows UNDER carousel */}
-        <div className="mt-4 flex items-center justify-center gap-3 sm:hidden">
+        <div className="mt-4 flex items-center justify-center gap-3 sm:hidden" data-reveal data-reveal-delay="2">
           <button
             type="button"
             aria-label="Предыдущий слайд"
@@ -184,7 +188,7 @@ function TrendCarousel({
         </div>
 
         {/* TABLET + DESKTOP arrows OUTSIDE carousel */}
-        <div className="pointer-events-none hidden sm:block">
+        <div className="pointer-events-none hidden sm:block" data-reveal data-reveal-delay="2">
           <button
             type="button"
             aria-label="Предыдущий слайд"
@@ -222,7 +226,7 @@ function TrendCarousel({
           </button>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -235,7 +239,6 @@ export default function Portfolio() {
     cta: { title: string; button: string };
   };
 
-  // используем первые 6 текстовых карточек как шаблон
   const textSlides = useMemo(() => pf.slides.slice(0, 6), [pf.slides]);
 
   const sliders = useMemo(() => {
@@ -254,18 +257,22 @@ export default function Portfolio() {
   }, [pf.categories, textSlides]);
 
   return (
-    <section id="portfolio" className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
+    <section
+      id="portfolio"
+      className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20"
+      data-observe
+      data-reveal-mode="items"
+    >
       <div data-reveal="up">
         <Eyebrow>{pf.eyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{pf.title}</h2>
       </div>
 
-<div className="mt-8 space-y-10 sm:space-y-12 lg:space-y-14">
-  {sliders.map((s) => (
-    <TrendCarousel key={s.title} title={s.title} hint={s.hint} slides={s.slides} />
-  ))}
-</div>
-
+      <div className="mt-8 space-y-10 sm:space-y-12 lg:space-y-14">
+        {sliders.map((s, i) => (
+          <TrendCarousel key={s.title} title={s.title} hint={s.hint} slides={s.slides} index={i} />
+        ))}
+      </div>
 
       <div
         className="mt-14 ui-card border border-black/10 bg-[#ddd6cc]/30 p-6 shadow-none dark:border-white/15 dark:bg-[#2d2f31]/50 dark:shadow-none sm:p-8"
@@ -273,7 +280,7 @@ export default function Portfolio() {
         data-reveal="up"
       >
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-xl sm:text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+          <div className="text-xl font-extrabold tracking-tight text-zinc-950 dark:text-white sm:text-2xl">
             {pf.cta.title}
           </div>
 

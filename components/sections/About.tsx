@@ -4,7 +4,12 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { copy } from "@/lib/copy";
 import HeroRSlider from "@/components/HeroRSlider";
 
-const aboutImages = ["/images/tz_chertezh.webp", "/images/control_quality.webp", "/images/upakovka.webp", "/images/logistics_sklad.webp"] as const;
+const aboutImages = [
+  "/images/tz_chertezh.webp",
+  "/images/control_quality.webp",
+  "/images/upakovka.webp",
+  "/images/logistics_sklad.webp",
+] as const;
 
 function Eyebrow({ children }: { children: string }) {
   return (
@@ -48,16 +53,17 @@ export default function About() {
     return () => ro.disconnect();
   }, [faqItems.length]);
 
-  // рамка/вьюпорт слайдера именно для About:
-  // 40vh как ты просил + ограничители, чтобы не было гиганта/крошки
-// сделай больше ТОЛЬКО на lg — меняешь только эти 3 значения:
-const aboutSliderViewport =
-  "overflow-hidden rounded-[var(--radius-card)] h-[32vh] min-h-[260px] max-h-[420px] sm:h-[34vh] sm:min-h-[280px] sm:max-h-[460px] lg:h-[44vh] lg:min-h-[380px] lg:max-h-[580px] xl:h-[60vh] xl:h-[66vh] xl:min-h-[360px] xl:max-h-[720px]";
-
+  const aboutSliderViewport =
+    "overflow-hidden rounded-[var(--radius-card)] h-[32vh] min-h-[260px] max-h-[420px] sm:h-[34vh] sm:min-h-[280px] sm:max-h-[460px] lg:h-[44vh] lg:min-h-[380px] lg:max-h-[580px] xl:h-[60vh] xl:h-[66vh] xl:min-h-[360px] xl:max-h-[720px]";
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20" data-observe>
-      <div className="pl-10" data-reveal>
+    <section
+      className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20"
+      data-observe
+      data-reveal-mode="items"
+    >
+      {/* header */}
+      <div className="pl-10" data-reveal="up">
         <h2 className="subhead font-extrabold uppercase tracking-[0.09em] leading-snug text-zinc-950 dark:text-white text-2xl sm:text-3xl">
           {copy.about.eyebrow}
         </h2>
@@ -66,16 +72,20 @@ const aboutSliderViewport =
       <div className="mt-8">
         {/* MOBILE */}
         <div className="grid grid-cols-1 gap-6 lg:hidden">
-          <HeroRSlider
-            slides={copy.hero.slides}
-            images={aboutImages}
-            dots="bottom"
-            // dotsAlign="left"
-            className="w-full"
-            viewportClassName={aboutSliderViewport}
-          />
+          <div data-reveal="up">
+            <HeroRSlider
+              slides={copy.hero.slides}
+              images={aboutImages}
+              dots="bottom"
+              className="w-full"
+              viewportClassName={aboutSliderViewport}
+            />
+          </div>
 
-          <div className="py-4 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
+          <div
+            className="py-4 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70"
+            data-reveal="up"
+          >
             {copy.about.top.paragraphs.map((p, i) => (
               <p key={`m-top-p-${i}`}>{p}</p>
             ))}
@@ -125,15 +135,20 @@ const aboutSliderViewport =
           <div className="space-y-10">
             {/* TOP ROW */}
             <div className="grid grid-cols-2 gap-12 items-start">
-              <HeroRSlider
-                slides={copy.hero.slides}
-                images={aboutImages}
-                dotsAlign="right"
-                className="w-full"
-                viewportClassName={aboutSliderViewport}
-              />
+              <div data-reveal="up">
+                <HeroRSlider
+                  slides={copy.hero.slides}
+                  images={aboutImages}
+                  dotsAlign="right"
+                  className="w-full"
+                  viewportClassName={aboutSliderViewport}
+                />
+              </div>
 
-              <div className="py-2 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70">
+              <div
+                className="py-2 space-y-4 text-base tracking-[0.02em] text-black/70 dark:text-white/70"
+                data-reveal="up"
+              >
                 {copy.about.top.paragraphs.slice(0, 2).map((p, i) => (
                   <p key={`d-top-p-${i}`}>{p}</p>
                 ))}
@@ -141,8 +156,11 @@ const aboutSliderViewport =
             </div>
 
             {/* FULL WIDTH */}
-      <div className="ui-card border border-black/10 bg-white/60 p-6 text-base tracking-[0.02em] text-black/70 shadow-sm dark:border-white/15 dark:bg-white/[0.03] dark:text-white/70 dark:shadow-none lg:px-10">
-        <h3 className="text-lg font-semibold leading-snug text-zinc-950 dark:text-white">
+            <div
+              className="ui-card border border-black/10 bg-white/60 p-6 text-base tracking-[0.02em] text-black/70 shadow-sm dark:border-white/15 dark:bg-white/[0.03] dark:text-white/70 dark:shadow-none lg:px-10"
+              data-reveal="up"
+            >
+              <h3 className="text-lg font-semibold leading-snug text-zinc-950 dark:text-white">
                 {copy.about.top.paragraphs[2]}
               </h3>
 
@@ -156,7 +174,9 @@ const aboutSliderViewport =
                 ))}
               </ul>
 
-              {copy.about.top.tailParagraphs[0] ? <p className="mt-4">{copy.about.top.tailParagraphs[0]}</p> : null}
+              {copy.about.top.tailParagraphs[0] ? (
+                <p className="mt-4">{copy.about.top.tailParagraphs[0]}</p>
+              ) : null}
 
               <p className="mt-4">
                 <span className="font-semibold text-[color:var(--accent)]/80">
@@ -166,7 +186,10 @@ const aboutSliderViewport =
             </div>
 
             {/* BOTTOM */}
-            <div className="py-4 space-y-6 text-base tracking-[0.02em] text-black/70 dark:text-white/70 lg:px-10" data-reveal>
+            <div
+              className="py-4 space-y-6 text-base tracking-[0.02em] text-black/70 dark:text-white/70 lg:px-10"
+              data-reveal="up"
+            >
               <div className="text-center">
                 <div className="inline-flex flex-col items-center gap-2">
                   <Eyebrow>{copy.about.bottom.kicker}</Eyebrow>
@@ -234,7 +257,7 @@ const aboutSliderViewport =
         </div>
       </div>
 
-      {/* FAQ */}
+      {/* FAQ toggle row */}
       <div className="mt-6" data-reveal="up">
         <div className="flex items-center gap-3 text-base font-semibold tracking-[0.04em] text-[color:var(--accent)]/80">
           <span className="whitespace-nowrap">{copy.about.faqToggle.label}</span>
@@ -269,7 +292,10 @@ const aboutSliderViewport =
             />
           </button>
         </div>
+      </div>
 
+      {/* FAQ content (анимируется как блок, когда он реально появляется) */}
+      <div data-reveal="up">
         <div
           className="overflow-hidden transition-[max-height,opacity] duration-500 ease-out"
           style={{

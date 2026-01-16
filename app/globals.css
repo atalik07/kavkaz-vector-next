@@ -145,6 +145,20 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* ---------------------------------------------------------------------------------------------- */
+/* Items mode: не показываем всё сразу, когда контейнер вошёл */
+[data-observe][data-reveal-mode="items"][data-ready="true"][data-inview="true"] [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+}
+
+/* Items mode: показываем только те элементы, которые сами попали в inview */
+[data-observe][data-reveal-mode="items"][data-ready="true"] [data-reveal][data-inview="true"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+/* ---------------------------------------------------------------------------------------------- */
+
 /* HERO right card styles (height comes from inline style in Hero.tsx) */
 .heroRCard {
   position: relative;

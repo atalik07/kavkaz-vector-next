@@ -19,7 +19,7 @@ type Advantage = {
   lightText?: boolean;
 };
 
-function Tile({ item }: { item: Advantage }) {
+function Tile({ item, index }: { item: Advantage; index: number }) {
   const textClass = item.lightText ? "text-white" : "text-zinc-950 dark:text-white";
   const subClass = item.lightText ? "text-white/80" : "text-black/70 dark:text-white/70";
 
@@ -34,6 +34,8 @@ function Tile({ item }: { item: Advantage }) {
             ? "lg:col-span-6 lg:row-span-1"
             : "lg:col-span-6 lg:row-span-1";
 
+  const delay = (index % 3) + 1; // 1..3 мягкая “лесенка”
+
   return (
     <article
       className={[
@@ -43,7 +45,9 @@ function Tile({ item }: { item: Advantage }) {
         "min-h-[220px] sm:min-h-[240px]",
         spanClass,
       ].join(" ")}
+      style={{ borderRadius: "var(--radius-card)" }}
       data-reveal="up"
+      data-reveal-delay={String(delay)}
     >
       <div className="absolute inset-0">
         <img src={item.image} alt="" className="h-full w-full object-cover" loading="lazy" />
@@ -75,7 +79,11 @@ export default function AdvantagesBento() {
   const items = copy.advantagesBento.items as unknown as Advantage[];
 
   return (
-    <section className="mx-auto -mt-2 max-w-6xl px-4 py-2 sm:px-6 sm:py-2">
+    <section
+      className="mx-auto -mt-2 max-w-6xl px-4 py-2 sm:px-6 sm:py-2"
+      data-observe
+      data-reveal-mode="items"
+    >
       <div className="pl-10" data-reveal="up">
         <Eyebrow>
           {copy.advantagesBento.eyebrowPrefix}{" "}
@@ -87,8 +95,8 @@ export default function AdvantagesBento() {
 
       <div className="mt-6">
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:auto-rows-[240px]">
-          {items.map((it) => (
-            <Tile key={it.title} item={it} />
+          {items.map((it, idx) => (
+            <Tile key={it.title} item={it} index={idx} />
           ))}
         </div>
       </div>
