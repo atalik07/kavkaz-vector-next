@@ -16,7 +16,10 @@ function requireAuth(request: Request) {
   if (!header.startsWith("Basic ")) return false;
 
   const decoded = Buffer.from(header.slice(6), "base64").toString("utf8");
-  const [u, p] = decoded.split(":");
+
+  const idx = decoded.indexOf(":");
+  const u = idx >= 0 ? decoded.slice(0, idx) : decoded;
+  const p = idx >= 0 ? decoded.slice(idx + 1) : "";
 
   return u === user && p === pass;
 }
@@ -46,22 +49,11 @@ function toBase64Utf8(s: string) {
   return Buffer.from(s, "utf8").toString("base64");
 }
 
+function fromBase64Utf8(b64: string) {
+  return Buffer.from((b64 ?? "").replace(/\n/g, ""), "base64").toString("utf8");
+}
+
 export async function GET(request: Request) {
-  // TEMP DEBUG: проверка, видит ли деплой env (без авторизации)
-  if (request.nextUrl.searchParams.get("ping") === "1") {
-    const u = process.env.ADMIN_USERNAME ?? "";
-    const p = process.env.ADMIN_PASSWORD ?? "";
-
-    return NextResponse.json({
-      vercel: process.env.VERCEL ?? null,
-      vercelEnv: process.env.VERCEL_ENV ?? null,
-      hasUser: Boolean(u),
-      userLen: u.length,
-      hasPass: Boolean(p),
-      passLen: p.length,
-    });
-  }
-
   if (!requireAuth(request)) {
     return new NextResponse("Unauthorized", {
       status: 401,
@@ -69,7 +61,31 @@ export async function GET(request: Request) {
     });
   }
 
-  // Локально читаем файл (для dev это удобно)
+  const isVercel = process.env.VERCEL === "1";
+
+  // Vercel: читаем из GitHub
+  if (isVercel) {
+    const owner = process.env.GITHUB_OWNER ?? "";
+    const repo = process.env.GITHUB_REPO ?? "";
+    const branch = process.env.GITHUB_BRANCH ?? "";
+    const token = process.env.GITHUB_TOKEN ?? "";
+    if (!owner || !repo || !branch || !token) return NextResponse.json({});
+
+    try {
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(
+        "ru.override.json"
+      )}?ref=${encodeURIComponent(branch)}`;
+
+      const data = await ghJson<{ content?: string }>(url, { method: "GET" });
+      const raw = fromBase64Utf8(data.content ?? "");
+      const json = raw.trim() ? JSON.parse(raw) : {};
+      return NextResponse.json(json);
+    } catch {
+      return NextResponse.json({});
+    }
+  }
+
+  // Локально: читаем файл
   const file = getOverridePath();
   if (!fs.existsSync(file)) return NextResponse.json({});
 
@@ -98,10 +114,9 @@ export async function PUT(request: Request) {
   }
 
   const pretty = JSON.stringify(body ?? {}, null, 2) + "\n";
-
   const isVercel = process.env.VERCEL === "1";
 
-  // 1) DEV/локально: пишем в файл
+  // Локально: пишем в файл
   if (!isVercel) {
     try {
       fs.writeFileSync(getOverridePath(), pretty, "utf8");
@@ -114,12 +129,11 @@ export async function PUT(request: Request) {
     }
   }
 
-  // 2) PROD (Vercel): коммитим в GitHub
+  // Vercel: коммитим в GitHub
   const owner = process.env.GITHUB_OWNER ?? "";
   const repo = process.env.GITHUB_REPO ?? "";
   const branch = process.env.GITHUB_BRANCH ?? "";
   const token = process.env.GITHUB_TOKEN ?? "";
-
   if (!owner || !repo || !branch || !token) {
     return NextResponse.json(
       { ok: false, error: "Missing GitHub env (OWNER/REPO/BRANCH/TOKEN)" },
@@ -130,8 +144,9 @@ export async function PUT(request: Request) {
   const pathInRepo = "ru.override.json";
 
   try {
+    // sha, если файл существует
     type GetContentResp = { sha: string };
-    let sha: string | undefined = undefined;
+    let sha: string | undefined;
 
     try {
       const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(
@@ -144,6 +159,7 @@ export async function PUT(request: Request) {
       if (!msg.includes(" 404:")) throw e;
     }
 
+    // PUT contents
     type PutContentResp = { commit: { sha: string } };
 
     const putUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(
