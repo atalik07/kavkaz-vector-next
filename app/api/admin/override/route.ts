@@ -47,6 +47,21 @@ function toBase64Utf8(s: string) {
 }
 
 export async function GET(request: Request) {
+  // TEMP DEBUG: проверка, видит ли деплой env (без авторизации)
+  if (request.nextUrl.searchParams.get("ping") === "1") {
+    const u = process.env.ADMIN_USERNAME ?? "";
+    const p = process.env.ADMIN_PASSWORD ?? "";
+
+    return NextResponse.json({
+      vercel: process.env.VERCEL ?? null,
+      vercelEnv: process.env.VERCEL_ENV ?? null,
+      hasUser: Boolean(u),
+      userLen: u.length,
+      hasPass: Boolean(p),
+      passLen: p.length,
+    });
+  }
+
   if (!requireAuth(request)) {
     return new NextResponse("Unauthorized", {
       status: 401,
@@ -86,7 +101,7 @@ export async function PUT(request: Request) {
 
   const isVercel = process.env.VERCEL === "1";
 
-  // 1) DEV/локально: пишем в файл (не трогаем GitHub, чтобы не упираться в DNS/блокировки)
+  // 1) DEV/локально: пишем в файл
   if (!isVercel) {
     try {
       fs.writeFileSync(getOverridePath(), pretty, "utf8");
@@ -115,7 +130,6 @@ export async function PUT(request: Request) {
   const pathInRepo = "ru.override.json";
 
   try {
-    // 1) текущий sha (если файл уже существует)
     type GetContentResp = { sha: string };
     let sha: string | undefined = undefined;
 
@@ -127,11 +141,9 @@ export async function PUT(request: Request) {
       sha = existing.sha;
     } catch (e: any) {
       const msg = String(e?.message ?? "");
-      // если файла нет — 404 ок, просто создадим
       if (!msg.includes(" 404:")) throw e;
     }
 
-    // 2) коммит
     type PutContentResp = { commit: { sha: string } };
 
     const putUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(
