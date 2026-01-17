@@ -1,5 +1,9 @@
 {
   "theme": {
-    "accentColor": "#FF8C00"
+    "accentColor": "#ff4b2b"
+  },
+  "telegram": {
+    "account": "",
+    "group": ""
   }
 }
