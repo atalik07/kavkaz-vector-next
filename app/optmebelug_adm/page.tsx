@@ -101,7 +101,7 @@ export default function AdminPage() {
     }
 
     if (!loaded) {
-      setError("Сначала нажмите “Загрузить”.");
+      setError("Сначала нажмите “Войти”.");
       return;
     }
 
@@ -198,7 +198,7 @@ export default function AdminPage() {
             className="ui-btn inline-flex h-11 items-center justify-center rounded-xl bg-[color:var(--accent)] px-5 text-base font-semibold text-black hover:opacity-95 disabled:opacity-60"
             disabled={!user || !pass || loading}
           >
-            {loading ? "Загрузка…" : "Загрузить"}
+            {loading ? "Авторизация…" : "Войти"}
           </button>
 
           <button
@@ -282,19 +282,10 @@ export default function AdminPage() {
               placeholder="https://t.me/+invite"
             />
           </div>
-
-          <details className="mt-2">
-            <summary className="cursor-pointer text-sm font-semibold text-black/70 dark:text-white/70">
-              Показать raw JSON
-            </summary>
-            <pre className="mt-3 max-h-[50vh] overflow-auto rounded-xl bg-black/5 p-4 text-xs text-black/80 dark:bg-white/5 dark:text-white/80">
-              {JSON.stringify(overrideJson, null, 2)}
-            </pre>
-          </details>
         </div>
       ) : (
         <p className="mt-6 text-sm text-black/60 dark:text-white/60">
-          Введите логин/пароль и нажмите “Загрузить”.
+          Введите логин/пароль и нажмите “Войти”.
         </p>
       )}
     </main>
