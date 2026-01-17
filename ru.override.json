@@ -4,14 +4,38 @@
     "group": "https://t.me/+INVITE_OR_CHANNEL"
   },
   "cta": {
-    "heroPrimary": { "mode": "tgAccount", "override": "" },
-    "portfolio": { "mode": "tgGroup", "override": "" },
-    "stepsManager": { "mode": "tgAccount", "override": "" },
-    "stepsCatalog": { "mode": "tgGroup", "override": "" },
-    "bottomCalc": { "mode": "tgAccount", "override": "" },
-    "bottomTerms": { "mode": "tgAccount", "override": "" },
-    "contactsManager": { "mode": "tgAccount", "override": "" },
-    "contactsTelegramGroup": { "mode": "tgGroup", "override": "" }
+    "heroPrimary": {
+      "mode": "tgAccount",
+      "override": ""
+    },
+    "portfolio": {
+      "mode": "tgGroup",
+      "override": ""
+    },
+    "stepsManager": {
+      "mode": "tgAccount",
+      "override": ""
+    },
+    "stepsCatalog": {
+      "mode": "tgGroup",
+      "override": ""
+    },
+    "bottomCalc": {
+      "mode": "tgAccount",
+      "override": ""
+    },
+    "bottomTerms": {
+      "mode": "tgAccount",
+      "override": ""
+    },
+    "contactsManager": {
+      "mode": "tgAccount",
+      "override": ""
+    },
+    "contactsTelegramGroup": {
+      "mode": "tgGroup",
+      "override": ""
+    }
   },
   "contacts": {
     "form": {
@@ -30,5 +54,8 @@
         "body": "..."
       }
     }
+  },
+  "theme": {
+    "accentColor": "#4682B4"
   }
 }
