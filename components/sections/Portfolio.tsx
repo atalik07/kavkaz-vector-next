@@ -2,15 +2,17 @@
 
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper/types";
 
+import type { Copy } from "@/lib/copy/ru";
+import { resolveCtaHref } from "@/lib/cta";
+
 import "swiper/css";
 
-type Props = {
-  copy: any;
-};
+type Props = { copy: Copy };
 
 function Eyebrow({ children }: { children: string }) {
   return (
@@ -74,13 +76,13 @@ function TrendCarousel({
     setCanNext(!s.isEnd);
   };
 
-  const headerDelay = (index % 3) + 1; // 1..3 — лёгкая “волна”, не обязательно
+  const delay = String((index % 3) + 1); // 1..3 волна
 
   return (
-    <div>
-      <div className="lg:pl-6" data-reveal="up" data-reveal-delay={String(headerDelay)}>
+    <section data-reveal="up" data-reveal-delay={delay}>
+      <div className="lg:pl-6">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-          <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white sm:text-xl">
+          <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
             {title}
           </h3>
 
@@ -88,7 +90,7 @@ function TrendCarousel({
         </div>
       </div>
 
-      <div className="relative mt-5 overflow-visible" data-reveal data-reveal-delay={String(headerDelay)}>
+      <div className="relative mt-5 overflow-visible">
         <div className="swiper-clip">
           <Swiper
             modules={[A11y]}
@@ -155,7 +157,7 @@ function TrendCarousel({
         </div>
 
         {/* MOBILE arrows UNDER carousel */}
-        <div className="mt-4 flex items-center justify-center gap-3 sm:hidden" data-reveal data-reveal-delay="2">
+        <div className="mt-4 flex items-center justify-center gap-3 sm:hidden">
           <button
             type="button"
             aria-label="Предыдущий слайд"
@@ -190,7 +192,7 @@ function TrendCarousel({
         </div>
 
         {/* TABLET + DESKTOP arrows OUTSIDE carousel */}
-        <div className="pointer-events-none hidden sm:block" data-reveal data-reveal-delay="2">
+        <div className="pointer-events-none hidden sm:block">
           <button
             type="button"
             aria-label="Предыдущий слайд"
@@ -228,7 +230,7 @@ function TrendCarousel({
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -239,24 +241,37 @@ export default function Portfolio({ copy }: Props) {
     categories: { title: string; hint: string; prefix: string }[];
     slides: Slide[];
     cta: { title: string; button: string };
+    images: {
+      basePath: string;
+      count: number;
+      defaultExt: string;
+      extByPrefix?: Record<string, string>;
+    };
   };
 
+  // используем первые 6 текстовых карточек как шаблон
   const textSlides = useMemo(() => pf.slides.slice(0, 6), [pf.slides]);
 
   const sliders = useMemo(() => {
+    const { basePath, count, defaultExt, extByPrefix } = pf.images;
+
     return pf.categories.map((c) => {
-      const slides: Slide[] = textSlides.map((t, i) => {
+      const ext = extByPrefix?.[c.prefix] ?? defaultExt;
+
+      const slides: Slide[] = Array.from({ length: count }, (_, i) => {
         const n = String(i + 1).padStart(2, "0");
+        const t = textSlides[i % textSlides.length];
+
         return {
           ...t,
-          src: `/images/portfolio/${c.prefix}-${n}.webp`,
+          src: `${basePath}/${c.prefix}-${n}.${ext}`,
           alt: `${c.title} — пример ${i + 1}`,
         };
       });
 
       return { title: c.title, hint: c.hint, slides };
     });
-  }, [pf.categories, textSlides]);
+  }, [pf.categories, pf.images, textSlides]);
 
   return (
     <section
@@ -282,12 +297,12 @@ export default function Portfolio({ copy }: Props) {
         data-reveal="up"
       >
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-xl font-extrabold tracking-tight text-zinc-950 dark:text-white sm:text-2xl">
+          <div className="text-xl sm:text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
             {pf.cta.title}
           </div>
 
           <a
-            href={copy.contacts.social.telegram.href}
+            href={resolveCtaHref(copy, copy.cta.portfolio)}
             target="_blank"
             rel="noreferrer"
             className="inline-flex h-11 w-full items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-base font-semibold text-black transition hover:opacity-95 sm:w-auto"

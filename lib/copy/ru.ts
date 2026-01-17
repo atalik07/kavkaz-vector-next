@@ -1,5 +1,6 @@
 // lib/copy/ru.ts
 type AboutCtaMode = "paused" | "telegram";
+type ContactsSubmitMode = "email" | "telegram";
 
 export const ru = {
   brand: {
@@ -44,6 +45,8 @@ export const ru = {
     bottomTerms: { mode: "tgAccount", override: "" },
     aboutExcursion: { mode: "tgAccount", override: "" },
 
+    contactsManager: { mode: "tgAccount", override: "" },
+    contactsTelegramGroup: { mode: "tgGroup", override: "" },
   },
 
   hero: {
@@ -270,67 +273,94 @@ images: [
 
 
 
-  contacts: {
-    eyebrow: "Связаться с нами",
-    titleLeft: "Контакты",
-    titleRight: "Готовы к сотрудничеству? Заполни форму и мы поможем настроить все процессы от идеи до продаж",
+ contacts: {
+  eyebrow: "Связаться с нами",
+  titleLeft: "Контакты",
+  titleRight:
+    "Готовы к сотрудничеству? Заполни форму и мы поможем настроить все процессы от идеи до продаж",
 
-    fields: {
-      phoneLabel: "Телефон:",
-      emailLabel: "Email:",
-      addressLabel: "Адрес офиса/шоурума:",
-      hoursLabel: "График работы:",
-    },
-
-    values: {
-      phone: "+7 (928) 080-80-96",
-      email: "OptMebelUg@mail.ru",
-      address: "г. Нальчик, ул. Кабардинская, 148Б",
-      hours: "Пн–Сб 09:00–19:00",
-    },
-
-    form: {
-      name: "Имя",
-      namePlaceholder: "Как к вам обращаться",
-      phone: "Телефон",
-      phonePlaceholder: "+7 (___) ___-__-__",
-      email: "Эл. почта",
-      emailPlaceholder: "you@example.com",
-      message: "Запрос",
-      messagePlaceholder:
-        "Кто вы (ЮЛ/ИП), какие изделия нужны, объём партии, есть ли ТЗ/чертежи/ссылка на аналог, точка отгрузки (ТК/склад/фулфилмент) и желаемые сроки.",
-      submit: "Отправить",
-      consent:
-        "Нажимая ОТПРАВИТЬ, вы соглашаетесь с политикой конфиденциальности и согласием на обработку персональных данных.",
-      privacy: "политикой конфиденциальности",
-      personalData: "согласием на обработку персональных данных",
-    },
-
-    map: {
-      title: "Как нас найти",
-      src: "https://www.google.com/maps?q=Нальчик%20ул.%20Кабардинская%20148Б&output=embed",
-    },
-
-    links: {
-      phoneHref: "tel:+79280808096",
-      emailHref: "mailto:OptMebelUg@mail.ru",
-    },
-    cta: {
-      telegramGroup: "Наша группа в Telegram",
-    },
-    social: {
-      telegram: { href: "https://t.me/+gaG54XczoY40ZGVi", label: "Telegram" },
-      instagram: { href: "https://instagram.com/your", label: "Instagram" },
-    },
+  fields: {
+    phoneLabel: "Телефон:",
+    emailLabel: "Email:",
+    addressLabel: "Адрес офиса/шоурума:",
+    hoursLabel: "График работы:",
   },
 
-  footer: {
-    copyright: "© {year} ОптМебельЮг. Все права защищены.",
-    links: {
-      privacy: { label: "Политика конфиденциальности", href: "/privacy" },
-      personalData: { label: "Согласие на обработку персональных данных", href: "/personal-data" },
+  values: {
+    phone: "+7 (928) 080-80-96",
+    email: "OptMebelUg@mail.ru",
+    address: "г. Нальчик, ул. Кабардинская, 148Б",
+    hours: "Пн–Сб 09:00–19:00",
+  },
+
+  form: {
+    name: "Имя",
+    namePlaceholder: "Как к вам обращаться",
+    phone: "Телефон",
+    phonePlaceholder: "+7 (___) ___-__-__",
+    email: "Эл. почта",
+    emailPlaceholder: "you@example.com",
+    message: "Запрос",
+    messagePlaceholder:
+      "Кто вы (ЮЛ/ИП), какие изделия нужны, объём партии, есть ли ТЗ/чертежи/ссылка на аналог, точка отгрузки (ТК/склад/фулфилмент) и желаемые сроки.",
+    submit: "Отправить",
+
+    submitMode: "email" as ContactsSubmitMode,
+    mailSubject: "Запрос условий / расчёта — ОптМебельЮг",
+
+    consent:
+      "Нажимая ОТПРАВИТЬ, вы соглашаетесь с политикой конфиденциальности и согласием на обработку персональных данных.",
+    privacy: "политикой конфиденциальности",
+    personalData: "согласием на обработку персональных данных",
+  },
+
+  map: {
+    title: "Как нас найти",
+    src: "https://www.google.com/maps?q=Нальчик%20ул.%20Кабардинская%20148Б&output=embed",
+  },
+
+  links: {
+    phoneHref: "tel:+79280808096",
+    emailHref: "mailto:OptMebelUg@mail.ru",
+  },
+
+  cta: {
+    telegramGroup: "Наша группа в Telegram",
+  },
+
+  social: {
+    telegram: { href: "https://t.me/+gaG54XczoY40ZGVi", label: "Telegram" },
+    instagram: { href: "https://instagram.com/your", label: "Instagram" },
+  },
+},
+
+footer: {
+  copyright: "© {year} ОптМебельЮг. Все права защищены.",
+  links: {
+    privacy: { label: "Политика конфиденциальности", href: "/privacy" },
+    personalData: { label: "Согласие на обработку персональных данных", href: "/personal-data" },
+  },
+
+  docs: {
+    privacy: {
+      title: "Политика конфиденциальности",
+      body:
+        "Текст политики конфиденциальности (черновик).\n\n" +
+        "1. Общие положения...\n" +
+        "2. Какие данные собираем...\n" +
+        "3. Цели обработки...\n" +
+        "4. Контакты оператора...\n",
+    },
+    personalData: {
+      title: "Согласие на обработку персональных данных",
+      body:
+        "Текст согласия на обработку персональных данных (черновик).\n\n" +
+        "Я даю согласие на обработку моих персональных данных...\n" +
+        "Перечень данных...\n" +
+        "Срок действия согласия...\n",
     },
   },
+},
 
   seo: {
     title: "ОптМебельЮг — контрактное производство корпусной мебели (B2B)",
@@ -342,6 +372,16 @@ images: [
 portfolio: {
   eyebrow: "Виды мебели для маркетплейсов",
   title: "ВОСХОДЯЩИЕ ТРЕНДЫ МЕБЕЛИ НА МАРКЕТПЛЕЙСАХ",
+
+  images: {
+  basePath: "/images/portfolio",
+  count: 30,
+  extByPrefix: {
+    // можно не заполнять — тогда будет defaultExt
+    // komody: "jpg",
+  },
+  defaultExt: "webp",
+},
 
   categories: [
     { title: "Комоды", prefix: "komody", hint: " — универсальная мебель для хранения: компактно, практично, легко продавать." },
