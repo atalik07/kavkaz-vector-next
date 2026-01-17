@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+// import React, { useMemo } from "react";
 import HeroUtilityBar from "@/components/HeroUtilityBar";
 import { ButtonLink } from "@/components/Button";
 import HeroRSlider from "@/components/HeroRSlider";
@@ -13,12 +13,8 @@ type Props = { copy: Copy };
 export default function Hero({ copy }: Props) {
   const slides = copy.hero.slides;
 
-  const slideImages = useMemo(
-    () => ["/images/1.webp", "/images/2.jpg", "/images/3.webp", "/images/4.webp"],
-    []
-  );
-
-  const activeBg = slideImages[0];
+const slideImages = copy.hero.images?.length ? copy.hero.images : ["/images/1.webp"];
+const activeBg = slideImages[0];
 
   // Мобайл-раскладка заголовка из строк copy (без правок ru.ts):
   // line1 = copy.hero.titleLine1

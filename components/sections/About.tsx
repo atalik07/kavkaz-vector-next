@@ -1,18 +1,13 @@
 "use client";
 
-import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import HeroRSlider from "@/components/HeroRSlider";
 import type { Copy } from "@/lib/copy/ru";
+import { resolveCtaHref } from "@/lib/cta";
+
 
 type Props = { copy: Copy };
 
-
-const aboutImages = [
-  "/images/tz_chertezh.webp",
-  "/images/control_quality.webp",
-  "/images/upakovka.webp",
-  "/images/logistics_sklad.webp",
-] as const;
 
 function Eyebrow({ children }: { children: string }) {
   return (
@@ -38,6 +33,24 @@ function IconChevronDown(props: React.SVGProps<SVGSVGElement>) {
 
 export default function About({ copy }: Props) {
   const faqItems = copy.faq.items;
+  const aboutImages = copy.about.images;
+  const [excNoticeOpen, setExcNoticeOpen] = useState(false);
+  useEffect(() => {
+  if (!excNoticeOpen) return;
+  const t = window.setTimeout(() => setExcNoticeOpen(false), 10_000);
+  return () => window.clearTimeout(t);
+}, [excNoticeOpen]);
+
+  const baseExcHref = resolveCtaHref(copy, copy.cta.aboutExcursion);
+  const msg = (copy.about.ctaPanel.tgMessage ?? "").trim();
+
+  // Telegram prefill работает нормально только для https://t.me/USERNAME (не для https://t.me/+invite)
+  const excursionHref =
+    msg && /^https:\/\/t\.me\/(?!\+)/.test(baseExcHref)
+      ? `${baseExcHref}?text=${encodeURIComponent(msg)}`
+      : baseExcHref;
+
+
   const [open, setOpen] = useState(false);
 
   const innerRef = useRef<HTMLDivElement | null>(null);
@@ -239,27 +252,42 @@ export default function About({ copy }: Props) {
           {copy.about.ctaPanel.text}
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-4">
-          {copy.about.ctaPanel.tgHref ? (
-            <a
-              href={copy.about.ctaPanel.tgHref}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
-            >
-              {copy.about.ctaPanel.button}
-            </a>
-          ) : (
-            <button
-              type="button"
-              disabled
-              className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black opacity-60 cursor-not-allowed"
-            >
-              {copy.about.ctaPanel.button}
-            </button>
-          )}
-        </div>
-      </div>
+<div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-4">
+  {copy.about.ctaPanel.mode === "telegram" ? (
+    <a
+      href={excursionHref}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+    >
+      {copy.about.ctaPanel.button}
+    </a>
+  ) : (
+    <button
+      type="button"
+      onClick={() => setExcNoticeOpen((v) => !v)}
+      className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+    >
+      {copy.about.ctaPanel.button}
+    </button>
+  )}
+
+  {/* DESKTOP: notice справа */}
+  {copy.about.ctaPanel.mode === "paused" && excNoticeOpen ? (
+    <div className="hidden sm:block text-sm text-black/70 dark:text-white/70">
+      {copy.about.ctaPanel.pausedNotice}
+    </div>
+  ) : null}
+</div>
+
+{/* MOBILE: notice под кнопкой */}
+{copy.about.ctaPanel.mode === "paused" && excNoticeOpen ? (
+  <div className="mt-3 sm:hidden text-sm text-black/70 dark:text-white/70">
+    {copy.about.ctaPanel.pausedNotice}
+  </div>
+) : null}
+</div>
+
 
       {/* FAQ toggle row */}
       <div className="mt-6" data-reveal="up">

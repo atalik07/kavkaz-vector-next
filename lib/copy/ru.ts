@@ -1,4 +1,6 @@
 // lib/copy/ru.ts
+type AboutCtaMode = "paused" | "telegram";
+
 export const ru = {
   brand: {
     name: "ОптМебельЮг",
@@ -24,7 +26,7 @@ export const ru = {
     light: "Светлая",
     dark: "Тёмная",
   },
-  
+
   telegram: {
     account: "https://t.me/+gaG54XczoY40ZGVi",
     group: "https://t.me/+gaG54XczoY40ZGVi",
@@ -40,6 +42,8 @@ export const ru = {
 
     bottomCalc: { mode: "tgAccount", override: "" },
     bottomTerms: { mode: "tgAccount", override: "" },
+    aboutExcursion: { mode: "tgAccount", override: "" },
+
   },
 
   hero: {
@@ -53,6 +57,9 @@ export const ru = {
     ctaSecondary: "Запросить условия",
     ctaSecondaryHref: "#contacts",
     imageAlt: "Контрактное производство корпусной мебели под ключ",
+
+    images: ["/images/1.webp", "/images/2.jpg", "/images/3.webp", "/images/4.webp"],
+
 
     trust: ["Только B2B (ЮЛ/ИП)", "Минимальный заказ — от 300 000 ₽"],
     slides: [
@@ -136,6 +143,13 @@ export const ru = {
   about: {
     eyebrow: "Собственное производство на Юге России",
 
+images: [
+  "/images/tz_chertezh.webp",
+  "/images/control_quality.webp",
+  "/images/upakovka.webp",
+  "/images/logistics_sklad.webp",
+],
+
     // TOP (right of slider)
     top: {
       paragraphs: [
@@ -199,10 +213,11 @@ export const ru = {
     closingAccent: "МЫ ЖДЕМ ВАС!",
 
     ctaPanel: {
-      text:
-        "Приглашаем Вас на экскурсию! Убедитесь лично в наших возможностях: - Посетите производство - покажем, как рождается мебель, от выбора материалов до финишной упаковки, обсудим ваши задачи с технологами и дизайнерами вживую. Оцените качество на примере готовых образцов. Это не просто визит — это возможность стать частью нашей истории успеха!",
+      text: "Приглашаем Вас на экскурсию! Убедитесь лично в наших возможностях: - Посетите производство - покажем, как рождается мебель, от выбора материалов до финишной упаковки, обсудим ваши задачи с технологами и дизайнерами вживую. Оцените качество на примере готовых образцов. Это не просто визит — это возможность стать частью нашей истории успеха!",
       button: "На экскурсию",
-      tgHref: null as string | null,
+      mode: "paused" as AboutCtaMode,
+      pausedNotice: "Запись на экскурсию временно приостановлена.",
+      tgMessage: "Запись на экскурсию на производство",
     },
 
     faqToggle: {

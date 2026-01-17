@@ -1,5 +1,6 @@
 import type { Copy } from "@/lib/copy/ru";
 import { SocialPill } from "@/components/HeroUtilityBar";
+import { resolveCtaHref } from "@/lib/cta";
 
 type Props = { copy: Copy };
 
@@ -32,8 +33,6 @@ function TelegramIcon({ className = "h-4 w-4" }: { className?: string }) {
 }
 
 export default function Terms({ copy }: Props) {
-  const tgHref = copy.contacts.social.telegram.href;
-  const catalogHref = "/catalog";
 
   return (
     <>
@@ -168,22 +167,25 @@ export default function Terms({ copy }: Props) {
 
           {/* CTAs */}
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center" data-reveal data-reveal-delay="2">
-            <a
-              href={tgHref}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex h-11 items-center justify-center gap-2 ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
-            >
-              <TelegramIcon className="h-4 w-4" />
-              {copy.steps.cta}
-            </a>
+<a
+  href={resolveCtaHref(copy, copy.cta.stepsManager)}
+  target="_blank"
+  rel="noreferrer"
+  className="inline-flex h-11 items-center justify-center gap-2 ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
+>
+  <TelegramIcon className="h-4 w-4" />
+  {copy.steps.cta}
+</a>
 
-            <a
-              href={catalogHref}
-              className="inline-flex h-11 items-center justify-center ui-btn border border-black/10 bg-white px-6 text-sm font-semibold text-zinc-950 transition hover:bg-black/[0.03] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/[0.08] rounded-[var(--radius-card)]"
-            >
-              {copy.steps.catalog}
-            </a>
+<a
+  href={resolveCtaHref(copy, copy.cta.stepsCatalog)}
+  target="_blank"
+  rel="noreferrer"
+  className="inline-flex h-11 items-center justify-center ui-btn border border-black/10 bg-white px-6 text-sm font-semibold text-zinc-950 transition hover:bg-black/[0.03] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/[0.08] rounded-[var(--radius-card)]"
+>
+  {copy.steps.catalog}
+</a>
+
           </div>
         </section>
 
@@ -254,7 +256,7 @@ export default function Terms({ copy }: Props) {
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <a
-                href={tgHref}
+                href={resolveCtaHref(copy, copy.cta.bottomCalc)}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex h-11 items-center justify-center ui-btn bg-[color:var(--accent)] px-6 text-sm font-semibold text-black transition hover:opacity-95"
@@ -263,7 +265,9 @@ export default function Terms({ copy }: Props) {
               </a>
 
               <a
-                href="#contacts"
+                href={resolveCtaHref(copy, copy.cta.bottomTerms)}
+                target="_blank"
+                rel="noreferrer"
                 className="inline-flex h-11 items-center justify-center ui-btn border border-black/15 px-6 text-sm font-semibold transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
               >
                 {copy.hero.ctaSecondary}

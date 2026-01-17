@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-type Props = {
-  copy: any;
-};
+import type { Copy } from "@/lib/copy/ru";
+
+type Props = { copy: Copy };
+
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -78,7 +79,8 @@ function Tile({ item, index }: { item: Advantage; index: number }) {
 }
 
 export default function AdvantagesBento({ copy }: Props) {
-  const items = copy.advantagesBento.items as unknown as Advantage[];
+  const items: readonly Advantage[] = copy.advantagesBento.items;
+
 
   return (
     <section
