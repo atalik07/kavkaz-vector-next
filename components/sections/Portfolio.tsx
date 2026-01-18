@@ -55,6 +55,31 @@ type Slide = {
   text: string;
 };
 
+type Category = {
+  title: string;
+  hint: string;
+  prefix: string;
+  // Вариант B: можно явно задать items в copy/override
+  items?: Slide[];
+};
+
+type PortfolioModel = {
+  eyebrow: string;
+  title: string;
+  categories: Category[];
+  // старое поле, оставляем для fallback текстов
+  slides: Slide[];
+  cta: { title: string; button: string };
+  images: {
+    basePath: string;
+    defaultExt: string;
+    // Вариант B: ext по каждому слоту prefix-01..06
+    extBySlot?: Record<string, Record<string, string>>;
+    // Вариант B: дефолтное кол-во файлов по шаблону prefix-01..N.ext
+    defaultCount?: number;
+  };
+};
+
 function TrendCarousel({
   title,
   hint,
@@ -235,32 +260,40 @@ function TrendCarousel({
 }
 
 export default function Portfolio({ copy }: Props) {
-  const pf = copy.portfolio as unknown as {
-    eyebrow: string;
-    title: string;
-    categories: { title: string; hint: string; prefix: string }[];
-    slides: Slide[];
-    cta: { title: string; button: string };
-    images: {
-      basePath: string;
-      count: number;
-      defaultExt: string;
-      extByPrefix?: Record<string, string>;
-    };
-  };
+  const pf = copy.portfolio as unknown as PortfolioModel;
 
-  // используем первые 6 текстовых карточек как шаблон
-  const textSlides = useMemo(() => pf.slides.slice(0, 6), [pf.slides]);
+  // берём до 6 "текстовых шаблонов" из старого массива slides
+  const textSlides = useMemo(() => pf.slides?.slice(0, 6) ?? [], [pf.slides]);
 
   const sliders = useMemo(() => {
-    const { basePath, count, defaultExt, extByPrefix } = pf.images;
+    const { basePath, defaultExt, extBySlot, defaultCount } = pf.images ?? {
+      basePath: "/images/portfolio",
+      defaultExt: "webp",
+    };
 
-    return pf.categories.map((c) => {
-      const ext = extByPrefix?.[c.prefix] ?? defaultExt;
+    const fallbackCount = defaultCount ?? 6;
 
-      const slides: Slide[] = Array.from({ length: count }, (_, i) => {
-        const n = String(i + 1).padStart(2, "0");
-        const t = textSlides[i % textSlides.length];
+    return (pf.categories ?? []).map((c) => {
+      // 1) если items явно задан — используем его (вариант B)
+      if (Array.isArray(c.items) && c.items.length > 0) {
+        return {
+          title: c.title,
+          hint: c.hint,
+          slides: c.items,
+        };
+      }
+
+      // 2) иначе — fallback: prefix-01..06 и тексты по кругу из textSlides
+      const slides: Slide[] = Array.from({ length: fallbackCount }, (_, i) => {
+        const n = String(i + 1).padStart(2, "0"); // "01".."06"
+        const ext = extBySlot?.[c.prefix]?.[n] ?? defaultExt;
+
+        const t = textSlides[i % Math.max(1, textSlides.length)] ?? {
+          src: "",
+          alt: "",
+          title: "",
+          text: "",
+        };
 
         return {
           ...t,

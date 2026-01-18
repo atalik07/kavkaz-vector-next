@@ -29,8 +29,8 @@ export const ru = {
   },
 
   telegram: {
-    account: "https://t.me/+gaG54XczoY40ZGVi",
-    group: "https://t.me/+gaG54XczoY40ZGVi",
+    account: "https://t.me/AzamatKush",
+    group: "https://t.me/OptMebelUg",
   },
 
   cta: {
@@ -56,7 +56,7 @@ export const ru = {
     subtitleLine2: "мы сделаем все остальное.",
 
     ctaPrimary: "ПОЛУЧИТЬ ПРАЙС В TELEGRAM",
-    ctaPrimaryHref: "https://t.me/+gaG54XczoY40ZGVi",
+    ctaPrimaryHref: "https://t.me/AzamatKush",
     ctaSecondary: "Запросить условия",
     ctaSecondaryHref: "#contacts",
     imageAlt: "Контрактное производство корпусной мебели под ключ",
@@ -329,7 +329,7 @@ images: [
   },
 
   social: {
-    telegram: { href: "https://t.me/+gaG54XczoY40ZGVi", label: "Telegram" },
+    telegram: { href: "https://t.me/AzamatKush", label: "Telegram" },
     instagram: { href: "https://instagram.com/your", label: "Instagram" },
   },
 },
@@ -373,15 +373,54 @@ portfolio: {
   eyebrow: "Виды мебели для маркетплейсов",
   title: "ВОСХОДЯЩИЕ ТРЕНДЫ МЕБЕЛИ НА МАРКЕТПЛЕЙСАХ",
 
-  images: {
+images: {
   basePath: "/images/portfolio",
-  count: 30,
-  extByPrefix: {
-    // можно не заполнять — тогда будет defaultExt
-    // komody: "jpg",
-  },
+  defaultCount: 6,
   defaultExt: "webp",
+  extBySlot: {
+    komody: {
+      "01": "webp",
+      "02": "webp",
+      "03": "webp",
+      "04": "webp",
+      "05": "webp",
+      "06": "webp",
+    },
+    tumby: {
+      "01": "webp",
+      "02": "webp",
+      "03": "webp",
+      "04": "webp",
+      "05": "webp",
+      "06": "webp",
+    },
+    stellazhi: {
+      "01": "webp",
+      "02": "webp",
+      "03": "webp",
+      "04": "webp",
+      "05": "webp",
+      "06": "webp",
+    },
+    "navesnye-garnitury": {
+      "01": "webp",
+      "02": "webp",
+      "03": "webp",
+      "04": "webp",
+      "05": "webp",
+      "06": "webp",
+    },
+    stoly: {
+      "01": "webp",
+      "02": "webp",
+      "03": "webp",
+      "04": "webp",
+      "05": "webp",
+      "06": "webp",
+    },
+  },
 },
+
 
   categories: [
     { title: "Комоды", prefix: "komody", hint: " — универсальная мебель для хранения: компактно, практично, легко продавать." },
