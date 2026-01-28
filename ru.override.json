@@ -57,9 +57,5 @@
   },
   "theme": {
     "accentColor": "#ff4b2b"
-  },
-  "telegram": {
-    "account": "",
-    "group": ""
   }
 }
