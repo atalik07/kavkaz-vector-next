@@ -35,6 +35,9 @@
     "contactsTelegramGroup": {
       "mode": "tgGroup",
       "override": ""
+    },
+    "aboutExcursion": {
+      "mode": "tgGroup"
     }
   },
   "contacts": {
@@ -57,5 +60,11 @@
   },
   "theme": {
     "accentColor": "#ff4b2b"
+  },
+  "about": {
+    "ctaPanel": {
+      "mode": "telegram",
+      "tgMessage": "Хочу записаться на экскурсию, посмотреть как устроено производство."
+    }
   }
 }

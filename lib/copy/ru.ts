@@ -35,6 +35,7 @@ export const ru = {
 
   cta: {
     heroPrimary: { mode: "tgAccount", override: "" },
+    heroSecondary: { mode: "override", override: "#contacts" },
 
     portfolio: { mode: "tgGroup", override: "" },
 

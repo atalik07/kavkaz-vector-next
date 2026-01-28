@@ -5,20 +5,17 @@ import HeroUtilityBar from "@/components/HeroUtilityBar";
 import { ButtonLink } from "@/components/Button";
 import HeroRSlider from "@/components/HeroRSlider";
 import type { Copy } from "@/lib/copy/ru";
-import { resolveCtaHref } from "@/lib/cta";
-
+import { resolveCtaHref } from "@/lib/cta"; // ✅ Импорт функции
 
 type Props = { copy: Copy };
 
 export default function Hero({ copy }: Props) {
   const slides = copy.hero.slides;
 
-const slideImages = copy.hero.images?.length ? copy.hero.images : ["/images/1.webp"];
-const activeBg = slideImages[0];
+  const slideImages = copy.hero.images?.length ? copy.hero.images : ["/images/1.webp"];
+  const activeBg = slideImages[0];
 
-  // Мобайл-раскладка заголовка из строк copy (без правок ru.ts):
-  // line1 = copy.hero.titleLine1
-  // line2 = copy.hero.titleLine2, пробуем красиво разбить на 2 строки
+  // Мобайл-раскладка заголовка из строк copy
   const title2 = copy.hero.titleLine2?.trim() ?? "";
   const title2Words = title2.split(/\s+/).filter(Boolean);
   const title2a = title2Words.slice(0, 2).join(" "); // напр. "корпусной мебели"
@@ -54,7 +51,7 @@ const activeBg = slideImages[0];
         }}
       >
         <div className="w-full h-[calc(100svh-var(--header-h))] px-4 sm:px-6 md:mx-auto md:max-w-5xl">
-         <div className="grid h-full grid-cols-1 gap-8 py-12 sm:py-10 lg:grid-cols-2 lg:items-stretch lg:py-8">
+          <div className="grid h-full grid-cols-1 gap-8 py-12 sm:py-10 lg:grid-cols-2 lg:items-stretch lg:py-8">
 
             {/* LEFT */}
             <div className="min-h-0 lg:flex lg:items-center">
@@ -71,7 +68,7 @@ const activeBg = slideImages[0];
                       {copy.hero.titleLine1}
                     </span>
 
-                    {/* Mobile: превращаем вторую строку в 2 строки (итого 3 строки заголовка) */}
+                    {/* Mobile: превращаем вторую строку в 2 строки */}
                     <span
                       data-reveal
                       data-reveal-delay="2"
@@ -110,35 +107,36 @@ const activeBg = slideImages[0];
                 </div>
 
                 {/* BOTTOM (прижать вниз) */}
-<div className="mt-auto pt-8 lg:mt-6 lg:pt-2">
+                <div className="mt-auto pt-8 lg:mt-6 lg:pt-2">
 
-                  {/* Кнопки: везде колонка, на мобиле — во всю ширину, на lg+ — по контенту */}
-<div
-  data-reveal="up"
-  data-reveal-delay="3"
-  className="flex flex-col gap-4 lg:gap-3"
->
-  <ButtonLink
-    href={resolveCtaHref(copy, copy?.cta?.heroPrimary)}
-    variant="accentOutline"
-    size="md"
-    className="uppercase tracking-[0.10em] w-full justify-center lg:w-auto lg:self-start"
-    target="_blank"
-    rel="noreferrer"
-  >
-    {copy.hero.ctaPrimary}
-  </ButtonLink>
+                  {/* Кнопки: теперь ОБЕ работают через resolveCtaHref */}
+                  <div
+                    data-reveal="up"
+                    data-reveal-delay="3"
+                    className="flex flex-col gap-4 lg:gap-3"
+                  >
+                    {/* Кнопка 1 */}
+                    <ButtonLink
+                      href={resolveCtaHref(copy, copy.cta?.heroPrimary)}
+                      variant="accentOutline"
+                      size="md"
+                      className="uppercase tracking-[0.10em] w-full justify-center lg:w-auto lg:self-start"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {copy.hero.ctaPrimary}
+                    </ButtonLink>
 
-  <ButtonLink
-    href={copy.hero.ctaSecondaryHref}
-    variant="soft"
-    size="md"
-    className="uppercase tracking-[0.10em] w-full justify-center lg:w-auto lg:self-start"
-  >
-    {copy.hero.ctaSecondary}
-  </ButtonLink>
-</div>
-
+                    {/* Кнопка 2 (Исправлено) */}
+                    <ButtonLink
+                      href={resolveCtaHref(copy, copy.cta?.heroSecondary)}
+                      variant="soft"
+                      size="md"
+                      className="uppercase tracking-[0.10em] w-full justify-center lg:w-auto lg:self-start"
+                    >
+                      {copy.hero.ctaSecondary}
+                    </ButtonLink>
+                  </div>
 
                   <div data-reveal="up" data-reveal-delay="4" className="mt-6 lg:mt-4 flex flex-wrap gap-2">
                     {copy.hero.trust.map((t) => (
@@ -154,7 +152,6 @@ const activeBg = slideImages[0];
                   {/* Бар на мобиле скрыт как и было (md:block) */}
                   <div className="relative z-20 mt-8 hidden md:block">
                     <HeroUtilityBar copy={copy} />
-
                   </div>
                 </div>
               </div>

@@ -41,7 +41,7 @@ export default function About({ copy }: Props) {
   return () => window.clearTimeout(t);
 }, [excNoticeOpen]);
 
-  const baseExcHref = resolveCtaHref(copy, copy.cta.aboutExcursion);
+ const baseExcHref = resolveCtaHref(copy, copy.cta?.aboutExcursion);
   const msg = (copy.about.ctaPanel.tgMessage ?? "").trim();
 
   // Telegram prefill работает нормально только для https://t.me/USERNAME (не для https://t.me/+invite)
