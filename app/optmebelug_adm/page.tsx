@@ -148,7 +148,7 @@ export default function AdminPage() {
                    <option key={i} value={link.value}>
                      {link.label}
                    </option>
-                 ))}
+                  ))}
                </select>
             </div>
           </div>

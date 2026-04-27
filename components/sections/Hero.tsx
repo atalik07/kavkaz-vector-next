@@ -128,14 +128,14 @@ export default function Hero({ copy }: Props) {
                     </ButtonLink>
 
                     {/* Кнопка 2 (Исправлено) */}
-                    <ButtonLink
-                      href={resolveCtaHref(copy, copy.cta?.heroSecondary)}
-                      variant="soft"
-                      size="md"
-                      className="uppercase tracking-[0.10em] w-full justify-center lg:w-auto lg:self-start"
-                    >
-                      {copy.hero.ctaSecondary}
-                    </ButtonLink>
+                    {/* <ButtonLink */}
+                      {/* href={resolveCtaHref(copy, copy.cta?.heroSecondary)} */}
+                      {/* variant="soft" */}
+                      {/* size="md" */}
+                      {/* className="uppercase tracking-[0.10em] w-full justify-center lg:w-auto lg:self-start" */}
+                    {/* > */}
+                      {/* {copy.hero.ctaSecondary} */}
+                    {/* </ButtonLink> */}
                   </div>
 
                   <div data-reveal="up" data-reveal-delay="4" className="mt-6 lg:mt-4 flex flex-wrap gap-2">
