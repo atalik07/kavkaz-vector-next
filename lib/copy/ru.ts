@@ -289,7 +289,7 @@ images: [
 
   values: {
     phone: "+7 (928) 080-80-96",
-    email: "OptMebelUg@mail.ru",
+    email: "optmebelug@mail.ru",
     address: "г. Нальчик, ул. Кабардинская, 179",
     hours: "Пн–Сб 09:00–19:00",
   },
