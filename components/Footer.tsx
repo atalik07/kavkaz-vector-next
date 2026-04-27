@@ -101,7 +101,7 @@ export default function Footer({ copy }: Props) {
           </div>
 
           <div className="flex flex-wrap justify-center gap-5 text-base sm:justify-end sm:gap-6">
-            <a
+           {/* <a
               href={copy.footer.links.privacy.href}
               onClick={(e) => {
                 e.preventDefault();
@@ -121,7 +121,7 @@ export default function Footer({ copy }: Props) {
               className="text-black/70 hover:text-[color:var(--accent)] dark:text-white/70"
             >
               {copy.footer.links.personalData.label}
-            </a>
+            </a>*/}
           </div>
         </div>
       </footer>

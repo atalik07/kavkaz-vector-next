@@ -8,7 +8,7 @@ export const ru = {
     tagline: "контрактное производство корпусной мебели (B2B)",
     phone: "+7 (928) 080-80-96",
     telegramUrl: "https://t.me/+gaG54XczoY40ZGVi",
-    address: "г. Нальчик, ул. Кабардинская, 148Б",
+    address: "г. Нальчик, ул. Кабардинская, 179",
     workHours: "Пн–Сб 09:00–19:00",
     geo: "Производство: Юг России. Отгрузка по РФ — до ТК/склада/фулфилмента.",
   },
@@ -317,7 +317,7 @@ images: [
 
   map: {
     title: "Как нас найти",
-    src: "https://www.google.com/maps?q=Нальчик%20ул.%20Кабардинская%20148Б&output=embed",
+    src: "https://www.google.com/maps?q=Нальчик%20ул.%20Кабардинская%20179&output=embed",
   },
 
   links: {
